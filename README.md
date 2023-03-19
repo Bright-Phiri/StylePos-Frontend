@@ -1,4 +1,4 @@
-# inbox
+# Clothing-Retail-Stores-Frontend
 
 ## Project setup
 ```
