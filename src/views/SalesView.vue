@@ -85,9 +85,9 @@
                   <h1 class="text-h6 text-center">VAT&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ vat }}</h1>
                 </div>
-                <v-text-field class="mt-2" v-model="pay" v-on:keyup="processPayment" style="border-radius: 0"
+                <v-text-field class="mt-1" v-model="pay" v-on:keyup="processPayment" style="border-radius: 0"
                   outlined></v-text-field>
-                <v-text>CHANGE</v-text>
+                <h2>CHANGE</h2>
                 <v-alert outlined color="black" style="border-radius: 0">
                   <div class="text-h6">{{ change }}</div>
                 </v-alert>
@@ -153,6 +153,25 @@ export default {
     }
   },
   methods: {
+    async updateLineItemQauantity(item){
+      try {
+        let line_item_payload = {
+          quantity: item.quantity
+        }
+        this.loading = true
+        const response = await LineItemService.update(this.user.id, this.order_id, line_item_payload, item.id)
+        if (response.status === 200) {
+          const order = response.data
+          this.setData(order)
+          this.loading = false
+          this.$refs.addLineItemForm.reset()
+        }
+      }
+      catch (error) {
+        this.loading = false
+        this.handleError(error)
+      }
+    },
     async newOrder() {
       try {
         const response = await OrdersService.create(this.user.id)
@@ -251,9 +270,9 @@ export default {
         if (response.status === 204) {
           this.$store.commit('setOderId', 0)
           this.lineItems = []
-          this.sub_total = this.formartValue(0)
-          this.order_total = this.formartValue(0)
-          this.vat = this.formartValue(0)
+          this.sub_total = 0
+          this.order_total = 0
+          this.vat = 0
           this.items_count = 0
           this.$vToastify.success('Order successfully voided', 'Message');
         }
@@ -266,6 +285,8 @@ export default {
       if (this.pay >= parseFloat(this.order_total.replace(",", ""))) {
         const change = this.pay - parseFloat(this.order_total.replace(",", ""));
         this.change = this.formartValue(change)
+      } else{
+        this.change = this.formartValue(0)
       }
     },
     issueReceipt() {
@@ -275,17 +296,17 @@ export default {
         return;
       }
       this.lineItems = []
-      this.sub_total = this.formartValue(0)
-      this.order_total = this.formartValue(0)
-      this.vat = this.formartValue(0)
-      this.change = this.formartValue(0)
+      this.sub_total = 0
+      this.order_total = 0
+      this.vat = 0
+      this.change = 0
       this.pay = null
       this.items_count = 0
       this.$store.commit('setOderId', 0)
       this.$vToastify.success('Order successfully completed', 'Message');
     },
     formartValue(value) {
-      return parseInt(value).toLocaleString('en-US', { minimumFractionDigits: 2 })
+      return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     },
     logout() {
       this.$router.push({ name: "logout" })
@@ -300,10 +321,10 @@ export default {
     if (this.order_id !== 0) {
       this.setOrder(this.order_id)
     } else {
-      this.sub_total = this.formartValue(0)
-      this.order_total = this.formartValue(0)
-      this.vat = this.formartValue(0)
-      this.change = this.formartValue(0)
+      this.sub_total = 0
+      this.order_total = 0
+      this.vat = 0
+      this.change = 0
       this.items_count = 0
     }
   }

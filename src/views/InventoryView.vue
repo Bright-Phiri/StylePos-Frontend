@@ -46,7 +46,7 @@
 
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Inventory Levels... Please wait"
-              :headers="headers" :items="inventoryLevels" :search="search" :items-per-page="5" :sort-desc="[false, true]"
+              :headers="headers" :items="inventoryLevels" show-select :search="search" :items-per-page="5" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditInventoryDialog(item.item_id, item.id)"

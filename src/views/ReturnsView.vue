@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12">
           <div class="d-flex justify-space-between">
-            <h1 class="font-weight-regular">Order Summary</h1>
+            <h1 class="font-weight-regular">Issue a Return</h1>
           </div>
           <div class="d-flex justify-end">
             <v-text-field color="#B55B68" dense rounded outlined placeholder="Search" class="shrink ml-2"
@@ -13,7 +13,7 @@
 
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Order Summary... Please wait"
-              :headers="headers" :items="orders" :items-per-page="5" :sort-desc="[false, true]" multi-sort>
+              :headers="headers" show :items="orders" show-select :items-per-page="5" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon class="mr-0" v-on:click="selectPatientRecord(item.id)" color="primary">mdi-eye
                 </v-icon>
