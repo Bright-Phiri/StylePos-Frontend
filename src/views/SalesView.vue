@@ -131,7 +131,7 @@ export default {
         { text: 'Item Name', value: 'item' },
         { text: 'Selling Price', value: 'price' },
         { text: 'Quantity', value: 'quantity' },
-        { text: 'VAT', value: 'vat' },
+        { text: 'Total VAT', value: 'vat' },
         { text: 'Total', value: 'total' },
         { text: 'Action', value: 'action' },
       ],

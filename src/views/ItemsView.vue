@@ -211,7 +211,7 @@ export default {
       }
     },
     formartValue(value) {
-      return parseInt(value).toLocaleString('en-US', { minimumFractionDigits: 2 })
+      return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     },
     async updateItem() {
       const requiredFields = ['name', 'price', 'size', 'color'];
