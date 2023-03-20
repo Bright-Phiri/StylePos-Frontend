@@ -37,6 +37,10 @@
               <template v-slot:[`item.total`]="{ item }">
                 {{ formartValue(item.total) }}
               </template>
+              <template v-slot:[`item.quantity`]="{ item }">
+                <input type="number" v-model="item.quantity" @change="updateLineItemQauantity(item)"
+                  style="width: 60px;" />
+              </template>
               <template v-slot:[`item.vat`]="{ item }">
                 {{ formartValue(item.vat) }}
               </template>
@@ -91,7 +95,8 @@
                 <v-alert outlined color="black" style="border-radius: 0">
                   <div class="text-h6">{{ change }}</div>
                 </v-alert>
-                <v-btn x-large class="white--text" v-on:click="issueReceipt" depressed flat color="green">Finish Sale</v-btn>
+                <v-btn x-large class="white--text" v-on:click="issueReceipt" depressed flat color="green">Finish
+                  Sale</v-btn>
                 <v-btn x-large class="mt-2 white--text" v-on:click="voidOrder" depressed flat color="red">VOID</v-btn>
                 <v-btn x-large class="mt-2 white--text" v-on:click="newOrder" depressed flat color="blue">NEW
                   SALE</v-btn>
@@ -153,25 +158,6 @@ export default {
     }
   },
   methods: {
-    async updateLineItemQauantity(item){
-      try {
-        let line_item_payload = {
-          quantity: item.quantity
-        }
-        this.loading = true
-        const response = await LineItemService.update(this.user.id, this.order_id, line_item_payload, item.id)
-        if (response.status === 200) {
-          const order = response.data
-          this.setData(order)
-          this.loading = false
-          this.$refs.addLineItemForm.reset()
-        }
-      }
-      catch (error) {
-        this.loading = false
-        this.handleError(error)
-      }
-    },
     async newOrder() {
       try {
         const response = await OrdersService.create(this.user.id)
@@ -179,6 +165,45 @@ export default {
           const order = response.data
           this.$store.commit('setOderId', order.id)
           this.$vToastify.success('Order successfully created', 'Message');
+        }
+      }
+      catch (error) {
+        this.handleError(error)
+      }
+    },
+    async setOrder(order_id) {
+      this.loading = true
+      try {
+        const response = await OrdersService.show(order_id)
+        if (response.status === 200) {
+          const order = response.data
+          this.setData(order)
+          this.loading = false
+        }
+      }
+      catch (error) {
+        this.handleError(error)
+        this.loading = false
+      }
+    },
+    setData(order) {
+      this.lineItems = order.line_items
+      this.sub_total = this.formartValue(order.sub_total)
+      this.order_total = this.formartValue(order.total)
+      this.vat = this.formartValue(order.vat)
+      this.items_count = order.items_count
+    },
+    async voidOrder() {
+      if (this.order_id == 0) {
+        this.$vToastify.error('Order not found', 'Error');
+        return;
+      }
+      try {
+        const response = await OrdersService.delete(this.order_id)
+        if (response.status === 204) {
+          this.$store.commit('setOderId', 0)
+          this.clearData();
+          this.$vToastify.success('Order successfully voided', 'Message');
         }
       }
       catch (error) {
@@ -199,7 +224,7 @@ export default {
       }
     },
     async addLineItem() {
-      if (this.order_id == 0){
+      if (this.order_id == 0) {
         this.$vToastify.error('Order not found, Please create new order', 'Error');
         return;
       }
@@ -211,6 +236,25 @@ export default {
         this.loading = true
         const response = await LineItemService.create(this.user.id, this.order_id, line_item_payload)
         if (response.status === 201) {
+          const order = response.data
+          this.setData(order)
+          this.loading = false
+          this.$refs.addLineItemForm.reset()
+        }
+      }
+      catch (error) {
+        this.loading = false
+        this.handleError(error)
+      }
+    },
+    async updateLineItemQauantity(item) {
+      try {
+        let line_item_payload = {
+          quantity: item.quantity
+        }
+        this.loading = true
+        const response = await LineItemService.update(this.user.id, this.order_id, line_item_payload, item.id)
+        if (response.status === 200) {
           const order = response.data
           this.setData(order)
           this.loading = false
@@ -238,72 +282,34 @@ export default {
       }
 
     },
-    async setOrder(order_id) {
-      this.loading = true
-      try {
-        const response = await OrdersService.show(order_id)
-        if (response.status === 200) {
-          const order = response.data
-          this.setData(order)
-          this.loading = false
-        }
-      }
-      catch (error) {
-        this.handleError(error)
-        this.loading = false
-      }
-    },
-    setData(order) {
-      this.lineItems = order.line_items
-      this.sub_total = this.formartValue(order.sub_total)
-      this.order_total = this.formartValue(order.total)
-      this.vat = this.formartValue(order.vat)
-      this.items_count = order.items_count
-    },
-    async voidOrder() {
-      if (this.order_id == 0){
-        this.$vToastify.error('Order not found', 'Error');
-        return;
-      }
-      try {
-        const response = await OrdersService.delete(this.order_id)
-        if (response.status === 204) {
-          this.$store.commit('setOderId', 0)
-          this.lineItems = []
-          this.sub_total = 0
-          this.order_total = 0
-          this.vat = 0
-          this.items_count = 0
-          this.$vToastify.success('Order successfully voided', 'Message');
-        }
-      }
-      catch (error) {
-        this.handleError(error)
-      }
-    },
     processPayment() {
       if (this.pay >= parseFloat(this.order_total.replace(",", ""))) {
         const change = this.pay - parseFloat(this.order_total.replace(",", ""));
         this.change = this.formartValue(change)
-      } else{
+      } else {
         this.change = this.formartValue(0)
       }
     },
     issueReceipt() {
       //Issue Receipt
-      if (this.order_id == 0){
+      if (this.order_id == 0) {
         this.$vToastify.error('Order not found', 'Message');
         return;
       }
-      this.lineItems = []
-      this.sub_total = 0
-      this.order_total = 0
-      this.vat = 0
-      this.change = 0
+      if (this.pay != null && this.pay >= parseFloat(this.order_total.replace(",", ""))) {
+        this.lineItems = []
+        this.clearData();
+        this.$store.commit('setOderId', 0)
+        this.$vToastify.success('Order successfully completed', 'Message');
+      }
+    },
+    clearData() {
+      this.sub_total = this.formartValue(0)
+      this.order_total = this.formartValue(0)
+      this.vat = this.formartValue(0)
+      this.change = this.formartValue(0)
       this.pay = null
       this.items_count = 0
-      this.$store.commit('setOderId', 0)
-      this.$vToastify.success('Order successfully completed', 'Message');
     },
     formartValue(value) {
       return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -321,10 +327,10 @@ export default {
     if (this.order_id !== 0) {
       this.setOrder(this.order_id)
     } else {
-      this.sub_total = 0
-      this.order_total = 0
-      this.vat = 0
-      this.change = 0
+      this.sub_total = this.formartValue(0)
+      this.order_total = this.formartValue(0)
+      this.vat = this.formartValue(0)
+      this.change = this.formartValue(0)
       this.items_count = 0
     }
   }
