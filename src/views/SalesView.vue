@@ -235,7 +235,7 @@ export default {
         }
         this.loading = true
         const response = await LineItemService.create(this.user.id, this.order_id, line_item_payload)
-        if (response.status === 201) {
+        if (response.status === 200) {
           const order = response.data
           this.setData(order)
           this.loading = false
