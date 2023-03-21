@@ -304,6 +304,7 @@ export default {
       }
     },
     clearData() {
+      this.lineItems = []
       this.sub_total = this.formartValue(0)
       this.order_total = this.formartValue(0)
       this.vat = this.formartValue(0)
