@@ -159,6 +159,10 @@ export default {
   },
   methods: {
     async newOrder() {
+      if (this.order_id != 0) {
+        this.$vToastify.error('Order in progress', 'Message');
+        return;
+      }
       try {
         const response = await OrdersService.create(this.user.id)
         if (response.status === 201) {
@@ -191,6 +195,7 @@ export default {
       this.sub_total = this.formartValue(order.sub_total)
       this.order_total = this.formartValue(order.total)
       this.vat = this.formartValue(order.vat)
+      this.change = this.formartValue(0)
       this.items_count = order.items_count
     },
     async voidOrder() {
