@@ -228,6 +228,10 @@ export default {
         this.$vToastify.error('Order not found, Please create new order', 'Error');
         return;
       }
+      if (this.item.id == null){
+        this.$vToastify.error('Message, Please enter item code', 'Error');
+        return
+      }
       try {
         let line_item_payload = {
           item_id: this.item.id,
