@@ -328,11 +328,7 @@ export default {
     if (this.order_id !== 0) {
       this.setOrder(this.order_id)
     } else {
-      this.sub_total = this.formartValue(0)
-      this.order_total = this.formartValue(0)
-      this.vat = this.formartValue(0)
-      this.change = this.formartValue(0)
-      this.items_count = 0
+      this.clearData();
     }
   }
 }
