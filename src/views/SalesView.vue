@@ -325,7 +325,10 @@ export default {
       return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     },
     logout() {
-      this.$router.push({ name: "logout" })
+      this.$store.commit('setToken', null)
+      this.$store.commit('setUser', null)
+      this.$store.commit('setTempPass', null)
+      this.$router.push('/login')
     },
   },
   computed: {
