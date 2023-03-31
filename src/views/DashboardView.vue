@@ -8,7 +8,7 @@
               <v-card color="#B55B52" height="180px" style="border-radius: 10px;" class="elevation-0 pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#BE6F67" size="64">
-                    <v-icon large color="white">mdi-cash-plus</v-icon>
+                    <v-icon large color="white">mdi-cart</v-icon>
                   </v-avatar>
                   <v-icon x-small color="white">mdi-greater-than</v-icon>
                 </v-card-title>
@@ -20,10 +20,10 @@
               </v-card>
             </v-col>
             <v-col>
-              <v-card color="white" height="180px" style="border-radius: 10px;" class="elevation-0 pa-5">
+              <v-card height="180px" class="elevation-0 my-card pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
-                    <v-icon large color="#B55B52">mdi-cash-plus</v-icon>
+                    <v-icon large color="#B55B52">mdi-cart</v-icon>
                   </v-avatar>
                   <v-icon x-small color="black">mdi-greater-than</v-icon>
                 </v-card-title>
@@ -231,6 +231,12 @@ export default {
 <style scoped>
 .heading-color {
   color: #ffffff;
+}
+
+.my-card {
+  background-color: #F5F4F7;
+  border: 2px dashed #D0D0D2;
+  border-radius: 10px;
 }
 
 .font-class-name * {

@@ -48,6 +48,11 @@ const routes = [
     component: () => import("../views/LoginView.vue"),
   },
   {
+    path: "/signup",
+    name: "signup",
+    component: () => import("../views/SignUpView.vue"),
+  },
+  {
     path: "/sales",
     name: "sales",
     component: () => import("../views/SalesView.vue"),
@@ -71,7 +76,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !store.state.isUserLoggedIn) next({ name: 'login' })
+  if (to.name !== 'login' && to.name !== 'signup'  && !store.state.isUserLoggedIn) next({ name: 'login' })
   else next()
 })
 

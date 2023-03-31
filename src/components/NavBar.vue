@@ -47,7 +47,7 @@
       </v-navigation-drawer>
       <v-app-bar app flat color="#F3F3F3">
         <v-toolbar-title>
-          <v-app-bar-nav-icon color="#B55B68" large class="d-xl-none d-lg-none d-xl-flex" v-on:click="drawer = !drawer">
+          <v-app-bar-nav-icon color="#B55B68" x-large class="" v-on:click="drawer = !drawer">
           </v-app-bar-nav-icon>
         </v-toolbar-title>
         <v-spacer></v-spacer>
