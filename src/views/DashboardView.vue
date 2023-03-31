@@ -75,13 +75,13 @@
                 </apexchart>
               </v-card-text>
             </v-card>
-            <v-card color="#ffffff" style="border-radius: 10px;" class="mt-1 elevation-0">
+            <v-card color="#ffffff" style="border-radius: 10px;" class="mt-0 elevation-0">
               <v-card-title>Inventory</v-card-title>
               <v-card-text>
                 <v-alert border="left" colored-border color="green" elevation="1">
                   <v-row>
                     <v-col>
-                      <v-avatar tile size="65">
+                      <v-avatar tile size="64">
                         <v-img src="@/assets/i-stock.png"></v-img>
                       </v-avatar>
                     </v-col>
@@ -96,7 +96,7 @@
                 <v-alert border="left" colored-border color="red" elevation="1">
                   <v-row>
                     <v-col>
-                      <v-avatar tile size="65">
+                      <v-avatar tile size="64">
                         <v-img src="@/assets/o-stock.png"></v-img>
                       </v-avatar>
                     </v-col>
