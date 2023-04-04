@@ -12,6 +12,7 @@
       </v-avatar>
       <h3 class="ml-3 font-weight-bold">{{ this.user.first_name }} {{ this.user.last_name }} | {{ this.user.job_title }}
       </h3>
+      
       <v-btn v-on:click="logout" depressed class="ml-3"><v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -40,6 +41,10 @@
               <template v-slot:[`item.quantity`]="{ item }">
                 <input type="number" v-model="item.quantity" @change="updateLineItemQauantity(item)"
                   style="width: 60px;" />
+              </template>
+              <template v-slot:[`item.discount`]="{ item }">
+                <input type="text" v-model="item.discount" @change="applyDiscount(item)"
+                  style="width: 70px;border: 1px solid blue;" />
               </template>
               <template v-slot:[`item.vat`]="{ item }">
                 {{ formartValue(item.vat) }}
@@ -83,7 +88,7 @@
                 </div>
                 <div class="d-flex mt-2">
                   <h1 class="text-h6 text-center">DIS&nbsp;&nbsp;:</h1>
-                  <h1 class="text-h6 text-center ml-1">0.00</h1>
+                  <h1 class="text-h6 text-center ml-1">{{ discount }}</h1>
                 </div>
                 <div class="d-flex mt-2">
                   <h1 class="text-h6 text-center">VAT&nbsp;:</h1>
@@ -131,6 +136,7 @@ export default {
         { text: 'Item Name', value: 'item' },
         { text: 'Selling Price', value: 'price' },
         { text: 'Quantity', value: 'quantity' },
+        { text: 'Discount', value: 'discount' },
         { text: 'Total VAT', value: 'vat' },
         { text: 'Total', value: 'total' },
         { text: 'Action', value: 'action' },
@@ -139,18 +145,21 @@ export default {
         id: null,
         name: null,
         price: null,
-        quantity: null
+        quantity: null,
+        discount: null
       },
       line_item: {
         id: null,
         item: null,
         quantity: null,
+        discount: null,
         price: null,
         vat: null,
         total: null,
       },
       sub_total: 0,
       order_total: 0,
+      discount: 0,
       vat: 0,
       change: 0,
       pay: null,
@@ -194,6 +203,7 @@ export default {
       this.lineItems = order.line_items
       this.sub_total = this.formartValue(order.sub_total)
       this.order_total = this.formartValue(order.total)
+      this.discount = this.formartValue(order.discount)
       this.vat = this.formartValue(order.vat)
       this.change = this.formartValue(0)
       this.items_count = order.items_count
@@ -291,6 +301,25 @@ export default {
       }
 
     },
+    async applyDiscount(item) {
+      try {
+        let line_item_payload = {
+          discount: item.discount
+        }
+        this.loading = true
+        const response = await LineItemService.applyDiscount(this.user.id, this.order_id, line_item_payload, item.id)
+        if (response.status === 200) {
+          const order = response.data
+          this.setData(order)
+          this.loading = false
+          this.$refs.addLineItemForm.reset()
+        }
+      }
+      catch (error) {
+        this.loading = false
+        this.handleError(error)
+      }
+    },
     processPayment() {
       if (this.pay >= parseFloat(this.order_total.replace(",", ""))) {
         const change = this.pay - parseFloat(this.order_total.replace(",", ""));
@@ -318,6 +347,7 @@ export default {
       this.order_total = this.formartValue(0)
       this.vat = this.formartValue(0)
       this.change = this.formartValue(0)
+      this.discount = this.formartValue(0)
       this.pay = null
       this.items_count = 0
     },
@@ -345,3 +375,4 @@ export default {
   }
 }
 </script>
+
