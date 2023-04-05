@@ -44,7 +44,7 @@
               </template>
               <template v-slot:[`item.discount`]="{ item }">
                 <input type="text" v-model="item.discount" @change="applyDiscount(item)"
-                  style="width: 70px;border: 1px solid blue;" />
+                  style="width: 70px;border: 1px solid grey;" />
               </template>
               <template v-slot:[`item.vat`]="{ item }">
                 {{ formartValue(item.vat) }}
@@ -375,4 +375,3 @@ export default {
   }
 }
 </script>
-
