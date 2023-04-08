@@ -46,7 +46,8 @@
 
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Inventory Levels... Please wait"
-              :headers="headers" :items="inventoryLevels" show-select :search="search" :items-per-page="5" :sort-desc="[false, true]"
+              :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
+              @pagination="onPagination" :items="inventoryLevels" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditInventoryDialog(item.item_id, item.id)"
@@ -72,6 +73,9 @@ export default {
       inventoryLevels: [],
       item_id: null,
       updateInventoryLoading: false,
+      total: 0,
+      currentPage: 1,
+      itemsPerPage: 7,
       inventoryLevel: {
         id: null,
         quantity: null,
@@ -96,17 +100,22 @@ export default {
     }
   },
   methods: {
-    async fetchDataFromAPI() {
+    async fetchDataFromAPI(page, perPage) {
       this.loading = true
       try {
-        const response = await InventoryLevelService.getData();
-        this.inventoryLevels = response.data
+        const response = await InventoryLevelService.getData(page, perPage);
+        this.inventoryLevels = response.data.inventory_levels
+        this.total = response.data.total;
         this.loading = false
       }
       catch (error) {
         this.loading = false
         this.handleError(error)
       }
+    },
+    onPagination(page) {
+      this.currentPage = Number(page.page);
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage);
     },
     async showEditInventoryDialog(item_id, id) {
       this.item_id = item_id
@@ -137,7 +146,7 @@ export default {
             this.updateInventoryLoading = false;
             this.inventoryLevelDialog = false;
             this.$refs.updateInventoryLevelForm.reset();
-            this.fetchDataFromAPI();
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
           })
         }
       } catch (error) {
@@ -151,7 +160,7 @@ export default {
         const response = await InventoryLevelService.delete(id);
         if (response.status === 204) {
           this.$swal('Information', 'Inventory deleted successfully', 'success').then(() => {
-            this.fetchDataFromAPI();
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
           })
         }
       } catch (error) {
@@ -160,7 +169,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchDataFromAPI();
+    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
   }
 };
 </script>

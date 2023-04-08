@@ -93,8 +93,9 @@
 
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Items... Please wait"
-              :headers="headers" :items="items" :items-per-page="6" show-select :search="search"
-              :sort-desc="[false, true]" multi-sort>
+              :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
+              @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
+              multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)" color="primary">mdi-pencil
                 </v-icon>
@@ -126,6 +127,9 @@ export default {
       saveItemLoading: false,
       saveInventoryLoading: false,
       updateItemloading: false,
+      total: 0,
+      currentPage: 1,
+      itemsPerPage: 7,
       search: '',
       items: [],
       item_id: null,
@@ -159,11 +163,12 @@ export default {
     }
   },
   methods: {
-    async fetchDataFromAPI() {
+    async fetchDataFromAPI(page, perPage) {
       this.loading = true
       try {
-        const response = await ItemsService.getData()
-        this.items = response.data
+        const response = await ItemsService.getData(page, perPage)
+        this.items = response.data.items;
+        this.total = response.data.total;
         this.loading = false
       }
       catch (error) {
@@ -171,6 +176,11 @@ export default {
         this.handleError(error)
       }
     },
+    onPagination(page) {
+      this.currentPage = Number(page.page);
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage);
+    },
+
     async saveItem() {
       const requiredFields = ['name', 'price', 'size', 'color'];
 
@@ -236,7 +246,7 @@ export default {
             this.$refs.editItemForm.reset();
             this.updateItemloading = false;
             this.editdialog = false;
-            this.fetchDataFromAPI();
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
           })
         }
       } catch (error) {
@@ -249,7 +259,7 @@ export default {
         const response = await ItemsService.delete(item_id);
         if (response.status === 204) {
           this.$swal('Information', 'Item deleted successfully', 'success').then(() => {
-            this.fetchDataFromAPI();
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
           })
         }
       }
@@ -279,7 +289,7 @@ export default {
             this.saveInventoryLoading = false
             this.inventoryLevelDialog = false
             this.$refs.addInventoryLevelForm.reset()
-            this.fetchDataFromAPI()
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
           })
         }
       }
@@ -290,7 +300,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchDataFromAPI();
+    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
   }
 };
 </script>

@@ -1,7 +1,7 @@
 import Api from "./api"
 
 export default {
-    getData(){
+    getData() {
         return Api().get('dashboard')
     }
 }

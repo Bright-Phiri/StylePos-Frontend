@@ -21,7 +21,8 @@
           </div>
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Transactions... Please wait"
-              :headers="headers" :items="orders" :items-per-page="5" :sort-desc="[false, true]" multi-sort>
+              :headers="headers"  :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
+              @pagination="onPagination" :items="orders" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon class="mr-0" v-on:click="viewOrderSummary(item.id)" color="primary">mdi-eye
                 </v-icon>
@@ -45,6 +46,9 @@ export default {
       dialog: false,
       loading: false,
       orders: [],
+      total: 0,
+      currentPage: 1,
+      itemsPerPage: 7,
       headers: [
         {
           text: 'Id',
@@ -60,16 +64,21 @@ export default {
     }
   },
   methods: {
-    async fetchDataFromAPI() {
+    async fetchDataFromAPI(page, perPage) {
       this.loading = true
       try {
-        const response = await OrdersService.getData();
-        this.orders = response.data
+        const response = await OrdersService.getData(page, perPage);
+        this.orders = response.data.orders
+        this.total = response.data.total;
         this.loading = false
       } catch (error) {
         this.loading = false
         this.handleError(error);
       }
+    },
+    onPagination(page) {
+      this.currentPage = Number(page.page);
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage);
     },
     formartValue(value) {
       return parseInt(value).toLocaleString('en-US', { minimumFractionDigits: 2 })
@@ -86,7 +95,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchDataFromAPI();
+    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
   }
 };
 </script>
