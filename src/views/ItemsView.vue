@@ -87,7 +87,7 @@
             <v-btn color="#FFCDD2" class="mt-2" fab depressed x-small v-on:click="fetchDataFromAPI">
               <v-icon color="#E57373">mdi-cached</v-icon>
             </v-btn>
-            <v-text-field color="#B55B68" v-model="search" dense rounded outlined placeholder="Search" class="shrink ml-2"
+            <v-text-field color="#B55B68" v-model="search" @input="searchItem" dense rounded outlined placeholder="Search" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </div>
 
@@ -122,6 +122,7 @@ export default {
     return {
       dialog: false,
       editdialog: false,
+      searchTimeout: null, // Initialize searchTimeout variable as null
       inventoryLevelDialog: false,
       loading: false,
       saveItemLoading: false,
@@ -163,10 +164,10 @@ export default {
     }
   },
   methods: {
-    async fetchDataFromAPI(page, perPage) {
+    async fetchDataFromAPI(page, perPage, search) {
       this.loading = true
       try {
-        const response = await ItemsService.getData(page, perPage)
+        const response = await ItemsService.getData(page, perPage, search)
         this.items = response.data.items;
         this.total = response.data.total;
         this.loading = false
@@ -176,11 +177,16 @@ export default {
         this.handleError(error)
       }
     },
+    searchItem(){
+      clearTimeout(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {
+        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search); 
+      }, 500);
+    },
     onPagination(page) {
       this.currentPage = Number(page.page);
-      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage);
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
     },
-
     async saveItem() {
       const requiredFields = ['name', 'price', 'size', 'color'];
 
@@ -246,7 +252,7 @@ export default {
             this.$refs.editItemForm.reset();
             this.updateItemloading = false;
             this.editdialog = false;
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
           })
         }
       } catch (error) {
@@ -259,7 +265,7 @@ export default {
         const response = await ItemsService.delete(item_id);
         if (response.status === 204) {
           this.$swal('Information', 'Item deleted successfully', 'success').then(() => {
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
           })
         }
       }
@@ -289,7 +295,7 @@ export default {
             this.saveInventoryLoading = false
             this.inventoryLevelDialog = false
             this.$refs.addInventoryLevelForm.reset()
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
           })
         }
       }
@@ -300,7 +306,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
   }
 };
 </script>
