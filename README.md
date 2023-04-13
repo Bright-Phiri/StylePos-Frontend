@@ -22,7 +22,9 @@ npm run lint
 
 ### Screenshots
 
-<img width="960" alt="1" src="https://user-images.githubusercontent.com/75673222/229117989-34a94820-b9f3-4781-9d35-d7a8dc90b879.png">
-<img width="960" alt="2" src="https://user-images.githubusercontent.com/75673222/229118008-b11ef101-3c47-4565-a0c4-9f0fdbeceadb.png">
-<img width="960" alt="3" src="https://user-images.githubusercontent.com/75673222/229118010-a9486943-6c1c-4134-8984-07bc53e179d0.png">
-<img width="960" alt="4" src="https://user-images.githubusercontent.com/75673222/229118017-b3803a29-086c-4ff9-975d-51b42723f861.png">
+<img width="960" alt="0" src="https://user-images.githubusercontent.com/75673222/231624165-cc7245c7-941a-4e7b-beee-9ca4763d7823.png">
+<img width="960" alt="1" src="https://user-images.githubusercontent.com/75673222/231624197-d07a6e6e-6dc7-4d1f-8551-f2798127d3f6.png">
+<img width="960" alt="2" src="https://user-images.githubusercontent.com/75673222/231624226-14a7b8de-0e33-4065-868b-fbc8c05ed179.png">
+<img width="960" alt="3" src="https://user-images.githubusercontent.com/75673222/231624323-92e2767e-1c0f-440d-a141-20fe33f8a3f4.png">
+<img width="960" alt="5" src="https://user-images.githubusercontent.com/75673222/231624347-3c349d7e-da6f-4cf1-a553-f75069ce680c.png">
+<img width="960" alt="4" src="https://user-images.githubusercontent.com/75673222/231624375-c6e44766-4b43-4ed8-bc7e-55accc4b6bf3.png">
