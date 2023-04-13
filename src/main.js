@@ -11,12 +11,19 @@ import VueApexCharts from "vue-apexcharts";
 import handleError from "./mixins/handleError";
 import "sweetalert2/dist/sweetalert2.min.css";
 import VueToastify from "vue-toastify";
+import ActionCableVue from "actioncable-vue";
 
 Vue.mixin(handleError);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
 Vue.use(VueApexCharts);
 Vue.use(VueToastify);
+Vue.use(ActionCableVue, {
+  debug: true,
+  debugLevel: "error",
+  connectionUrl: "ws://127.0.0.1:3000/cable",
+  connectImmediately: true,
+});
 
 Vue.component("apexchart", VueApexCharts);
 

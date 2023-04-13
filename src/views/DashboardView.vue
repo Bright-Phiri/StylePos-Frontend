@@ -117,7 +117,6 @@
   </div>
 </template>
 <script>
-import DashboardService from '@/services/DashboardService';
 import AnimatedNumber from "animated-number-vue";
 export default {
   name: "DashboardView",
@@ -185,29 +184,25 @@ export default {
     }
   },
   methods: {
-    async loadDashboardData() {
-      try {
-        const response = await DashboardService.getData();
-        this.setDashboardData(response)
-        this.setOrdersStatistics(response)
-      } catch (error) {
-        this.handleError(error);
+    clearChart(series) {
+      while (series.length) {
+        series.pop();
       }
     },
-    setDashboardData(response) {
-      this.orders_count = response.data.number_of_orders
-      this.total_sales = Number(response.data.total_sales).toFixed(2)
-      this.daily_total_sales = Number(response.data.daily_sales).toFixed(2);
-      this.monthly_total_sales = Number(response.data.monthly_revenue).toFixed(2)
-      this.weekly_total_sales = Number(response.data.weekly_revenue).toFixed(2)
-      this.out_of_stock_count = response.data.items_out_of_stock_count
-      this.in_stock_count = response.data.items_in_stock_count
+    setDashboardData(data) {
+      this.orders_count = data.number_of_orders
+      this.total_sales = Number(data.total_sales).toFixed(2)
+      this.daily_total_sales = Number(data.daily_sales).toFixed(2);
+      this.monthly_total_sales = Number(data.monthly_revenue).toFixed(2)
+      this.weekly_total_sales = Number(data.weekly_revenue).toFixed(2)
+      this.out_of_stock_count = data.items_out_of_stock_count
+      this.in_stock_count = data.items_in_stock_count
       this.series.splice(0, this.series.length)
       this.series.push(Math.floor(this.daily_total_sales), Math.floor(this.weekly_total_sales), Math.floor(this.monthly_total_sales)) //apa ma float ako ayi
     },
-    setOrdersStatistics(response) {
+    setOrdersStatistics(data) {
       const ordersStatistics = Array(12).fill(0);
-      const m_order_statistics = response.data.monthly_order_statistics;
+      const m_order_statistics = data.monthly_order_statistics;
       m_order_statistics.forEach(m_order => {
         const order_month = new Date(m_order.created_at).getMonth();
         ordersStatistics[order_month]++;
@@ -219,11 +214,48 @@ export default {
     },
     formatAmount(value) {
       return `MK ${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    },
+    updateDashboard(data){
+      switch (data.type) {
+        case "all":
+          this.setOrdersStatistics(data)
+          this.setDashboardData(data)
+          break;
+        case "order":
+          this.orders_count = data.number_of_orders
+          this.setOrdersStatistics(data)
+          break;
+        case "line_items":
+          this.total_sales = Number(data.total_sales).toFixed(2)
+          this.daily_total_sales = Number(data.daily_sales).toFixed(2);
+          this.monthly_total_sales = Number(data.monthly_revenue).toFixed(2)
+          this.weekly_total_sales = Number(data.weekly_revenue).toFixed(2)
+          this.out_of_stock_count = data.items_out_of_stock_count
+          this.in_stock_count = data.items_in_stock_count
+          this.clearChart(this.series)
+          this.series.splice(0, this.series.length)
+          this.series.push(Math.floor(this.daily_total_sales), Math.floor(this.weekly_total_sales), Math.floor(this.monthly_total_sales)) //apa ma float ako ayi
+          break;
+        case "inventory":
+          this.out_of_stock_count = data.items_out_of_stock_count
+          this.in_stock_count = data.items_in_stock_count
+          break;
+      }
     }
 
   },
+  channels: {
+    DashboardChannel: {
+      connected() {},
+      rejected() {},
+      received(data) {
+        this.updateDashboard(data)
+      },
+      disconnected() {},
+    },
+  },
   mounted() {
-    this.loadDashboardData();
+    this.$cable.subscribe({ channel: "DashboardChannel" });
   }
 };
 </script>
