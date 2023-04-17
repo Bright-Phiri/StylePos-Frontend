@@ -63,6 +63,7 @@ export default {
           this.loading = false
           this.$store.commit('setToken', response.data.token)
           this.$store.commit('setUser', user)
+          this.$store.commit('setTempPass', this.user.password)
           this.switchUserPanel(user)
         }
       } catch (error) {
