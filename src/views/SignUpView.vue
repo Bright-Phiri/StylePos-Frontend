@@ -17,9 +17,11 @@
               <v-form @submit.prevent="signUp">
                 <v-text-field color="#B55B68" label="Username" outlined v-model.trim="user.user_name"></v-text-field>
                 <v-text-field color="#B55B68" label="Email Address" outlined v-model.trim="user.email"></v-text-field>
-                <v-text-field color="#B55B68" label="Password" type="password" outlined v-model.trim="user.password">
+                <v-text-field color="#B55B68" label="Password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"  @click:append="showPassword = !showPassword" outlined v-model.trim="user.password">
                 </v-text-field>
-                <v-text-field color="#B55B68" label="Confirm Password" type="password" outlined v-model.trim="user.password_confirmation">
+                <v-text-field color="#B55B68" label="Confirm Password" :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showConfirmPassword ? 'text' : 'password'"  @click:append="showConfirmPassword = !showConfirmPassword" outlined v-model.trim="user.password_confirmation">
                 </v-text-field>
                 <v-btn type="submit" :loading="loading" dark depressed large block color="#B55B68">Sign up</v-btn>
                 <v-divider class="my-4"></v-divider>
@@ -41,6 +43,8 @@ export default {
   data() {
     return {
       loading: false,
+      showPassword: false,
+      showConfirmPassword: false,
       user: {
         user_name: null,
         email: null,
