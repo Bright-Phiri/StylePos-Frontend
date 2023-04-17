@@ -52,7 +52,7 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-avatar color="F9F9F9" size="39"> <v-img src="../assets/avatar.png"></v-img> </v-avatar>
-        <h4 class="ml-3 font-weight-bold">{{ user.user_name }}</h4>
+        <h4 class="ml-3 font-weight-bold">Welcome, {{ user.user_name }}</h4>
       </v-app-bar>
     </nav>
     <transition name="page" mode="out-in">

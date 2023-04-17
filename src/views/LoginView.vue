@@ -15,7 +15,8 @@
             <v-card-text>
               <v-form @submit.prevent="login">
                 <v-text-field color="#B55B68" label="Username" outlined v-model.trim="user.username"></v-text-field>
-                <v-text-field color="#B55B68" label="Password" type="password" outlined v-model.trim="user.password">
+                <v-text-field color="#B55B68" label="Password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword ? 'text' : 'password'"  @click:append="showPassword = !showPassword" outlined v-model.trim="user.password">
                 </v-text-field>
                 <v-btn type="submit" :loading="loading" dark depressed large block color="#B55B68">Sign in</v-btn>
                 <v-divider class="my-4"></v-divider>
@@ -40,6 +41,7 @@ export default {
   data() {
     return {
       loading: false,
+      showPassword: false,
       user: {
         username: null,
         password: null,

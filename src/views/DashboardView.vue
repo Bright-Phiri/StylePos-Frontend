@@ -69,7 +69,7 @@
         <v-col cols="12" lg="4">
           <div class="side-content">
             <v-card color="#ffffff" style="border-radius: 10px;" class="elevation-0">
-              <v-card-title>Sales</v-card-title>
+              <v-card-title>Sales Overview</v-card-title>
               <v-card-text class="d-flex justify-center">
                 <apexchart v-if="series && series.length" width="350" type="donut" :options="options" :series="series">
                 </apexchart>

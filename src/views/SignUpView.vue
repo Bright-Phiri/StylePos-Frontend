@@ -9,8 +9,9 @@
             </v-avatar>
           </div>
           <v-card>
-            <v-card-title>
-              <span class="font-weight-light title">Sign Up</span>
+            <v-card-title class="d-flex flex-column">
+              <span class="font-weight-light title">LETS GET STARTED!</span>
+              <span class="font-weight-light">Create account</span>
             </v-card-title>
             <v-card-text>
               <v-form @submit.prevent="signUp">
