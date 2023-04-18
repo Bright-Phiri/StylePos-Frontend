@@ -24,7 +24,7 @@ npm run lint
 
 <img width="960" alt="new1" src="https://user-images.githubusercontent.com/75673222/232696634-1539465c-48cb-4173-a125-f8d54c188855.png">
 <img width="960" alt="new2" src="https://user-images.githubusercontent.com/75673222/232696687-be6a75af-871b-467c-9bf7-2b93d3a97f33.png">
-<img width="960" alt="1" src="https://user-images.githubusercontent.com/75673222/231624197-d07a6e6e-6dc7-4d1f-8551-f2798127d3f6.png">
+<img width="960" alt="final" src="https://user-images.githubusercontent.com/75673222/232698283-fd0972fb-3c2d-447a-b667-fa3078fa5a86.png">
 <img width="960" alt="2" src="https://user-images.githubusercontent.com/75673222/231624226-14a7b8de-0e33-4065-868b-fbc8c05ed179.png">
 <img width="960" alt="3" src="https://user-images.githubusercontent.com/75673222/231624323-92e2767e-1c0f-440d-a141-20fe33f8a3f4.png">
 <img width="960" alt="5" src="https://user-images.githubusercontent.com/75673222/231624347-3c349d7e-da6f-4cf1-a553-f75069ce680c.png">
