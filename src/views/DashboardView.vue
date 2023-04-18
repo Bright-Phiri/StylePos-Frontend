@@ -76,7 +76,7 @@
               </v-card-text>
             </v-card>
             <v-card color="#ffffff" style="border-radius: 10px;" class="mt-0 elevation-0">
-              <v-card-title>Inventory</v-card-title>
+              <v-card-title>Inventory Levels</v-card-title>
               <v-card-text>
                 <v-alert border="left" colored-border color="green" elevation="1">
                   <v-row>
@@ -200,15 +200,6 @@ export default {
       this.series.splice(0, this.series.length)
       this.series.push(Math.floor(this.daily_total_sales), Math.floor(this.weekly_total_sales), Math.floor(this.monthly_total_sales)) //apa ma float ako ayi
     },
-    setOrdersStatistics(data) {
-      const ordersStatistics = Array(12).fill(0);
-      const m_order_statistics = data.monthly_order_statistics;
-      m_order_statistics.forEach(m_order => {
-        const order_month = new Date(m_order.created_at).getMonth();
-        ordersStatistics[order_month]++;
-      });
-      this.stati = [{ data: ordersStatistics }];
-    },
     formatValue(value) {
       return `${value.toFixed(0)}`;
     },
@@ -241,8 +232,16 @@ export default {
           this.in_stock_count = data.items_in_stock_count
           break;
       }
-    }
-
+    },
+    setOrdersStatistics(data) {
+      const ordersStatistics = Array(12).fill(0);
+      const m_order_statistics = data.monthly_order_statistics;
+      m_order_statistics.forEach(m_order => {
+        const order_month = new Date(m_order.created_at).getMonth();
+        ordersStatistics[order_month]++;
+      });
+      this.stati = [{ data: ordersStatistics }];
+    },
   },
   channels: {
     DashboardChannel: {
