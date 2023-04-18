@@ -106,6 +106,9 @@
               <template v-slot:[`item.price`]="{ item }">
                 {{ formartValue(item.price) }}
               </template>
+              <template v-slot:[`item.selling_price`]="{ item }">
+                {{ formartValue(item.selling_price) }}
+              </template>
             </v-data-table>
           </v-card>
         </v-col>
@@ -154,7 +157,8 @@ export default {
           value: 'id',
         },
         { text: 'Name', value: 'name' },
-        { text: 'Price', value: 'price' },
+        { text: 'Pre VAT Price', value: 'price' },
+        { text: 'Seling Price', value: 'selling_price' },
         { text: 'Size', value: 'size' },
         { text: 'Color', value: 'color' },
         { text: 'Stock Level', value: 'stock_level' },
