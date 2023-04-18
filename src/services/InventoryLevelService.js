@@ -1,8 +1,8 @@
 import Api from "./api";
 
 export default {
-    getData(page, perPage){
-        return Api().get('inventory_levels', { params: { page: page, per_page: perPage } })
+    getData(page, perPage, search){
+        return Api().get('inventory_levels', { params: { page: page, per_page: perPage, search: search} })
     },
     create(inventoryLevel, item_id) {
         return Api().post(`items/${item_id}/inventory_levels`, inventoryLevel)

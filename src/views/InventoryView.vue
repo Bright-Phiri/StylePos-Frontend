@@ -40,7 +40,7 @@
             <v-btn color="#FFCDD2" class="mt-2" v-on:click="fetchDataFromAPI" fab depressed x-small>
               <v-icon color="#E57373">mdi-cached</v-icon>
             </v-btn>
-            <v-text-field color="#B55B68" v-model="search" dense rounded outlined placeholder="Search" class="shrink ml-2"
+            <v-text-field color="#B55B68" v-model="search" dense rounded outlined placeholder="Search" @input="searchItem" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </div>
 
@@ -100,10 +100,10 @@ export default {
     }
   },
   methods: {
-    async fetchDataFromAPI(page, perPage) {
+    async fetchDataFromAPI(page, perPage, search) {
       this.loading = true
       try {
-        const response = await InventoryLevelService.getData(page, perPage);
+        const response = await InventoryLevelService.getData(page, perPage, search);
         this.inventoryLevels = response.data.inventory_levels
         this.total = response.data.total;
         this.loading = false
@@ -113,9 +113,15 @@ export default {
         this.handleError(error)
       }
     },
+    searchItem(){
+      clearTimeout(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {
+        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search); 
+      }, 500);
+    },
     onPagination(page) {
       this.currentPage = Number(page.page);
-      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage);
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
     },
     async showEditInventoryDialog(item_id, id) {
       this.item_id = item_id
@@ -146,7 +152,7 @@ export default {
             this.updateInventoryLoading = false;
             this.inventoryLevelDialog = false;
             this.$refs.updateInventoryLevelForm.reset();
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
           })
         }
       } catch (error) {
@@ -160,7 +166,7 @@ export default {
         const response = await InventoryLevelService.delete(id);
         if (response.status === 204) {
           this.$swal('Information', 'Inventory deleted successfully', 'success').then(() => {
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
           })
         }
       } catch (error) {
@@ -169,7 +175,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage)
+    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
   }
 };
 </script>
