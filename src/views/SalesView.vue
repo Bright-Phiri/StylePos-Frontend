@@ -12,7 +12,7 @@
       </v-avatar>
       <h3 class="ml-3 font-weight-bold">{{ this.user.first_name }} {{ this.user.last_name }} | {{ this.user.job_title }}
       </h3>
-      
+
       <v-btn v-on:click="logout" depressed class="ml-3"><v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -111,6 +111,52 @@
         </v-sheet>
       </v-col>
     </v-row>
+
+    <div class="receipt" ref="receipt">
+      <h1 class="heading-1">StylePos Receipt</h1>
+      <ul>
+        <li v-for="item in lineItems" :key="item.id">
+          <span class="item">{{ item.item }}</span>
+          <span class="price">{{ item.quantity }} * {{ formartValue(item.price) }}</span>
+          <span class="total">{{ formartValue(item.total) }}</span>
+        </li>
+      </ul>
+      <P>--------------------------------------------------------------------------------------------------------------
+      </P>
+      <div class="total mt-2">
+        <span>Sub total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
+        <span class="price">{{ sub_total }}</span>
+      </div>
+      <div class="total mt-2">
+        <span>Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
+        <span class="price">{{ discount }}</span>
+      </div>
+      <div class="total mt-2">
+        <span>VAT A-16.5%&nbsp;: </span>
+        <span class="price">{{ vat }}</span>
+      </div>
+      <div class="total mt-2">
+        <span>Total VAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
+        <span class="price">{{ vat }}</span>
+      </div>
+      <P>--------------------------------------------------------------------------------------------------------------
+      </P>
+      <div class="total">
+        <span>Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
+        <span class="price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+          order_total }}</span>
+      </div>
+      <div class="total">
+        <span>Change: </span>
+        <span class="price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+          change }}</span>
+      </div>
+      <p>You were served by:</p>
+      <p>Cashier: {{ user.first_name }} {{ user.last_name }}</p>
+      <p>Date Time : {{ transaction_date }}</p>
+      <button @click="printReceipt">Print Receipt</button>
+    </div>
+
   </div>
 </template>
 
@@ -161,12 +207,94 @@ export default {
       order_total: 0,
       discount: 0,
       vat: 0,
+      transaction_date: null,
       change: 0,
       pay: null,
       items_count: 0,
     }
   },
   methods: {
+    printReceipt() {
+      // Clone the receipt element and remove the print button
+      const receipt = this.$refs.receipt.cloneNode(true)
+      const button = receipt.querySelector('button')
+      button.parentNode.removeChild(button)
+
+      // Open a new window and print the receipt
+      const printWindow = window.open('', '', 'height=600,width=800')
+      printWindow.document.write('<html><head><title>Receipt</title>')
+      printWindow.document.write('<style scoped>' + this.getPrintStyles() + '</style>')
+      printWindow.document.write('</head><body>')
+      printWindow.document.write(receipt.outerHTML)
+      printWindow.document.write('</body></html>')
+      printWindow.print()
+      printWindow.close()
+    },
+
+    getPrintStyles() {
+      // Return the CSS code as a string
+      return `
+        .receipt {
+          border: 1px solid black;
+          padding: 10px;
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          width: 300px;
+          visibility: hidden; /* hide by default */
+        }
+
+        .receipt h1 {
+          font-size: 18px;
+          font-weight: bold;
+          text-align: center;
+          margin: 0 0 10px 0;
+        }
+
+        .receipt ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .receipt li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 5px;
+        }
+
+        .receipt .item {
+          flex: 0.3;
+        }
+
+        .receipt .price {
+          flex: 0.3;
+        }
+
+        .receipt .total {
+          flex: 0.3;
+        }
+
+        .receipt .total span:first-child {
+          font-weight: bold;
+        }
+
+        .receipt .total .price {
+          font-weight: bold;
+        }
+
+        @media print {
+          .receipt {
+            display: block;
+            margin: 0;
+            font-size: 12pt;
+            width: 100%;
+            page-break-after: always;
+            visibility: visible;
+          }
+        }
+      `
+    },
     async newOrder() {
       if (this.order_id != 0) {
         this.$vToastify.error('Order in progress', 'Message');
@@ -207,6 +335,7 @@ export default {
       this.vat = this.formartValue(order.vat)
       this.change = this.formartValue(0)
       this.items_count = order.items_count
+      this.transaction_date = order.transaction_date
     },
     async voidOrder() {
       if (this.order_id == 0) {
@@ -243,7 +372,7 @@ export default {
         this.$vToastify.error('Order not found, Please create new order', 'Error');
         return;
       }
-      if (this.item.id == null){
+      if (this.item.id == null) {
         this.$vToastify.error('Message, Please enter item code', 'Error');
         return
       }
@@ -329,16 +458,16 @@ export default {
       }
     },
     issueReceipt() {
-      //Issue Receipt
       if (this.order_id == 0) {
         this.$vToastify.error('Order not found', 'Message');
         return;
       }
       if (this.pay != null && this.pay >= parseFloat(this.order_total.replace(",", ""))) {
         this.lineItems = []
-        this.clearData();
         this.$store.commit('setOderId', 0)
         this.$vToastify.success('Order successfully completed', 'Message');
+        this.printReceipt();
+        this.clearData();
       }
     },
     clearData() {
@@ -375,3 +504,65 @@ export default {
   }
 }
 </script>
+<style scoped>
+.receipt {
+  border: 1px solid black;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  width: 300px;
+  visibility: hidden; /* hide by default */
+}
+
+.receipt h1 {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+.receipt ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.receipt li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.receipt .item {
+  flex: 0.3;
+}
+
+.receipt .price {
+  flex: 0.3;
+}
+
+.receipt .total {
+  flex: 0.3;
+}
+
+.receipt .total span:first-child {
+  font-weight: bold;
+}
+
+.receipt .total .price {
+  font-weight: bold;
+}
+
+@media print {
+  .receipt {
+    display: block;
+    margin: 0;
+    font-size: 12pt;
+    width: 100%;
+    page-break-after: always;
+    visibility: visible; /* show only when printing */
+  }
+}
+
+</style>
