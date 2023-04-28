@@ -466,7 +466,7 @@ export default {
         this.lineItems = []
         this.$store.commit('setOderId', 0)
         this.$vToastify.success('Order successfully completed', 'Message');
-        this.printReceipt();
+        // this.printReceipt();
         this.clearData();
       }
     },
