@@ -73,7 +73,7 @@ export default {
         { text: "Items", icon: "mdi-package", route: "/items" },
         { text: "Inventory", icon: "mdi-trending-up", route: "/inventory" },
         { text: "Transactions", icon: "mdi-cash-multiple", route: "/orders" },
-        { text: "Return", icon: "mdi-package", route: "/items1" },
+        { text: "Return", icon: "mdi-package", route: "/returns" },
         { text: "Employees", icon: "mdi-account-multiple", route: "/employees" },
       ],
       links1: [

@@ -12,5 +12,8 @@ export default {
     },
     delete(order_id) {
         return Api().delete(`orders/${order_id}`)
+    },
+    item_return(order_id, line_item_id) {
+        return Api().delete(`orders/${order_id}/return_item/${line_item_id}`)
     }
 }

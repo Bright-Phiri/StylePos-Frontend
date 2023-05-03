@@ -31,6 +31,11 @@ const routes = [
         component: () => import("../views/OrdersView.vue"),
       },
       {
+        path: "/returns",
+        name: "returns",
+        component: () => import("../views/ReturnsView.vue"),
+      },
+      {
         path: "/employees",
         name: "employees",
         component: () => import("../views/EmployeesView.vue"),
@@ -44,6 +49,11 @@ const routes = [
         path: "/order_summary",
         name: "order_summary",
         component: () => import("../views/OrderSummaryView.vue"),
+      },
+      {
+        path: "/item_return",
+        name: "item_return",
+        component: () => import("../views/ItemReturnView.vue"),
       },
     ],
   },
