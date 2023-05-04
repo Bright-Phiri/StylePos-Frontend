@@ -58,6 +58,11 @@ export default {
       ],
     }
   },
+  computed: {
+    order_ID() {
+      return this.$store.state.order_ID !== null ? this.$store.state.order_ID : 0;
+    }
+  },
   methods: {
     async fetchDataFromAPI(order_id) {
       this.loading = true
@@ -70,12 +75,12 @@ export default {
         this.handleError(error);
       }
     },
-    async issueItemReturn(line_item_id){
-      try{
-        const response = await OrdersService.item_return(this.$store.state.order_id, line_item_id);
-        if (response.status === 200){
-          this.$swal('Information', 'Item returned successfully', 'success').then(()=>{
-             this.fetchDataFromAPI(this.$store.state.order_id);
+    async issueItemReturn(line_item_id) {
+      try {
+        const response = await OrdersService.item_return(this.order_ID, line_item_id);
+        if (response.status === 200) {
+          this.$swal('Information', 'Item returned successfully', 'success').then(() => {
+            this.fetchDataFromAPI(this.order_ID);
           })
         }
       } catch (error) {
@@ -88,8 +93,14 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit('setOderId', this.$route.params.order_id)
-    this.fetchDataFromAPI(this.$store.state.order_id);
+    if (this.$route.params.order_id !== undefined) {
+      this.$store.commit('setOderID', this.$route.params.order_id);
+      this.fetchDataFromAPI(this.order_ID);
+    } else{
+      if (this.order_ID !== 0) {
+        this.fetchDataFromAPI(this.order_ID);
+      }
+    }
   }
 };
 </script>

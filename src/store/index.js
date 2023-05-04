@@ -10,7 +10,8 @@ export default new Vuex.Store({
         token: null,
         temp_pass: null,
         isUserLoggedIn: false,
-        order_id: 0
+        order_id: 0,
+        order_ID: 0,
     },
     mutations: {
         setUser(state, payload) {
@@ -29,6 +30,9 @@ export default new Vuex.Store({
         },
         setOderId(state, payload){
             state.order_id = payload
+        },
+        setOderID(state, payload){
+            state.order_ID = payload
         }
     },
     plugins: [createPersistedState()]
