@@ -22,7 +22,6 @@ npm run lint
 
 ### Screenshots
 
-<img width="960" alt="new1" src="https://user-images.githubusercontent.com/75673222/232696634-1539465c-48cb-4173-a125-f8d54c188855.png">
 <img width="960" alt="new2" src="https://user-images.githubusercontent.com/75673222/232696687-be6a75af-871b-467c-9bf7-2b93d3a97f33.png">
 <img width="960" alt="final" src="https://user-images.githubusercontent.com/75673222/232698283-fd0972fb-3c2d-447a-b667-fa3078fa5a86.png">
 <img width="960" alt="2" src="https://user-images.githubusercontent.com/75673222/231624226-14a7b8de-0e33-4065-868b-fbc8c05ed179.png">
