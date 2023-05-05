@@ -53,6 +53,11 @@ export default {
       ],
     }
   },
+  computed: {
+    order_ID() {
+      return this.$store.state.order_ID !== null ? this.$store.state.order_ID : 0;
+    }
+  },
   methods: {
     async fetchDataFromAPI(order_id) {
       this.loading = true
@@ -70,7 +75,14 @@ export default {
     },
   },
   mounted() {
-    this.fetchDataFromAPI(this.$route.params.order_id);
+    if (this.$route.params.order_id !== undefined) {
+      this.$store.commit('setOderID', this.$route.params.order_id);
+      this.fetchDataFromAPI(this.order_ID);
+    } else{
+      if (this.order_ID !== 0) {
+        this.fetchDataFromAPI(this.order_ID);
+      }
+    }
   }
 };
 </script>

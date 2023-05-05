@@ -7,8 +7,8 @@ export default {
     create(employee) {
         return Api().post('items', employee)
     },
-    show(item_id) {
-        return Api().get(`items/${item_id}`)
+    show(barcode) {
+        return Api().get(`find_item/${barcode}`)
     },
     put(item, item_id) {
         return Api().put(`items/${item_id}`,item)

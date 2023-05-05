@@ -58,7 +58,7 @@
           <v-card-text>
             <v-form ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex">
-                <v-text-field label="Item Code" v-model="item.id" v-on:keyup="searchItem" outlined></v-text-field>
+                <v-text-field label="Item Code" v-model="item.barcode" v-on:keyup="searchItem" outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
                 <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4"></v-text-field>
@@ -179,6 +179,7 @@ export default {
           sortable: false,
           value: 'id',
         },
+        { text: 'Barcode', value: 'barcode' },
         { text: 'Item Name', value: 'item' },
         { text: 'Selling Price', value: 'price' },
         { text: 'Quantity', value: 'quantity' },
@@ -189,6 +190,7 @@ export default {
       ],
       item: {
         id: null,
+        barcode: null,
         name: null,
         price: null,
         quantity: null,
@@ -356,7 +358,7 @@ export default {
     },
     async searchItem() {
       try {
-        const response = await ItemsService.show(this.item.id)
+        const response = await ItemsService.show(this.item.barcode)
         const transformedData = {
           ...response.data,
           price: this.formartValue(response.data.price),
@@ -364,7 +366,8 @@ export default {
         this.item = transformedData
       }
       catch (error) {
-        //this.handleError(error)
+        this.handleError(error)
+        this.$refs.addLineItemForm.reset()
       }
     },
     async addLineItem() {
@@ -372,7 +375,7 @@ export default {
         this.$vToastify.error('Order not found, Please create new order', 'Error');
         return;
       }
-      if (this.item.id == null) {
+      if (this.item.barcode == null) {
         this.$vToastify.error('Message, Please enter item code', 'Error');
         return
       }

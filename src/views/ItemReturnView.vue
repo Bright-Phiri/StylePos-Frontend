@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12">
           <div class="d-flex justify-space-between">
-            <h1 class="font-weight-regular">Issue Item Return</h1>
+            <h1 class="font-weight-regular">Return Request</h1>
           </div>
           <div class="d-flex justify-end">
             <v-text-field color="#B55B68" dense rounded outlined placeholder="Search" class="shrink ml-2"
@@ -15,7 +15,7 @@
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Order Summary... Please wait"
               :headers="headers" :items="line_items" :items-per-page="5" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon class="mr-0" v-on:click="issueItemReturn(item.id)" color="primary">mdi-package
+                <v-icon class="mr-0" v-on:click="issueItemReturn(item.id)" color="primary">mdi-undo
                 </v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">

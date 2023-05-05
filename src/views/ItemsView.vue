@@ -87,8 +87,8 @@
             <v-btn color="#FFCDD2" class="mt-2" fab depressed x-small v-on:click="fetchDataFromAPI">
               <v-icon color="#E57373">mdi-cached</v-icon>
             </v-btn>
-            <v-text-field color="#B55B68" v-model="search" @input="searchItem" dense rounded outlined placeholder="Search" class="shrink ml-2"
-              append-icon="mdi-magnify"></v-text-field>
+            <v-text-field color="#B55B68" v-model="search" @input="searchItem" dense rounded outlined placeholder="Search"
+              class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
           </div>
 
           <v-card>
@@ -101,6 +101,7 @@
                 </v-icon>
                 <v-icon small class="mr-0" color="#2A9B90" v-on:click="showInventoryLevelDialog(item.id)">mdi-plus-box
                 </v-icon>
+                <v-icon small class="mr-0" color="blue darken-2" v-on:click="generateAndPrintBarcode(item.barcode)">mdi-barcode</v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteItem(item.id)">mdi-delete</v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">
@@ -119,6 +120,8 @@
 <script>
 import ItemsService from '../services/ItemsService'
 import InventoryLevelService from '../services/InventoryLevelService'
+import JsBarcode from 'jsbarcode';
+import printJS from 'print-js';
 export default {
   name: "ItemsView",
   data() {
@@ -156,6 +159,7 @@ export default {
           sortable: false,
           value: 'id',
         },
+        { text: 'Barcode', value: 'barcode' },
         { text: 'Name', value: 'name' },
         { text: 'Pre VAT Price', value: 'price' },
         { text: 'Seling Price', value: 'selling_price' },
@@ -181,10 +185,10 @@ export default {
         this.handleError(error)
       }
     },
-    searchItem(){
+    searchItem() {
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
-        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search); 
+        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
       }, 500);
     },
     onPagination(page) {
@@ -276,6 +280,18 @@ export default {
       catch (error) {
         this.handleError(error)
       }
+    },
+    generateAndPrintBarcode(barcodeValue) {
+      const canvas = document.createElement('canvas');
+      JsBarcode(canvas, barcodeValue);
+      // Send the barcode image to the printer using print-js
+      printJS({
+        printable: canvas.toDataURL(), // Convert the canvas to a base64-encoded image URL
+        type: 'image',
+        maxWidth: 300, // Set the maximum width of the image
+        targetStyles: ['height=auto'], // Set the height of the image to auto
+        documentTitle: 'Barcode', // Set the title of the print document
+      });
     },
     showInventoryLevelDialog(item_id) {
       this.item_id = item_id
