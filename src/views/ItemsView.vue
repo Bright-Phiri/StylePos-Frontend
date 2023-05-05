@@ -228,7 +228,7 @@ export default {
       this.editdialog = true
       this.item_id = item_id
       try {
-        const response = await ItemsService.show(item_id)
+        const response = await ItemsService.getItem(item_id)
         this.item = response.data
       } catch (error) {
         this.handleError(error)

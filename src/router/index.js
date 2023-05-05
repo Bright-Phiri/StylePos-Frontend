@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Navbar from "@/components/NavBar.vue";
-import store from '../store'
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -68,6 +68,16 @@ const routes = [
     component: () => import("../views/LoginView.vue"),
   },
   {
+    path: "/forgot",
+    name: "forgot",
+    component: () => import("../views/ForgotPasswordView.vue"),
+  },
+  {
+    path: "/reset",
+    name: "reset",
+    component: () => import("../views/ResetPasswordView.vue"),
+  },
+  {
     path: "/signup",
     name: "signup",
     component: () => import("../views/SignUpView.vue"),
@@ -81,9 +91,9 @@ const routes = [
     path: "/logout",
     name: "logout",
     beforeEnter(to, from, next) {
-      store.commit('setToken', null)
-      store.commit('setUser', null)
-      store.commit('setTempPass', null)
+      store.commit("setToken", null);
+      store.commit("setUser", null);
+      store.commit("setTempPass", null);
       next({ name: "login" });
     },
   },
@@ -96,8 +106,15 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && to.name !== 'signup'  && !store.state.isUserLoggedIn) next({ name: 'login' })
-  else next()
-})
+  if (
+    to.name !== "login" &&
+    to.name !== "signup" &&
+    to.name !== "forgot" &&
+    to.name !== "reset" &&
+    !store.state.isUserLoggedIn
+  )
+    next({ name: "login" });
+  else next();
+});
 
 export default router;
