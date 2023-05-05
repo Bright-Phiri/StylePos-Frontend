@@ -55,6 +55,11 @@ const routes = [
         name: "item_return",
         component: () => import("../views/ItemReturnView.vue"),
       },
+      {
+        path: "/refunds",
+        name: "refunds",
+        component: () => import("../views/RefundsView.vue"),
+      },
     ],
   },
   {

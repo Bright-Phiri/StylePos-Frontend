@@ -7,15 +7,33 @@
             <h1 class="font-weight-regular">Return Request</h1>
           </div>
           <div class="d-flex justify-end">
-            <v-text-field color="#B55B68" dense rounded outlined placeholder="Search" class="shrink ml-2"
+            <v-text-field color="#B55B68" dense rounded outlined v-model="search" placeholder="Search" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </div>
-
+          <v-dialog max-width="570" v-model="returnDialog" persistent>
+            <v-card>
+              <v-card-title class="d-flex justify-space-between">
+                Issue Return
+                <v-icon v-on:click="returnDialog = false">mdi-close</v-icon>
+              </v-card-title>
+              <v-card-text>
+                <v-form ref="issueReturnForm">
+                  <v-textarea color="#B55B68" outlined v-model="return_item.reason" label="Reason"></v-textarea>
+                </v-form>
+              </v-card-text>
+              <v-card-actions class="d-flex justify-end">
+                <v-btn class="text-capitalize mb-3" elevation="2" outlined
+                  v-on:click="returnDialog = !returnDialog">Cancel</v-btn>
+                <v-btn class="text-capitalize mb-3" :loading="issueReturnLoading ? '#B55B68' : null" elevation="2"
+                  outlined color="#B55B68" v-on:click="issueItemReturn">Issue Return</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Order Summary... Please wait"
-              :headers="headers" :items="line_items" :items-per-page="5" :sort-desc="[false, true]" multi-sort>
+              :headers="headers" :items="line_items" :items-per-page="5" :search="search" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon class="mr-0" v-on:click="issueItemReturn(item.id)" color="primary">mdi-undo
+                <v-icon class="mr-0" v-on:click="showReturnDialog(item.id)" color="primary">mdi-undo
                 </v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">
@@ -23,6 +41,9 @@
               </template>
               <template v-slot:[`item.total`]="{ item }">
                 {{ formartValue(item.total) }}
+              </template>
+              <template v-slot:[`item.discount`]="{ item }">
+                {{ formartValue(item.discount) }}
               </template>
               <template v-slot:[`item.vat`]="{ item }">
                 {{ formartValue(item.vat) }}
@@ -42,6 +63,13 @@ export default {
     return {
       loading: false,
       line_items: [],
+      line_item_id: null,
+      returnDialog: false,
+      issueReturnLoading: false,
+      return_item: {
+       reason: null
+      },
+      search: '',
       headers: [
         {
           text: 'Id',
@@ -53,6 +81,7 @@ export default {
         { text: 'Quantity', value: 'quantity' },
         { text: 'Price', value: 'price' },
         { text: 'VAT', value: 'vat' },
+        { text: 'Discount', value: 'discount' },
         { text: 'Total', value: 'total' },
         { text: 'Action', value: 'action' },
       ],
@@ -75,16 +104,31 @@ export default {
         this.handleError(error);
       }
     },
-    async issueItemReturn(line_item_id) {
+    showReturnDialog(line_item_id){
+     this.line_item_id = line_item_id
+     this.returnDialog = true
+    },
+    async issueItemReturn() {
+      if (!this.return_item.reason) {
+        this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+        return;
+      }
+      let returnPayload = {
+        reason: this.return_item.reason
+      }
       try {
-        const response = await OrdersService.item_return(this.order_ID, line_item_id);
+        this.issueReturnLoading = true
+        const response = await OrdersService.item_return(returnPayload, this.order_ID, this.line_item_id);
         if (response.status === 200) {
           this.$swal('Information', 'Item returned successfully', 'success').then(() => {
+            this.issueReturnLoading = false
+            this.returnDialog = false
+            this.$refs.issueReturnForm.reset();
             this.fetchDataFromAPI(this.order_ID);
           })
         }
       } catch (error) {
-        this.loading = false
+        this.issueReturnLoading = false
         this.handleError(error);
       }
     },

@@ -7,18 +7,21 @@
             <h1 class="font-weight-regular">Order Summary</h1>
           </div>
           <div class="d-flex justify-end">
-            <v-text-field color="#B55B68" dense rounded outlined placeholder="Search" class="shrink ml-2"
+            <v-text-field color="#B55B68" dense rounded outlined v-model="search" placeholder="Search" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </div>
 
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Order Summary... Please wait"
-              :headers="headers" :items="orders" :items-per-page="5" :sort-desc="[false, true]" multi-sort>
+              :headers="headers" :items="orders" :items-per-page="5" :search="search" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.price`]="{ item }">
                 {{ formartValue(item.price) }}
               </template>
               <template v-slot:[`item.total`]="{ item }">
                 {{ formartValue(item.total) }}
+              </template>
+              <template v-slot:[`item.discount`]="{ item }">
+                {{ formartValue(item.discount) }}
               </template>
               <template v-slot:[`item.vat`]="{ item }">
                 {{ formartValue(item.vat) }}
@@ -38,6 +41,7 @@ export default {
     return {
       loading: false,
       orderSummary: [],
+      search: '',
       headers: [
         {
           text: 'Id',
@@ -49,6 +53,7 @@ export default {
         { text: 'Quantity', value: 'quantity' },
         { text: 'Price', value: 'price' },
         { text: 'VAT', value: 'vat' },
+        { text: 'Discount', value: 'discount' },
         { text: 'Total', value: 'total' },
       ],
     }

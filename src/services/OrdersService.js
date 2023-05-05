@@ -13,7 +13,10 @@ export default {
     delete(order_id) {
         return Api().delete(`orders/${order_id}`)
     },
-    item_return(order_id, line_item_id) {
-        return Api().delete(`orders/${order_id}/return_item/${line_item_id}`)
+    item_return(return_details, order_id, line_item_id) {
+        return Api().post(`orders/${order_id}/return_item/${line_item_id}`, return_details)
+    },
+    getRetuns(){
+        return Api().get('returns')
     }
 }
