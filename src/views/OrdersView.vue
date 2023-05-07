@@ -16,7 +16,7 @@
             <v-btn color="#FFCDD2" class="mt-2" fab depressed x-small>
               <v-icon color="#E57373">mdi-cached</v-icon>
             </v-btn>
-            <v-text-field color="#B55B68" dense rounded v-model="search" outlined placeholder="Search" @input="searchItem" class="shrink ml-2"
+            <v-text-field color="#B55B68" dense rounded v-model.trim="search" outlined placeholder="Search" @input="searchItem" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </div>
           <v-card>

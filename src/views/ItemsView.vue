@@ -87,7 +87,7 @@
             <v-btn color="#FFCDD2" class="mt-2" fab depressed x-small v-on:click="fetchDataFromAPI">
               <v-icon color="#E57373">mdi-cached</v-icon>
             </v-btn>
-            <v-text-field color="#B55B68" v-model="search" @input="searchItem" dense rounded outlined placeholder="Search"
+            <v-text-field color="#B55B68" v-model.trim="search" @input="searchItem" dense rounded outlined placeholder="Search"
               class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
           </div>
 

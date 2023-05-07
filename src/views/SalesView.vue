@@ -58,7 +58,7 @@
           <v-card-text>
             <v-form ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex">
-                <v-text-field label="Item Code" v-model="item.barcode" v-on:keyup="searchItem" outlined></v-text-field>
+                <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup="searchItem" outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
                 <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4"></v-text-field>
