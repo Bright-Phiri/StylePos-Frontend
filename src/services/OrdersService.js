@@ -2,7 +2,7 @@ import Api from "./api";
 
 export default {
     getData(page, perPage, search) {
-        return Api().get('orders' , { params: { page: page, per_page: perPage, search: search} })
+        return Api().get('orders', { params: { page: page, per_page: perPage, search: search } })
     },
     create(employee_id) {
         return Api().post(`employees/${employee_id}/orders`)
@@ -16,7 +16,7 @@ export default {
     item_return(return_details, order_id, line_item_id) {
         return Api().post(`orders/${order_id}/return_item/${line_item_id}`, return_details)
     },
-    getRetuns(){
+    getRetuns() {
         return Api().get('returns')
     }
 }

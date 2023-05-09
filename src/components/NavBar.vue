@@ -2,6 +2,7 @@
   <div name="NavBar">
     <nav>
       <v-navigation-drawer color="#FFFFFF" :width="282" v-model="drawer" :mini-variant.sync="mini" app>
+
         <v-sheet color="#FFFFFF" class="pa-4">
           <div class="d-flex justify-space-between">
             <v-avatar tile width="550" height="55" class="mr-11">
