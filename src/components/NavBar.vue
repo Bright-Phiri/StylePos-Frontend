@@ -30,6 +30,7 @@
           </v-list-item>
         </v-list>
         <v-spacer></v-spacer>
+
         <v-list shaped nav>
           <v-list-item v-for="item in links1" :key="item.text" link router :to="item.route">
             <v-list-item-icon>
@@ -45,7 +46,9 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+
       </v-navigation-drawer>
+      
       <v-app-bar app flat color="#F3F3F3">
         <v-toolbar-title>
           <v-app-bar-nav-icon color="#B55B68" x-large class="" v-on:click="drawer = !drawer">

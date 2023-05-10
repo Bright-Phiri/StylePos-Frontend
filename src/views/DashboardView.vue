@@ -206,7 +206,7 @@ export default {
     formatAmount(value) {
       return `MK ${value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
     },
-    updateDashboard(data){
+    updateDashboard(data) {
       switch (data.type) {
         case "all":
           this.setOrdersStatistics(data)
@@ -245,12 +245,12 @@ export default {
   },
   channels: {
     DashboardChannel: {
-      connected() {},
-      rejected() {},
+      connected() { },
+      rejected() { },
       received(data) {
         this.updateDashboard(data)
       },
-      disconnected() {},
+      disconnected() { },
     },
   },
   mounted() {
@@ -277,4 +277,5 @@ export default {
 .side-content {
   background-color: #ffffff;
   border-radius: 10px;
-}</style>
+}
+</style>
