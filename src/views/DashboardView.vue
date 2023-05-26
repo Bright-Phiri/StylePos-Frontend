@@ -35,7 +35,7 @@
               </v-card>
             </v-col>
             <v-col>
-              <v-card color="white" height="180px" style="border-radius: 10px;" class="elevation-0 pa-5">
+              <v-card color="white" height="180px" style="border-radius: 10px;" class="elevation-1 pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
                     <v-icon large color="#B55B52">mdi-cash-multiple</v-icon>
