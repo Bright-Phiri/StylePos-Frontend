@@ -208,7 +208,7 @@ export default {
     },
     updateDashboard(data) {
       switch (data.type) {
-        case "all":
+        case "refresh_dashbaord":
           this.setOrdersStatistics(data)
           this.setDashboardData(data)
           break;
