@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12" lg="8">
           <v-row>
-            <v-col>
+            <v-col cols="12" lg="4" sm="6" md="4">
               <v-card color="#B55B52" height="180px" style="border-radius: 10px;" class="elevation-0 pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#BE6F67" size="64">
@@ -19,7 +19,7 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col>
+            <v-col cols="12" lg="4" sm="6" md="4">
               <v-card height="180px" class="elevation-0 my-card pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
@@ -34,7 +34,7 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col>
+            <v-col cols="12" lg="4" sm="12" md="4">
               <v-card color="white" height="180px" style="border-radius: 10px;" class="elevation-1 pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
