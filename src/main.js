@@ -21,7 +21,7 @@ Vue.use(VueToastify);
 Vue.use(ActionCableVue, {
   debug: true,
   debugLevel: "error",
-  connectionUrl: "ws://127.0.0.1:3000/cable",
+  connectionUrl: "ws://192.168.43.111:3000/cable",
   connectImmediately: true,
 });
 
