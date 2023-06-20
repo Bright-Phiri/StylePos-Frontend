@@ -128,8 +128,18 @@
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditEmployeeDialog(item.id)" color="primary">mdi-pencil
                 </v-icon>
-                <v-icon v-if="item.status === 'disabled'" small class="mr-0" color="red" v-on:click="activateEmployee(item.id)">mdi-account-off</v-icon>
-                <v-icon v-if="item.status === 'active'" small class="mr-0" color="red" v-on:click="disableEmployee(item.id)">mdi-account-lock</v-icon>
+                <v-tooltip bottom>
+                 <template v-slot:activator="{ on, attrs }">
+                  <v-icon v-if="item.status === 'disabled'" small class="mr-0" color="red" v-on:click="activateEmployee(item.id)" v-bind="attrs" v-on="on">mdi-account-off</v-icon>
+                 </template>
+                  <span>Activate</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                 <template v-slot:activator="{ on, attrs }">
+                  <v-icon v-if="item.status === 'active'" small class="mr-0" color="red" v-on:click="disableEmployee(item.id)" v-bind="attrs" v-on="on">mdi-account-lock</v-icon>
+                 </template>
+                  <span>Disable</span>
+                </v-tooltip>
               </template>
             </v-data-table>
           </v-card>
