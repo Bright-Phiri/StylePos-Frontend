@@ -6,14 +6,17 @@ export default {
       } else {
         if (error.response.status === 400) {
           this.$swal("Error", error.response.data.error, "error");
+        } else if (error.response.status === 401) {
+          this.$swal("Error", error.response.data.error, "error");
         } else if (error.response.status === 403) {
           this.$swal("Warning", error.response.data.message, "warning");
-        }
-        else if (error.response.status === 404) {
+        } else if (error.response.status === 404) {
           this.$swal("Error", error.response.data.error, "error");
         } else if (error.response.status === 422) {
           this.errors = error.response.data;
           this.$swal("Error", this.errors.join(", "), "error");
+        } else if (error.response.status == 423) {
+          this.$swal("Message", error.response.data.message, "info");
         }
       }
     },

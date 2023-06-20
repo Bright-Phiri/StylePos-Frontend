@@ -128,7 +128,8 @@
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditEmployeeDialog(item.id)" color="primary">mdi-pencil
                 </v-icon>
-                <v-icon small class="mr-0" color="red" v-on:click="deleteEmployee(item.id)">mdi-delete</v-icon>
+                <v-icon v-if="item.status === 'disabled'" small class="mr-0" color="red" v-on:click="activateEmployee(item.id)">mdi-account-off</v-icon>
+                <v-icon v-if="item.status === 'active'" small class="mr-0" color="red" v-on:click="disableEmployee(item.id)">mdi-account-lock</v-icon>
               </template>
             </v-data-table>
           </v-card>
@@ -176,6 +177,7 @@ export default {
         { text: 'Email', value: 'email' },
         { text: 'Phone', value: 'phone_number' },
         { text: 'Role', value: 'job_title' },
+        { text: 'Status', value: 'status' },
         { text: 'Action', value: 'action' },
       ],
     }
@@ -265,11 +267,23 @@ export default {
         this.handleError(error)
       }
     },
-    async deleteEmployee(employee_id) {
+    async activateEmployee(employee_id) {
       try {
-        const response = await EmployeesService.delete(employee_id);
-        if (response.status === 204) {
-          this.$swal('Information', 'Employee deleted successfully', 'success').then(() => {
+        const response = await EmployeesService.activate(employee_id);
+        if (response.status === 200) {
+          this.$swal('Information', 'Employee activated successfully', 'success').then(() => {
+            this.fetchDataFromAPI();
+          })
+        }
+      } catch (error) {
+        this.handleError(error)
+      }
+    },
+    async disableEmployee(employee_id) {
+      try {
+        const response = await EmployeesService.disable(employee_id);
+        if (response.status === 200) {
+          this.$swal('Information', 'Employee disabled successfully', 'success').then(() => {
             this.fetchDataFromAPI();
           })
         }
