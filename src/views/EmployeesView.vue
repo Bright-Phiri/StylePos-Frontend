@@ -36,7 +36,7 @@
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field type="password" color="#B55B68" label="Password"
+                      <v-text-field type="password" color="#B55B68" label="Confirm Password"
                         v-model="employee.password_confirmation">
                       </v-text-field>
                     </v-col>
@@ -85,7 +85,7 @@
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field type="password" color="#B55B68" label="Password"
+                      <v-text-field type="password" color="#B55B68" label="Confirm Password"
                         v-model="employee.password_confirmation">
                       </v-text-field>
                     </v-col>
@@ -128,18 +128,23 @@
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditEmployeeDialog(item.id)" color="primary">mdi-pencil
                 </v-icon>
-                <v-tooltip bottom>
+                <v-tooltip bottom v-if="item.status === 'disabled'">
                  <template v-slot:activator="{ on, attrs }">
-                  <v-icon v-if="item.status === 'disabled'" small class="mr-0" color="red" v-on:click="activateEmployee(item.id)" v-bind="attrs" v-on="on">mdi-account-off</v-icon>
+                  <v-icon small class="mr-0" color="green" v-on:click="activateEmployee(item.id)" v-bind="attrs" v-on="on">mdi-account-off</v-icon>
                  </template>
                   <span>Activate</span>
                 </v-tooltip>
-                <v-tooltip bottom>
+                <v-tooltip bottom v-if="item.status === 'active'">
                  <template v-slot:activator="{ on, attrs }">
-                  <v-icon v-if="item.status === 'active'" small class="mr-0" color="red" v-on:click="disableEmployee(item.id)" v-bind="attrs" v-on="on">mdi-account-lock</v-icon>
+                  <v-icon small class="mr-0" color="red" v-on:click="disableEmployee(item.id)" v-bind="attrs" v-on="on">mdi-account-lock</v-icon>
                  </template>
                   <span>Disable</span>
                 </v-tooltip>
+              </template>
+               <template v-slot:[`item.status`]="{ item }">
+                <v-chip class="text-center" small style="width: 65px" outlined :color="getColor(item.status)" dark>
+                  {{item.status === 'active' ? "Active":"Inactive"}}
+                </v-chip>
               </template>
             </v-data-table>
           </v-card>
@@ -235,6 +240,10 @@ export default {
         this.saveEmployeeLoading = false
         this.handleError(error)
       }
+    },
+    getColor(status) {
+      if (status === 'active') return "success";
+      else return "red";
     },
     async updateEmployee() {
       if (!this.employee.first_name || !this.employee.last_name || !this.employee.user_name || !this.employee.email || !this.employee.phone_number || !this.employee.password || !this.employee.password_confirmation) {
