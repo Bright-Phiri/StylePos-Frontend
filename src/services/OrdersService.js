@@ -18,5 +18,8 @@ export default {
     },
     getRetuns() {
         return Api().get('returns')
+    },
+    filter_transactions(page, perPage, filter){
+      return Api().get('filter_transactions', { params: { page: page, per_page: perPage, selected_filter: filter} })
     }
 }
