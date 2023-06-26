@@ -7,8 +7,14 @@
             <h1 class="font-weight-regular">Transactions</h1>
           </div>
           <div class="d-flex justify-end">
-            <v-text-field color="#B55B68" dense rounded v-model="search" outlined placeholder="Search" @input="searchItem" class="shrink ml-2"
+            <v-btn color="#FFCDD2" v-on:click="fetchDataFromAPI(currentPage, itemsPerPage, search)" class="mt-2" fab depressed x-small>
+              <v-icon color="#E57373">mdi-cached</v-icon>
+            </v-btn>
+            <v-text-field color="#B55B68" dense rounded v-model.trim="search" outlined placeholder="Search" @input="searchItem" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
+              <v-select v-model="selected_filter" :items="filterOptions" label="Select Transactions" @change="filterTransactions" style="max-width: 260px;" outlined
+              dense
+              color="#B55B68" class="ml-4"></v-select>
           </div>
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Transactions... Please wait"
@@ -42,6 +48,12 @@ export default {
       total: 0,
       currentPage: 1,
       itemsPerPage: 7,
+      selected_filter: null,
+      filterOptions: [
+      { text: "Today", value: "today" },
+      { text: "This Week", value: "week" },
+      { text: "This Month", value: "month" },
+      { text: "All Transactions", value: "all" }],
       headers: [
         {
           text: 'Id',
@@ -57,6 +69,36 @@ export default {
     }
   },
   methods: {
+    filterTransactions(){
+      switch (this.selected_filter) {
+          case "today":
+          this.filter_transactions(this.currentPage, this.itemsPerPage, this.selected_filter);
+            break;
+          case "week":
+          this.filter_transactions(this.currentPage, this.itemsPerPage, this.selected_filter);
+            break;
+          case "month":
+          this.filter_transactions(this.currentPage, this.itemsPerPage, this.selected_filter);
+            break;
+          case 'all':
+          this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+            break;
+          default:
+            break;
+        }
+    },
+    async filter_transactions(page, perPage, selected_filter) {
+      this.loading = true
+      try {
+        const response = await OrdersService.filter_transactions(page, perPage, selected_filter);
+        this.orders = response.data.orders
+        this.total = response.data.total;
+        this.loading = false
+      } catch (error) {
+        this.loading = false
+        this.handleError(error);
+      }
+    },
     async fetchDataFromAPI(page, perPage, search) {
       this.loading = true
       try {
@@ -77,7 +119,11 @@ export default {
     },
     onPagination(page) {
       this.currentPage = Number(page.page);
-      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+      if (this.selected_filter != null){
+        this.filter_transactions(this.currentPage, this.itemsPerPage, this.selected_filter)
+      } else{
+        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+      }
     },
     formartValue(value) {
       return parseInt(value).toLocaleString('en-US', { minimumFractionDigits: 2 })

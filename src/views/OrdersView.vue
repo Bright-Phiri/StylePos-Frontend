@@ -14,7 +14,7 @@
               append-icon="mdi-magnify"></v-text-field>
               <v-select v-model="selected_filter" :items="filterOptions" label="Select Transactions" @change="filterTransactions" style="max-width: 260px;" outlined
               dense
-              color="#B55B68" class="ml-4">Test</v-select>
+              color="#B55B68" class="ml-4"></v-select>
           </div>
           <v-card>
             <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Transactions... Please wait"
