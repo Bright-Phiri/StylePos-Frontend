@@ -7,7 +7,7 @@
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Add New Employee
-                <v-icon v-on:click="dialog = false">mdi-close</v-icon>
+                <v-icon v-on:click="cancelAdd">mdi-close</v-icon>
               </v-card-title>
               <v-card-text>
                 <v-form ref="addEmployeeForm">
@@ -44,7 +44,7 @@
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
-                <v-btn class="text-capitalize mb-3" elevation="2" outlined v-on:click="dialog = !dialog">Cancel</v-btn>
+                <v-btn class="text-capitalize mb-3" elevation="2" outlined v-on:click="cancelAdd">Cancel</v-btn>
                 <v-btn class="text-capitalize mb-3" elevation="2" color="#B55B68"
                   :loading="saveEmployeeLoading ? '#B55B68' : null" outlined v-on:click="saveEmployee">Save
                   Employee</v-btn>
@@ -56,7 +56,7 @@
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Edit Employee
-                <v-icon v-on:click="editDialog = false">mdi-close</v-icon>
+                <v-icon v-on:click="cancelUpdate">mdi-close</v-icon>
               </v-card-title>
               <v-card-text>
                 <v-form ref="editEmployeeForm">
@@ -94,7 +94,7 @@
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
-                  v-on:click="editDialog = !editDialog">Cancel</v-btn>
+                  v-on:click="cancelUpdate">Cancel</v-btn>
                 <v-btn class="text-capitalize mb-3" :loading="saveEmployeeLoading ? '#B55B68' : null" elevation="2"
                   outlined color="#B55B68" v-on:click="updateEmployee">Update Employee</v-btn>
               </v-card-actions>
@@ -275,6 +275,14 @@ export default {
         this.saveEmployeeLoading = false
         this.handleError(error)
       }
+    },
+    cancelAdd(){
+      this.$refs.addEmployeeForm.reset()
+      this.dialog = false;
+    },
+    cancelUpdate(){
+      this.$refs.editEmployeeForm.reset()
+      this.editDialog = false;
     },
     async showEditEmployeeDialog(employee_id) {
       this.employee_id = employee_id
