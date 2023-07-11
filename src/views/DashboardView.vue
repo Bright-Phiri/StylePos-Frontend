@@ -156,6 +156,9 @@ export default {
             stops: []
           }
         },
+        forecastDataPoints: {
+          count: 7
+        },
         xaxis: {
           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         },
