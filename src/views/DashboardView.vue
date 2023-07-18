@@ -176,7 +176,7 @@ export default {
         legend: {
           position: 'bottom'
         },
-        colors: ['#EB996E', '#FF968B', '#FCBEB6'],
+        colors: ['#555555', '#FF968B', '#FCBEB6'],
         labels: ["Daily", "Weekly", "Monthly"]
       },
       series: [],

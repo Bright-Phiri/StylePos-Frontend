@@ -5,7 +5,7 @@
 
         <v-sheet color="#FFFFFF" class="pa-4">
           <div class="d-flex justify-space-between">
-            <v-avatar tile width="550" height="55" class="mr-11">
+            <v-avatar tile width="560" height="57" class="mr-11">
               <v-img src="../assets/icon1.png"></v-img>
             </v-avatar>
             <v-btn icon large @click.stop="mini = !mini" class="d-none d-xl-flex d-none d-lg-flex d-xl-none">
@@ -57,6 +57,7 @@
         <v-spacer></v-spacer>
         <v-avatar color="F9F9F9" size="39"> <v-img src="../assets/avatar.png"></v-img> </v-avatar>
         <h4 class="ml-3 font-weight-bold">Welcome, {{ user.user_name }}</h4>
+        <v-icon class="ml-2">mdi-exit-to-app</v-icon>
       </v-app-bar>
     </nav>
     <transition name="page" mode="out-in">
@@ -74,6 +75,7 @@ export default {
       mini: null,
       store_manager: [
         { text: "Dashboard", icon: "mdi-view-dashboard", route: "/" },
+        { text: "Category", icon: "mdi-store", route: "/items" },
         { text: "Items", icon: "mdi-package", route: "/items" },
         { text: "Inventory", icon: "mdi-trending-up", route: "/inventory" },
         { text: "Transactions", icon: "mdi-cash-multiple", route: "/orders" },
@@ -83,7 +85,6 @@ export default {
       ],
       links1: [
         { text: "Settings", icon: "mdi-cog", route: "/settings" },
-        { text: "Logout", icon: "mdi-logout", route: "/logout" }
       ]
     }
   },

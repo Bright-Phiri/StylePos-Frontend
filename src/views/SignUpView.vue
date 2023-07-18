@@ -26,7 +26,7 @@
                 <v-btn type="submit" :loading="loading" dark depressed large block color="#B55B68">Sign up</v-btn>
                 <v-divider class="my-4"></v-divider>
                 <div class="text-center">
-                  <router-link class="titleC" to="/login">Login</router-link>
+                  Already have acoount? <router-link class="titleC" to="/login">Login</router-link>
                 </div>
               </v-form>
             </v-card-text>
@@ -80,5 +80,6 @@ export default {
 <style scoped>
 .titleC {
   color: #B55B68;
+  text-decoration: none;
 }
 </style>
