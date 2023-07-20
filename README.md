@@ -1,4 +1,4 @@
-# Clothing-Retail-Stores-Frontend
+# StylePos-Frontend 
 
 ## Project setup
 ```
