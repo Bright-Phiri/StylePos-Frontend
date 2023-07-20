@@ -127,7 +127,7 @@ export default {
       this.item_id = item_id
       this.inventoryLevelDialog = true
       try {
-        const response = await InventoryLevelService.show(item_id, id);
+        const response = await InventoryLevelService.show(item_id,null, id);
         this.inventoryLevel = response.data
       } catch (error) {
         this.handleError(error)
@@ -146,7 +146,7 @@ export default {
           reorder_level: this.inventoryLevel.reorder_level,
           supplier: this.inventoryLevel.supplier
         };
-        const response = await InventoryLevelService.put(inventoryLevelPayload, this.item_id, this.inventoryLevel.id);
+        const response = await InventoryLevelService.put(inventoryLevelPayload, null,this.item_id, this.inventoryLevel.id);
         if (response.status === 200) {
           await this.$swal('Information', 'Inventory Level successfully updated', 'success').then(() => {
             this.updateInventoryLoading = false;

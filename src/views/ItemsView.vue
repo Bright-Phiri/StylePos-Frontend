@@ -15,6 +15,8 @@
                   <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
+                  <v-autocomplete label="Category" :items="categories" v-model="item.category_name">
+                      </v-autocomplete>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -37,6 +39,8 @@
                   <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
+                  <v-autocomplete label="Category" :items="categories" v-model="item.category_name">
+                      </v-autocomplete>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -97,9 +101,9 @@
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)" color="primary">mdi-pencil
+                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id, item.category_id)" color="primary">mdi-pencil
                 </v-icon>
-                <v-icon small class="mr-0" color="#2A9B90" v-on:click="showInventoryLevelDialog(item.id)">mdi-plus-box
+                <v-icon small class="mr-0" color="#2A9B90" v-on:click="showInventoryLevelDialog(item.id, item.category_id)">mdi-plus-box
                 </v-icon>
                 <v-icon small class="mr-0" color="blue darken-2" v-on:click="generateAndPrintBarcode(item.barcode)">mdi-barcode</v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteItem(item.id)">mdi-delete</v-icon>
@@ -120,6 +124,7 @@
 <script>
 import ItemsService from '../services/ItemsService'
 import InventoryLevelService from '../services/InventoryLevelService'
+import CategoryService from '../services/CategoryService'
 import JsBarcode from 'jsbarcode';
 import printJS from 'print-js';
 export default {
@@ -140,12 +145,15 @@ export default {
       search: '',
       items: [],
       item_id: null,
+      category_id: null,
       item: {
         name: null,
         price: null,
         size: null,
-        color: null
+        color: null,
+        category: null
       },
+      categories: [],
       inventoryLevel: {
         quantity: null,
         reorder_level: null,
@@ -193,10 +201,14 @@ export default {
     },
     onPagination(page) {
       this.currentPage = Number(page.page);
-      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+      if (this.$route.params.category_id !== undefined) {
+        this.showCategoryItems(this.currentPage, this.itemsPerPage, this.search, this.$route.params.category_id)
+      } else{
+        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+      }
     },
     async saveItem() {
-      const requiredFields = ['name', 'price', 'size', 'color'];
+      const requiredFields = ['name', 'price', 'size', 'color', 'category_name'];
 
       if (requiredFields.some(field => !this.item[field])) {
         await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
@@ -209,7 +221,8 @@ export default {
           name: this.item.name,
           price: this.item.price,
           size: this.item.size,
-          color: this.item.color
+          color: this.item.color,
+          category_name: this.item.category_name
         };
         const response = await ItemsService.create(itemPayload);
         if (response.status === 201) {
@@ -224,12 +237,14 @@ export default {
         this.saveItemLoading = false;
       }
     },
-    async showEditItemDialog(item_id) {
+    async showEditItemDialog(item_id,category_id) {
       this.editdialog = true
       this.item_id = item_id
+      this.category_id = category_id
       try {
-        const response = await ItemsService.getItem(item_id)
+        const response = await ItemsService.getItem(item_id, category_id)
         this.item = response.data
+        console.log(this.item)
       } catch (error) {
         this.handleError(error)
       }
@@ -238,7 +253,7 @@ export default {
       return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     },
     async updateItem() {
-      const requiredFields = ['name', 'price', 'size', 'color'];
+      const requiredFields = ['name', 'price', 'size', 'color','category_name'];
 
       if (requiredFields.some(field => !this.item[field])) {
         await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
@@ -250,10 +265,11 @@ export default {
           name: this.item.name,
           price: this.item.price,
           size: this.item.size,
-          color: this.item.color
+          color: this.item.color,
+          category_name: this.item.category_name
         };
 
-        const response = await ItemsService.put(itemPayload, this.item_id);
+        const response = await ItemsService.put(itemPayload, this.category_id, this.item_id);
 
         if (response.status === 200) {
           this.$swal('Information', 'Item updated successfully', 'success').then(() => {
@@ -281,6 +297,17 @@ export default {
         this.handleError(error)
       }
     },
+    async fetchCategoriesFromAPI(){
+      try {
+        const response = await CategoryService.getData()
+        response.data.forEach(category => {
+          this.categories.push(category.name);
+        });
+      }
+      catch (error) {
+        this.handleError(error)
+      }
+    },
     generateAndPrintBarcode(barcodeValue) {
       const canvas = document.createElement('canvas');
       JsBarcode(canvas, barcodeValue);
@@ -293,8 +320,9 @@ export default {
         documentTitle: 'Barcode', // Set the title of the print document
       });
     },
-    showInventoryLevelDialog(item_id) {
+    showInventoryLevelDialog(item_id, category_id) {
       this.item_id = item_id
+      this.category_id = category_id
       this.inventoryLevelDialog = true
     },
     async addInventoryLevel() {
@@ -309,7 +337,7 @@ export default {
         supplier: this.inventoryLevel.supplier
       }
       try {
-        const response = await InventoryLevelService.create(inventoryLevelPayload, this.item_id)
+        const response = await InventoryLevelService.create(inventoryLevelPayload, this.category_id, this.item_id)
         if (response.status === 201) {
           this.$swal('Information', 'Inventory Level successfully added', 'success').then(() => {
             this.saveInventoryLoading = false
@@ -323,10 +351,29 @@ export default {
         this.saveInventoryLoading = false
         this.handleError(error)
       }
+    },
+    async showCategoryItems(page, perPage, search,category_id){
+      this.loading = true
+      try{
+        const response = await CategoryService.show_items(page, perPage, search,category_id);
+      if (response.status === 200){
+        this.items = response.data.items
+        this.total = response.data.total;
+        this.loading = false
+      }
+      } catch(error){
+        this.loading = false
+        this.handleError(error)
+      }
     }
   },
   mounted() {
-    this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
+    if (this.$route.params.category_id !== undefined) {
+     this.showCategoryItems(this.currentPage, this.itemsPerPage, this.search, this.$route.params.category_id)
+    } else{
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
+    }
+    this.fetchCategoriesFromAPI();
   }
 };
 </script>

@@ -7,8 +7,11 @@ export default {
     create(category) {
         return Api().post('categories', category)
     },
-    show_items(category_id) {
-        return Api().get(`show_items/${category_id}`)
+    show(category_id) {
+        return Api().get(`categories/${category_id}`)
+    },
+    show_items(page, perPage, search, category_id) {
+        return Api().get(`show_items/${category_id}`, { params: { page: page, per_page: perPage, search: search } })
     },
     put(category, category_id) {
         return Api().put(`categories/${category_id}`, category)

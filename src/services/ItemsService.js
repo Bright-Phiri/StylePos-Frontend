@@ -10,11 +10,11 @@ export default {
     show(barcode) {
         return Api().get(`find_item/${barcode}`)
     },
-    getItem(item_id) {
-        return Api().get(`items/${item_id}`)
+    getItem(item_id,category_id) {
+        return Api().get(`categories/${category_id}/items/${item_id}`)
     },
-    put(item, item_id) {
-        return Api().put(`items/${item_id}`, item)
+    put(item,category_id, item_id) {
+        return Api().put(`categories/${category_id}/items/${item_id}`, item)
     },
     delete(item_id) {
         return Api().delete(`items/${item_id}`)
