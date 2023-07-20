@@ -39,8 +39,6 @@
                   <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
-                  <v-autocomplete label="Category" :items="categories" v-model="item.category_name">
-                      </v-autocomplete>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -151,7 +149,7 @@ export default {
         price: null,
         size: null,
         color: null,
-        category: null
+        category_name: null
       },
       categories: [],
       inventoryLevel: {
@@ -253,7 +251,7 @@ export default {
       return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     },
     async updateItem() {
-      const requiredFields = ['name', 'price', 'size', 'color','category_name'];
+      const requiredFields = ['name', 'price', 'size', 'color'];
 
       if (requiredFields.some(field => !this.item[field])) {
         await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
@@ -265,8 +263,7 @@ export default {
           name: this.item.name,
           price: this.item.price,
           size: this.item.size,
-          color: this.item.color,
-          category_name: this.item.category_name
+          color: this.item.color
         };
 
         const response = await ItemsService.put(itemPayload, this.category_id, this.item_id);
