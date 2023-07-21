@@ -76,7 +76,7 @@ export default {
       mini: null,
       store_manager: [
         { text: "Dashboard", icon: "mdi-view-dashboard", route: "/" },
-        { text: "Category", icon: "mdi-store", route: "/categories" },
+        { text: "Category", icon: "mdi-shape-outline", route: "/categories" },
         { text: "Items", icon: "mdi-package", route: "/items" },
         { text: "Inventory", icon: "mdi-trending-up", route: "/inventory" },
         { text: "Transactions", icon: "mdi-cash-multiple", route: "/orders" },
