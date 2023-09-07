@@ -13,7 +13,11 @@ export default {
         } else if (error.response.status === 404) {
           this.$swal("Error", error.response.data.error, "error");
         } else if (error.response.status === 422) {
-          this.errors = error.response.data.errors;
+          if (error.response.data.errors) {
+            this.errors = error.response.data.errors;
+          } else {
+            this.errors = error.response.data;
+          }
           this.$swal("Error", this.errors.join(", "), "error");
         } else if (error.response.status == 423) {
           this.$swal("Message", error.response.data.message, "info");
