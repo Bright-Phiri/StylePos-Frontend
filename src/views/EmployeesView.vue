@@ -216,14 +216,16 @@ export default {
       }
       this.saveEmployeeLoading = true
       let employeePayload = {
-        first_name: this.employee.first_name,
-        last_name: this.employee.last_name,
-        user_name: this.employee.user_name,
-        job_title: this.employee.job_title,
-        phone_number: this.employee.phone_number,
-        email: this.employee.email,
-        password: this.employee.password,
-        password_confirmation: this.employee.password_confirmation
+        employee: {
+          first_name: this.employee.first_name,
+          last_name: this.employee.last_name,
+          user_name: this.employee.user_name,
+          job_title: this.employee.job_title,
+          phone_number: this.employee.phone_number,
+          email: this.employee.email,
+          password: this.employee.password,
+          password_confirmation: this.employee.password_confirmation
+        }
       };
       try {
         const response = await EmployeesService.create(employeePayload);
@@ -252,6 +254,7 @@ export default {
       }
       this.saveEmployeeLoading = true
       let employeePayload = {
+        employee: {
         first_name: this.employee.first_name,
         last_name: this.employee.last_name,
         user_name: this.employee.user_name,
@@ -260,6 +263,7 @@ export default {
         email: this.employee.email,
         password: this.employee.password,
         password_confirmation: this.employee.password_confirmation
+        }
       };
       try {
         const response = await EmployeesService.put(employeePayload, this.employee_id);
