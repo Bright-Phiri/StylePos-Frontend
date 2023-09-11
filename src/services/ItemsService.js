@@ -8,7 +8,7 @@ export default {
         return Api().post('items', employee)
     },
     show(barcode) {
-        return Api().get(`find_item/${barcode}`)
+        return Api().get(`items/find_item/${barcode}`)
     },
     getItem(item_id,category_id) {
         return Api().get(`categories/${category_id}/items/${item_id}`)

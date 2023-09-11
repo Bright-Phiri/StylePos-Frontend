@@ -20,6 +20,6 @@ export default {
         return Api().get('returns')
     },
     filter_transactions(page, perPage, filter){
-      return Api().get('filter_transactions', { params: { page: page, per_page: perPage, selected_filter: filter} })
+      return Api().get('orders/filter_transactions', { params: { page: page, per_page: perPage, selected_filter: filter} })
     }
 }
