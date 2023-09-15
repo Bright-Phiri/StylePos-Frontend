@@ -27,43 +27,89 @@
                         <v-form v-on:submit.prevent="updateUser">
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" v-model.trim="user.first_name" label="First Name" dense
-                                prepend-icon="mdi-account"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                v-model.trim="user.first_name"
+                                label="First Name"
+                                dense
+                                prepend-icon="mdi-account"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" v-model.trim="user.last_name" label="Last Name" dense
-                                prepend-icon="mdi-account"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                v-model.trim="user.last_name"
+                                label="Last Name"
+                                dense
+                                prepend-icon="mdi-account"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" v-model.trim="user.user_name" label="Username" dense
-                                prepend-icon="mdi-account"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                v-model.trim="user.user_name"
+                                label="Username"
+                                dense
+                                prepend-icon="mdi-account"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" type="email" v-model.trim="user.email" label="Email" dense
-                                prepend-icon="mdi-mail"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                type="email"
+                                v-model.trim="user.email"
+                                label="Email"
+                                dense
+                                prepend-icon="mdi-mail"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" v-model.trim="user.phone_number" label="Phone" dense
-                                prepend-icon="mdi-phone">
+                              <v-text-field
+                                color="#B55B68"
+                                v-model.trim="user.phone_number"
+                                label="Phone"
+                                dense
+                                prepend-icon="mdi-phone"
+                              >
                               </v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" type="password" v-model.trim="user.password"
-                                label="Enter password" dense prepend-icon="mdi-lock"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                type="password"
+                                v-model.trim="user.password"
+                                label="Enter password"
+                                dense
+                                prepend-icon="mdi-lock"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-btn class="text-capitalize" elevation="2" outlined v-on:click="cancelUserUpdate">Cancel</v-btn>
-                          <v-btn type="submit" elevation="2" color="#B55B68" :loading="loading ? '#B55B68' : null" outlined class="text-capitalize ml-2">Save</v-btn>
+                          <v-btn
+                            class="text-capitalize"
+                            elevation="2"
+                            outlined
+                            v-on:click="cancelUserUpdate"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            type="submit"
+                            elevation="2"
+                            color="#B55B68"
+                            :loading="loading ? '#B55B68' : null"
+                            outlined
+                            class="text-capitalize ml-2"
+                            >Save</v-btn
+                          >
                         </v-form>
                       </v-card-text>
                     </v-card>
@@ -74,28 +120,62 @@
                         Change Password
                       </v-card-title>
                       <v-card-text>
-                        <v-form ref="passwordForm" v-on:submit.prevent="updatePassword">
+                        <v-form
+                          ref="passwordForm"
+                          v-on:submit.prevent="updatePassword"
+                        >
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" type="password" v-model.trim="user.oldPassword"
-                                label="Enter old password" dense prepend-icon="mdi-lock"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                type="password"
+                                v-model.trim="user.oldPassword"
+                                label="Enter old password"
+                                dense
+                                prepend-icon="mdi-lock"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" type="password" v-model.trim="user.password"
-                                label="New password" dense prepend-icon="mdi-lock"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                type="password"
+                                v-model.trim="user.password"
+                                label="New password"
+                                dense
+                                prepend-icon="mdi-lock"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
-                              <v-text-field color="#B55B68" type="password" v-model.trim="user.password_confirmation"
-                                label="Confirm new password" dense prepend-icon="mdi-lock"></v-text-field>
+                              <v-text-field
+                                color="#B55B68"
+                                type="password"
+                                v-model.trim="user.password_confirmation"
+                                label="Confirm new password"
+                                dense
+                                prepend-icon="mdi-lock"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
-                          <v-btn class="text-capitalize" elevation="2" outlined v-on:click="cancelPasswordUpdate">Cancel</v-btn>
-                          <v-btn type="submit" elevation="2" color="#B55B68" :loading="loading ? '#B55B68' : null"
-                            outlined class="text-capitalize ml-2">Save</v-btn>
+                          <v-btn
+                            class="text-capitalize"
+                            elevation="2"
+                            outlined
+                            v-on:click="cancelPasswordUpdate"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            type="submit"
+                            elevation="2"
+                            color="#B55B68"
+                            :loading="loading ? '#B55B68' : null"
+                            outlined
+                            class="text-capitalize ml-2"
+                            >Save</v-btn
+                          >
                         </v-form>
                       </v-card-text>
                     </v-card>
@@ -111,8 +191,8 @@
 </template>
 
 <script>
-import EmployeesService from '@/services/EmployeesService';
-import AuthService from '../services/AuthService'
+import EmployeesService from "@/services/EmployeesService";
+import AuthService from "../services/AuthService";
 export default {
   name: "SettingsView",
   data() {
@@ -126,85 +206,108 @@ export default {
         phone_number: null,
         oldPassword: null,
         password: null,
-        password_confirmation: null
+        password_confirmation: null,
       },
-      errors: []
-    }
+      errors: [],
+    };
   },
   methods: {
     cancelPasswordUpdate() {
-      this.$refs.passwordForm.reset() 
+      this.$refs.passwordForm.reset();
     },
-    cancelUserUpdate(){
-      this.user.password = null
+    cancelUserUpdate() {
+      this.user.password = null;
       this.fetchLoggedFromAPI();
     },
     async fetchLoggedFromAPI() {
       try {
-        const loggedUser = this.$store.state.user
+        const loggedUser = this.$store.state.user;
         const response = await EmployeesService.show(loggedUser.id);
-        this.user = response.data
+        this.user = response.data;
       } catch (error) {
         this.handleError(error);
       }
     },
     async updateUser() {
-      if (!this.user.first_name || !this.user.last_name || !this.user.user_name || !this.user.email || !this.user.phone_number || !this.user.password) {
-        this.$swal('Error', 'Please fill in all required fields', 'error');
+      if (
+        !this.user.first_name ||
+        !this.user.last_name ||
+        !this.user.user_name ||
+        !this.user.email ||
+        !this.user.phone_number ||
+        !this.user.password
+      ) {
+        this.$swal("Error", "Please fill in all required fields", "error");
         return;
       }
-      let old_password = this.$store.state.temp_pass
+      let old_password = this.$store.state.temp_pass;
       if (old_password === this.user.password) {
         let employeePayload = {
-          first_name: this.user.first_name,
-          last_name: this.user.last_name,
-          user_name: this.user.user_name,
-          job_title: "Store Manager",
-          phone_number: this.user.phone_number,
-          email: this.user.email,
-          password: this.user.password,
-          password_confirmation: this.user.password
+          employee: {
+            first_name: this.user.first_name,
+            last_name: this.user.last_name,
+            user_name: this.user.user_name,
+            job_title: "Store Manager",
+            phone_number: this.user.phone_number,
+            email: this.user.email,
+            password: this.user.password,
+            password_confirmation: this.user.password,
+          }
         };
         try {
-          this.loading = true
-          const loggedUser = this.$store.state.user
-          const response = await EmployeesService.put(employeePayload, loggedUser.id);
+          this.loading = true;
+          const loggedUser = this.$store.state.user;
+          const response = await EmployeesService.put(
+            employeePayload,
+            loggedUser.id
+          );
           if (response.status === 200) {
-            this.loading = false
-            this.$swal('Information', 'User successfully updated', 'success').then(() => {
-              this.user.password = null
-              let updatedUser = response.data
-              this.$store.commit('setUser', updatedUser)
-            })
+            this.loading = false;
+            this.$swal(
+              "Information",
+              "User successfully updated",
+              "success"
+            ).then(() => {
+              this.user.password = null;
+              let updatedUser = response.data;
+              this.$store.commit("setUser", updatedUser);
+            });
           }
         } catch (error) {
-          this.loading = false
-          this.handleError(error)
+          this.loading = false;
+          this.handleError(error);
         }
       } else {
         this.$swal("Error", "Password is incorrect", "error");
       }
     },
     async updatePassword() {
-      const { oldPassword, password, password_confirmation } = this.user
+      const { oldPassword, password, password_confirmation } = this.user;
       if (!oldPassword || !password || !password_confirmation) {
-        await this.$swal("Fields validation", "Please fill in all required fields", "warning")
-        return
+        await this.$swal(
+          "Fields validation",
+          "Please fill in all required fields",
+          "warning"
+        );
+        return;
       }
-      let old_password = this.$store.state.temp_pass
+      let old_password = this.$store.state.temp_pass;
       if (old_password === this.user.oldPassword) {
-        this.loading = true
+        this.loading = true;
         try {
-          const loggedUser = this.$store.state.user
-          const response = await AuthService.updatePassword({ password, password_confirmation }, loggedUser.id)
+          const loggedUser = this.$store.state.user;
+          const response = await AuthService.updatePassword(
+            { password, password_confirmation },
+            loggedUser.id
+          );
           if (response.status === 200) {
-            this.loading = false
+            this.loading = false;
             this.$swal("Message", response.data.message, "success").then(() => {
-              this.$refs.passwordForm.reset()
-            })
+              this.$refs.passwordForm.reset();
+            });
           }
         } catch (error) {
-          this.loading = false
+          this.loading = false;
           this.handleError(error);
         }
       } else {
@@ -214,6 +317,6 @@ export default {
   },
   mounted() {
     this.fetchLoggedFromAPI();
-  }
+  },
 };
 </script>

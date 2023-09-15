@@ -62,7 +62,7 @@ export default {
       }
       this.loading = true
       try {
-        const response = await AuthService.register({ user_name, email, password, password_confirmation })
+        const response = await AuthService.register({ employee: { user_name, email, password, password_confirmation} })
         if (response.status === 201) {
           this.loading = false
           this.$swal('Information', 'Account successfully created', 'success').then(() => {
