@@ -15,8 +15,13 @@
                   <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
-                  <v-autocomplete label="Category" :items="categories" v-model="item.category_name">
-                      </v-autocomplete>
+                  <v-autocomplete
+  label="Category"
+  :items="categories"
+  v-model="item.category_id" 
+  item-text="name"
+  item-value="id"
+></v-autocomplete>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -149,7 +154,7 @@ export default {
         price: null,
         size: null,
         color: null,
-        category_name: null
+        category_id: null
       },
       categories: [],
       inventoryLevel: {
@@ -206,7 +211,7 @@ export default {
       }
     },
     async saveItem() {
-      const requiredFields = ['name', 'price', 'size', 'color', 'category_name'];
+      const requiredFields = ['name', 'price', 'size', 'color', 'category_id'];
 
       if (requiredFields.some(field => !this.item[field])) {
         await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
@@ -220,7 +225,7 @@ export default {
           price: this.item.price,
           size: this.item.size,
           color: this.item.color,
-          category_name: this.item.category_name
+          category_id: this.item.category_id
         };
         const response = await ItemsService.create(itemPayload);
         if (response.status === 201) {
@@ -297,9 +302,7 @@ export default {
     async fetchCategoriesFromAPI(){
       try {
         const response = await CategoryService.getData()
-        response.data.forEach(category => {
-          this.categories.push(category.name);
-        });
+        this.categories = response.data;
       }
       catch (error) {
         this.handleError(error)
