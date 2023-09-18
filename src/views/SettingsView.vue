@@ -296,8 +296,14 @@ export default {
         this.loading = true;
         try {
           const loggedUser = this.$store.state.user;
+          let userPayload = {
+            user: {
+              password: password,
+              password_confirmation: password_confirmation
+            }
+          };
           const response = await AuthService.updatePassword(
-            { password, password_confirmation },
+            userPayload,
             loggedUser.id
           );
           if (response.status === 200) {

@@ -52,9 +52,11 @@ export default {
         return
       }
       let userPayload = {
+        user: {
           password: this.user.password,
           password_confirmation: this.user.password_confirmation,
           token: this.user.token
+        }
       }
       this.loading = true
       try {

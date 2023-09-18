@@ -45,7 +45,9 @@ export default {
         return
       }
       let userPayload = {
-        email: this.user.email
+        user: {
+          email: this.user.email
+        }
       }
       this.loading = true
       try {
