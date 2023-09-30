@@ -237,7 +237,7 @@ export default {
         !this.user.phone_number ||
         !this.user.password
       ) {
-        this.$swal("Error", "Please fill in all required fields", "error");
+        this.$swal("Fields Validation", "Please fill in all required fields", "warning");
         return;
       }
       let old_password = this.$store.state.temp_pass;

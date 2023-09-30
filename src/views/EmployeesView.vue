@@ -6,7 +6,7 @@
           <v-dialog max-width="715" v-model="dialog" persistent>
             <v-card>
               <v-card-title class="d-flex justify-space-between">
-                Add New Employee
+                Add New User
                 <v-icon v-on:click="cancelAdd">mdi-close</v-icon>
               </v-card-title>
               <v-card-text>
@@ -47,7 +47,7 @@
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined v-on:click="cancelAdd">Cancel</v-btn>
                 <v-btn class="text-capitalize mb-3" elevation="2" color="#B55B68"
                   :loading="saveEmployeeLoading ? '#B55B68' : null" outlined v-on:click="saveEmployee">Save
-                  Employee</v-btn>
+                  User</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -55,7 +55,7 @@
           <v-dialog max-width="715" v-model="editDialog" persistent>
             <v-card>
               <v-card-title class="d-flex justify-space-between">
-                Edit Employee
+                Edit User
                 <v-icon v-on:click="cancelUpdate">mdi-close</v-icon>
               </v-card-title>
               <v-card-text>
@@ -96,13 +96,13 @@
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="cancelUpdate">Cancel</v-btn>
                 <v-btn class="text-capitalize mb-3" :loading="saveEmployeeLoading ? '#B55B68' : null" elevation="2"
-                  outlined color="#B55B68" v-on:click="updateEmployee">Update Employee</v-btn>
+                  outlined color="#B55B68" v-on:click="updateEmployee">Update User</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
 
           <div class="d-flex justify-space-between">
-            <h1 class="font-weight-regular">Employees</h1>
+            <h1 class="font-weight-regular">Users</h1>
             <v-btn color="#B55B68" depressed class="mt-2" fab x-small v-on:click="dialog = !dialog">
               <v-icon color="#fff">mdi-plus</v-icon>
             </v-btn>
@@ -211,7 +211,7 @@ export default {
     },
     async saveEmployee() {
       if (!this.employee.first_name || !this.employee.last_name || !this.employee.user_name || !this.employee.email || !this.employee.phone_number || !this.employee.password || !this.employee.password_confirmation) {
-        this.$swal('Error', 'Please fill in all required fields', 'error');
+        this.$swal('Fields Validation', 'Please fill in all required fields', 'warning');
         return;
       }
       this.saveEmployeeLoading = true
@@ -231,7 +231,7 @@ export default {
         const response = await EmployeesService.create(employeePayload);
         if (response.status === 201) {
           this.saveEmployeeLoading = false
-          this.$swal('Information', 'Employee successfully added', 'success').then(() => {
+          this.$swal('Information', 'User successfully added', 'success').then(() => {
             this.dialog = false
             this.$refs.addEmployeeForm.reset()
             this.fetchDataFromAPI();
@@ -249,7 +249,7 @@ export default {
     },
     async updateEmployee() {
       if (!this.employee.first_name || !this.employee.last_name || !this.employee.user_name || !this.employee.email || !this.employee.phone_number || !this.employee.password || !this.employee.password_confirmation) {
-        this.$swal('Error', 'Please fill in all required fields', 'error');
+        this.$swal('Fields Validation', 'Please fill in all required fields', 'warning');
         return;
       }
       this.saveEmployeeLoading = true
@@ -269,7 +269,7 @@ export default {
         const response = await EmployeesService.put(employeePayload, this.employee_id);
         if (response.status === 200) {
           this.saveEmployeeLoading = false
-          this.$swal('Information', 'Employee successfully updated', 'success').then(() => {
+          this.$swal('Information', 'User successfully updated', 'success').then(() => {
             this.editDialog = false
             this.$refs.editEmployeeForm.reset()
             this.fetchDataFromAPI();
@@ -302,7 +302,7 @@ export default {
       try {
         const response = await EmployeesService.activate(employee_id);
         if (response.status === 200) {
-          this.$swal('Information', 'Employee activated successfully', 'success').then(() => {
+          this.$swal('Information', 'User activated successfully', 'success').then(() => {
             this.fetchDataFromAPI();
           })
         }
@@ -314,7 +314,7 @@ export default {
       try {
         const response = await EmployeesService.disable(employee_id);
         if (response.status === 200) {
-          this.$swal('Information', 'Employee disabled successfully', 'success').then(() => {
+          this.$swal('Information', 'User disabled successfully', 'success').then(() => {
             this.fetchDataFromAPI();
           })
         }

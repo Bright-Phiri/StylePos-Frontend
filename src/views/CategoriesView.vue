@@ -138,7 +138,7 @@ export default {
       const requiredFields = ['name', 'description'];
 
       if (requiredFields.some(field => !this.category[field])) {
-        await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+        await this.$swal('Fields Validation', 'Please fill in all required fields', 'warning');
         return;
       }
 
@@ -178,7 +178,7 @@ export default {
       const requiredFields = ['name'];
 
       if (requiredFields.some(field => !this.category[field])) {
-        await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+        await this.$swal('Fields Validation', 'Please fill in all required fields', 'warning');
         return;
       }
       this.updateCategoryloading = true;

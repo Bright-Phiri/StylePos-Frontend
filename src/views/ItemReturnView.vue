@@ -110,7 +110,7 @@ export default {
     },
     async issueItemReturn() {
       if (!this.return_item.reason) {
-        this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+        this.$swal('Fields Validation', 'Please fill in all required fields', 'warning');
         return;
       }
       let returnPayload = {

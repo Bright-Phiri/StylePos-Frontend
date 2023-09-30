@@ -82,7 +82,7 @@ export default {
         { text: "Transactions", icon: "mdi-cash-multiple", route: "/orders" },
         { text: "Returns", icon: "mdi-undo", route: "/returns" },
         { text: "Refunds", icon: "mdi-cash-refund", route: "/refunds" },
-        { text: "Employees", icon: "mdi-account-multiple", route: "/employees" },
+        { text: "Users", icon: "mdi-account-multiple", route: "/employees" },
       ],
       links1: [
         { text: "Settings", icon: "mdi-cog", route: "/settings" },

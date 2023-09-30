@@ -15,13 +15,8 @@
                   <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
                   <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
-                  <v-autocomplete
-  label="Category"
-  :items="categories"
-  v-model="item.category_id" 
-  item-text="name"
-  item-value="id"
-></v-autocomplete>
+                  <v-autocomplete label="Category" :items="categories" v-model="item.category_id" item-text="name"
+                    item-value="id"></v-autocomplete>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -94,8 +89,8 @@
             <v-btn color="#FFCDD2" class="mt-2" fab depressed x-small v-on:click="fetchDataFromAPI">
               <v-icon color="#E57373">mdi-cached</v-icon>
             </v-btn>
-            <v-text-field color="#B55B68" v-model.trim="search" @input="searchItem" dense rounded outlined placeholder="Search"
-              class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
+            <v-text-field color="#B55B68" v-model.trim="search" @input="searchItem" dense rounded outlined
+              placeholder="Search" class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
           </div>
 
           <v-card>
@@ -104,11 +99,15 @@
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id, item.category_id)" color="primary">mdi-pencil
+                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id, item.category_id)"
+                  color="primary">mdi-pencil
                 </v-icon>
-                <v-icon small class="mr-0" color="#2A9B90" v-on:click="showInventoryLevelDialog(item.id, item.category_id)">mdi-plus-box
+                <v-icon small class="mr-0" color="#2A9B90" v-on:click="
+                  showInventoryLevelDialog(item.id, item.category_id)
+                  ">mdi-plus-box
                 </v-icon>
-                <v-icon small class="mr-0" color="blue darken-2" v-on:click="generateAndPrintBarcode(item.barcode)">mdi-barcode</v-icon>
+                <v-icon small class="mr-0" color="blue darken-2"
+                  v-on:click="generateAndPrintBarcode(item.barcode)">mdi-barcode</v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteItem(item.id)">mdi-delete</v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">
@@ -125,11 +124,11 @@
   </div>
 </template>
 <script>
-import ItemsService from '../services/ItemsService'
-import InventoryLevelService from '../services/InventoryLevelService'
-import CategoryService from '../services/CategoryService'
-import JsBarcode from 'jsbarcode';
-import printJS from 'print-js';
+import ItemsService from "../services/ItemsService";
+import InventoryLevelService from "../services/InventoryLevelService";
+import CategoryService from "../services/CategoryService";
+import JsBarcode from "jsbarcode";
+import printJS from "print-js";
 export default {
   name: "ItemsView",
   data() {
@@ -145,7 +144,7 @@ export default {
       total: 0,
       currentPage: 1,
       itemsPerPage: 7,
-      search: '',
+      search: "",
       items: [],
       item_id: null,
       category_id: null,
@@ -154,7 +153,7 @@ export default {
         price: null,
         size: null,
         color: null,
-        category_id: null
+        category_id: null,
       },
       categories: [],
       inventoryLevel: {
@@ -165,35 +164,34 @@ export default {
       errors: [],
       headers: [
         {
-          text: 'Id',
-          align: 'start',
+          text: "Id",
+          align: "start",
           sortable: false,
-          value: 'id',
+          value: "id",
         },
-        { text: 'Barcode', value: 'barcode' },
-        { text: 'Name', value: 'name' },
-        { text: 'Pre VAT Price', value: 'price' },
-        { text: 'Seling Price', value: 'selling_price' },
-        { text: 'Size', value: 'size' },
-        { text: 'Color', value: 'color' },
-        { text: 'Stock Level', value: 'stock_level' },
-        { text: 'Inventory Level', value: 'inventory_level' },
-        { text: 'Action', value: 'action' },
+        { text: "Barcode", value: "barcode" },
+        { text: "Name", value: "name" },
+        { text: "Pre VAT Price", value: "price" },
+        { text: "Seling Price", value: "selling_price" },
+        { text: "Size", value: "size" },
+        { text: "Color", value: "color" },
+        { text: "Stock Level", value: "stock_level" },
+        { text: "Inventory Level", value: "inventory_level" },
+        { text: "Action", value: "action" },
       ],
-    }
+    };
   },
   methods: {
     async fetchDataFromAPI(page, perPage, search) {
-      this.loading = true
+      this.loading = true;
       try {
-        const response = await ItemsService.getData(page, perPage, search)
+        const response = await ItemsService.getData(page, perPage, search);
         this.items = response.data.items;
         this.total = response.data.total;
-        this.loading = false
-      }
-      catch (error) {
-        this.loading = false
-        this.handleError(error)
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        this.handleError(error);
       }
     },
     searchItem() {
@@ -205,16 +203,25 @@ export default {
     onPagination(page) {
       this.currentPage = Number(page.page);
       if (this.$route.params.category_id !== undefined) {
-        this.showCategoryItems(this.currentPage, this.itemsPerPage, this.search, this.$route.params.category_id)
-      } else{
+        this.showCategoryItems(
+          this.currentPage,
+          this.itemsPerPage,
+          this.search,
+          this.$route.params.category_id
+        );
+      } else {
         this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
       }
     },
     async saveItem() {
-      const requiredFields = ['name', 'price', 'size', 'color', 'category_id'];
+      const requiredFields = ["name", "price", "size", "color", "category_id"];
 
-      if (requiredFields.some(field => !this.item[field])) {
-        await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+      if (requiredFields.some((field) => !this.item[field])) {
+        await this.$swal(
+          "Fields Validation",
+          "Please fill in all required fields",
+          "warning"
+        );
         return;
       }
 
@@ -225,11 +232,11 @@ export default {
           price: this.item.price,
           size: this.item.size,
           color: this.item.color,
-          category_id: this.item.category_id
+          category_id: this.item.category_id,
         };
         const response = await ItemsService.create(itemPayload);
         if (response.status === 201) {
-          this.$swal('Information', 'Item saved successfully', 'success');
+          this.$swal("Information", "Item saved successfully", "success");
           this.$refs.addItemForm.reset();
           this.dialog = false;
           this.fetchDataFromAPI();
@@ -240,26 +247,33 @@ export default {
         this.saveItemLoading = false;
       }
     },
-    async showEditItemDialog(item_id,category_id) {
-      this.editdialog = true
-      this.item_id = item_id
-      this.category_id = category_id
+    async showEditItemDialog(item_id, category_id) {
+      this.editdialog = true;
+      this.item_id = item_id;
+      this.category_id = category_id;
       try {
-        const response = await ItemsService.getItem(item_id, category_id)
-        this.item = response.data
-        console.log(this.item)
+        const response = await ItemsService.getItem(item_id, category_id);
+        this.item = response.data;
+        console.log(this.item);
       } catch (error) {
-        this.handleError(error)
+        this.handleError(error);
       }
     },
     formartValue(value) {
-      return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      return parseFloat(value).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     },
     async updateItem() {
-      const requiredFields = ['name', 'price', 'size', 'color'];
+      const requiredFields = ["name", "price", "size", "color"];
 
-      if (requiredFields.some(field => !this.item[field])) {
-        await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+      if (requiredFields.some((field) => !this.item[field])) {
+        await this.$swal(
+          "Fields Validation",
+          "Please fill in all required fields",
+          "warning"
+        );
         return;
       }
       this.updateItemloading = true;
@@ -268,112 +282,155 @@ export default {
           name: this.item.name,
           price: this.item.price,
           size: this.item.size,
-          color: this.item.color
+          color: this.item.color,
         };
 
-        const response = await ItemsService.put(itemPayload, this.category_id, this.item_id);
+        const response = await ItemsService.put(
+          itemPayload,
+          this.category_id,
+          this.item_id
+        );
 
         if (response.status === 200) {
-          this.$swal('Information', 'Item updated successfully', 'success').then(() => {
+          this.$swal(
+            "Information",
+            "Item updated successfully",
+            "success"
+          ).then(() => {
             this.$refs.editItemForm.reset();
             this.updateItemloading = false;
             this.editdialog = false;
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
-          })
+            this.fetchDataFromAPI(
+              this.currentPage,
+              this.itemsPerPage,
+              this.search
+            );
+          });
         }
       } catch (error) {
+        this.updateItemloading = false;
         this.handleError(error);
       }
-    }
-    ,
+    },
     async deleteItem(item_id) {
       try {
         const response = await ItemsService.delete(item_id);
         if (response.status === 204) {
-          this.$swal('Information', 'Item deleted successfully', 'success').then(() => {
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
-          })
+          this.$swal(
+            "Information",
+            "Item deleted successfully",
+            "success"
+          ).then(() => {
+            this.fetchDataFromAPI(
+              this.currentPage,
+              this.itemsPerPage,
+              this.search
+            );
+          });
         }
-      }
-      catch (error) {
-        this.handleError(error)
+      } catch (error) {
+        this.handleError(error);
       }
     },
-    async fetchCategoriesFromAPI(){
+    async fetchCategoriesFromAPI() {
       try {
-        const response = await CategoryService.getData()
+        const response = await CategoryService.getData();
         this.categories = response.data;
-      }
-      catch (error) {
-        this.handleError(error)
+      } catch (error) {
+        this.handleError(error);
       }
     },
     generateAndPrintBarcode(barcodeValue) {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       JsBarcode(canvas, barcodeValue);
       // Send the barcode image to the printer using print-js
       printJS({
         printable: canvas.toDataURL(), // Convert the canvas to a base64-encoded image URL
-        type: 'image',
+        type: "image",
         maxWidth: 300, // Set the maximum width of the image
-        targetStyles: ['height=auto'], // Set the height of the image to auto
-        documentTitle: 'Barcode', // Set the title of the print document
+        targetStyles: ["height=auto"], // Set the height of the image to auto
+        documentTitle: "Barcode", // Set the title of the print document
       });
     },
     showInventoryLevelDialog(item_id, category_id) {
-      this.item_id = item_id
-      this.category_id = category_id
-      this.inventoryLevelDialog = true
+      this.item_id = item_id;
+      this.category_id = category_id;
+      this.inventoryLevelDialog = true;
     },
     async addInventoryLevel() {
       if (!this.inventoryLevel.quantity || !this.inventoryLevel.reorder_level) {
-        this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
+        this.$swal(
+          "Fields Validation",
+          "Please fill in all required fields",
+          "error"
+        );
         return;
       }
-      this.saveInventoryLoading = true
+      this.saveInventoryLoading = true;
       let inventoryLevelPayload = {
         quantity: this.inventoryLevel.quantity,
         reorder_level: this.inventoryLevel.reorder_level,
-        supplier: this.inventoryLevel.supplier
-      }
+        supplier: this.inventoryLevel.supplier,
+      };
       try {
-        const response = await InventoryLevelService.create(inventoryLevelPayload, this.category_id, this.item_id)
+        const response = await InventoryLevelService.create(
+          inventoryLevelPayload,
+          this.category_id,
+          this.item_id
+        );
         if (response.status === 201) {
-          this.$swal('Information', 'Inventory Level successfully added', 'success').then(() => {
-            this.saveInventoryLoading = false
-            this.inventoryLevelDialog = false
-            this.$refs.addInventoryLevelForm.reset()
-            this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
-          })
+          this.$swal(
+            "Information",
+            "Inventory Level successfully added",
+            "success"
+          ).then(() => {
+            this.saveInventoryLoading = false;
+            this.inventoryLevelDialog = false;
+            this.$refs.addInventoryLevelForm.reset();
+            this.fetchDataFromAPI(
+              this.currentPage,
+              this.itemsPerPage,
+              this.search
+            );
+          });
         }
-      }
-      catch (error) {
-        this.saveInventoryLoading = false
-        this.handleError(error)
+      } catch (error) {
+        this.saveInventoryLoading = false;
+        this.handleError(error);
       }
     },
-    async showCategoryItems(page, perPage, search,category_id){
-      this.loading = true
-      try{
-        const response = await CategoryService.show_items(page, perPage, search,category_id);
-      if (response.status === 200){
-        this.items = response.data.items
-        this.total = response.data.total;
-        this.loading = false
+    async showCategoryItems(page, perPage, search, category_id) {
+      this.loading = true;
+      try {
+        const response = await CategoryService.show_items(
+          page,
+          perPage,
+          search,
+          category_id
+        );
+        if (response.status === 200) {
+          this.items = response.data.items;
+          this.total = response.data.total;
+          this.loading = false;
+        }
+      } catch (error) {
+        this.loading = false;
+        this.handleError(error);
       }
-      } catch(error){
-        this.loading = false
-        this.handleError(error)
-      }
-    }
+    },
   },
   mounted() {
     if (this.$route.params.category_id !== undefined) {
-     this.showCategoryItems(this.currentPage, this.itemsPerPage, this.search, this.$route.params.category_id)
-    } else{
-      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search)
+      this.showCategoryItems(
+        this.currentPage,
+        this.itemsPerPage,
+        this.search,
+        this.$route.params.category_id
+      );
+    } else {
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
     }
     this.fetchCategoriesFromAPI();
-  }
+  },
 };
 </script>
