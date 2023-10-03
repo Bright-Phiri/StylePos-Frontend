@@ -4,7 +4,7 @@
     <v-container class="py-8 px-6" fluid>
       <v-row>
         <v-col cols="12">
-          <v-dialog max-width="570" v-model="inventoryLevelDialog" persistent>
+          <v-dialog max-width="570" v-model="inventoryLevelDialog" persistent transition="fab-transition">
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Edit Inventory Level

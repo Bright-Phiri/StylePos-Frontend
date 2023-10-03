@@ -3,7 +3,7 @@
     <v-container class="py-8 px-6" fluid>
       <v-row>
         <v-col cols="12">
-          <v-dialog max-width="715" v-model="dialog" persistent>
+          <v-dialog max-width="800" v-model="dialog" persistent transition="fab-transition">
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Add New User
@@ -52,7 +52,7 @@
             </v-card>
           </v-dialog>
 
-          <v-dialog max-width="715" v-model="editDialog" persistent>
+          <v-dialog max-width="800" v-model="editDialog" persistent transition="fab-transition">
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Edit User
