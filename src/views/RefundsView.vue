@@ -11,7 +11,7 @@
               append-icon="mdi-magnify"></v-text-field>
           </div>
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Refunds... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Refunds... Please wait"
               :headers="headers"  :search="search" :items-per-page="7"
                :items="refunds" multi-sort>
                <template v-slot:[`item.refund_amount`]="{ item }">

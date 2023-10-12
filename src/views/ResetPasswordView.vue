@@ -21,7 +21,7 @@
                 </v-text-field>
                 <v-text-field color="#B55B68" label="Re-enter new password" type="password" outlined dense v-model.trim="user.password_confirmation">
                 </v-text-field>
-                <v-btn type="submit" block :loading="loading ? '#B55B68' : null" dark outlined depressed class="text-capitalize font-weight-light mb-2"
+                <v-btn type="submit" block :loading="loading" dark outlined depressed class="text-capitalize font-weight-light mb-2"
                   color="#B55B68">Reset Password</v-btn>
               </v-form>
             </v-card-text>

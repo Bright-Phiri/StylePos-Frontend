@@ -12,16 +12,16 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="updateInventoryLevelForm">
-                  <v-text-field color="#B55B68" v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="inventoryLevel.reorder_level"
+                  <v-text-field v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
+                  <v-text-field v-model="inventoryLevel.reorder_level"
                     label="Reorder Level"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
+                  <v-text-field v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="inventoryLevelDialog = !inventoryLevelDialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="updateInventoryLoading ? '#B55B68' : null" elevation="2"
+                <v-btn class="text-capitalize mb-3" :loading="updateInventoryLoading" elevation="2"
                   outlined color="#B55B68" v-on:click="updateInventoryLevel">Update Inventory</v-btn>
               </v-card-actions>
             </v-card>
@@ -45,13 +45,13 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Inventory Levels... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Inventory Levels... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="inventoryLevels" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditInventoryDialog(item.id)"
-                  color="primary">mdi-pencil
+                  color="blue">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteInventory(item.id)">mdi-delete</v-icon>
               </template>

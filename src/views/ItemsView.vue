@@ -11,17 +11,17 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="addItemForm">
-                  <v-text-field color="#B55B68" v-model="item.name" label="Name"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
+                  <v-text-field v-model="item.name" label="Name"></v-text-field>
+                  <v-text-field v-model="item.price" label="Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.size" label="Size"></v-text-field>
+                  <v-text-field v-model="item.color" label="Color"></v-text-field>
                   <v-autocomplete label="Category" :items="categories" v-model="item.category_id" item-text="name"
                     item-value="id"></v-autocomplete>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined v-on:click="dialog = !dialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="saveItemLoading ? '#B55B68' : null" elevation="2" outlined
+                <v-btn class="text-capitalize mb-3" :loading="saveItemLoading" elevation="2" outlined
                   color="#B55B68" v-on:click="saveItem">Save Item</v-btn>
               </v-card-actions>
             </v-card>
@@ -35,16 +35,16 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="editItemForm">
-                  <v-text-field color="#B55B68" v-model="item.name" label="Name"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="item.price" label="Price (MWK)"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="item.size" label="Size"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="item.color" label="Color"></v-text-field>
+                  <v-text-field v-model="item.name" label="Name"></v-text-field>
+                  <v-text-field v-model="item.price" label="Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.size" label="Size"></v-text-field>
+                  <v-text-field v-model="item.color" label="Color"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="editdialog = !editdialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="updateItemloading ? '#B55B68' : null" elevation="2" outlined
+                <v-btn class="text-capitalize mb-3" :loading="updateItemloading" elevation="2" outlined
                   color="#B55B68" v-on:click="updateItem">Update Item</v-btn>
               </v-card-actions>
             </v-card>
@@ -58,16 +58,16 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="addInventoryLevelForm">
-                  <v-text-field color="#B55B68" v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="inventoryLevel.reorder_level"
+                  <v-text-field v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
+                  <v-text-field v-model="inventoryLevel.reorder_level"
                     label="Reorder Level"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
+                  <v-text-field v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="inventoryLevelDialog = !inventoryLevelDialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="saveInventoryLoading ? '#B55B68' : null" elevation="2"
+                <v-btn class="text-capitalize mb-3" :loading="saveInventoryLoading" elevation="2"
                   outlined color="#B55B68" v-on:click="addInventoryLevel">Add Inventory</v-btn>
               </v-card-actions>
             </v-card>
@@ -94,13 +94,13 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Items... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Items... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)"
-                  color="primary">mdi-pencil
+                  color="blue">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="#2A9B90" v-on:click="
                   showInventoryLevelDialog(item.id)

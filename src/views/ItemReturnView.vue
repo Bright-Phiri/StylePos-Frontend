@@ -18,19 +18,19 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="issueReturnForm">
-                  <v-textarea color="#B55B68" outlined v-model="return_item.reason" label="Reason"></v-textarea>
+                  <v-textarea outlined v-model="return_item.reason" label="Reason"></v-textarea>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="returnDialog = !returnDialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="issueReturnLoading ? '#B55B68' : null" elevation="2"
+                <v-btn class="text-capitalize mb-3" :loading="issueReturnLoading" elevation="2"
                   outlined color="#B55B68" v-on:click="issueItemReturn">Issue Return</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Order Summary... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Order Summary... Please wait"
               :headers="headers" :items="line_items" :items-per-page="5" :search="search" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon class="mr-0" v-on:click="showReturnDialog(item.id)" color="primary">mdi-undo

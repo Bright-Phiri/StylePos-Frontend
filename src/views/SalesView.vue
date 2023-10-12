@@ -64,7 +64,7 @@
                 <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4"></v-text-field>
               </div>
               <div class="justify-end">
-                <v-btn class="white--text" color="primary" x-large v-on:click="addLineItem">
+                <v-btn class="white--text" color="blue" x-large v-on:click="addLineItem">
                   <v-icon large>mdi-cart</v-icon>Add
                 </v-btn>
               </div>

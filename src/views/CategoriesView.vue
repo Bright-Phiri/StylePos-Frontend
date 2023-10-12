@@ -11,8 +11,8 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="addCategoryForm">
-                  <v-text-field color="#B55B68" v-model="category.name" label="Name"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="category.description" label="Description"></v-text-field>
+                  <v-text-field v-model="category.name" label="Name"></v-text-field>
+                  <v-text-field v-model="category.description" label="Description"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -31,14 +31,14 @@
               </v-card-title>
               <v-card-text>
                 <v-form ref="editCategoryForm">
-                  <v-text-field color="#B55B68" v-model="category.name" label="Name"></v-text-field>
-                  <v-text-field color="#B55B68" v-model="category.description" label="Description"></v-text-field>
+                  <v-text-field v-model="category.name" label="Name"></v-text-field>
+                  <v-text-field v-model="category.description" label="Description"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="editdialog = !editdialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="updateCategoryloading ? '#B55B68' : null" elevation="2" outlined
+                <v-btn class="text-capitalize mb-3" :loading="updateCategoryloading" elevation="2" outlined
                   color="#B55B68" v-on:click="updateCategory">Update Category</v-btn>
               </v-card-actions>
             </v-card>
@@ -65,7 +65,7 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Categories... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Categories... Please wait"
               :headers="headers" :items-per-page="itemsPerPage"
               :items="categories" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
@@ -73,7 +73,7 @@
                 {{item.items_count === null ? 0 : item.items_count }}
               </template>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditCategoryDialog(item.id)" color="primary">mdi-pencil
+                <v-icon small class="mr-0" v-on:click="showEditCategoryDialog(item.id)" color="blue">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="#2A9B90" v-on:click="showCategoryItems(item.id)">mdi-eye
                 </v-icon>

@@ -17,11 +17,11 @@
               color="#B55B68" class="ml-4"></v-select>
           </div>
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Transactions... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Transactions... Please wait"
               :headers="headers"  :server-items-length="total" :search="search" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="orders" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon class="mr-0" v-on:click="viewOrderSummary(item.id)" color="primary">mdi-eye
+                <v-icon class="mr-0" v-on:click="viewOrderSummary(item.id)" color="blue">mdi-eye
                 </v-icon>
               </template>
               <template v-slot:[`item.total`]="{ item }">

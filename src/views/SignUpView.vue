@@ -15,9 +15,9 @@
             </v-card-title>
             <v-card-text>
               <v-form @submit.prevent="signUp">
-                <v-text-field color="#B55B68" label="Username" outlined v-model.trim="user.user_name"></v-text-field>
-                <v-text-field color="#B55B68" label="Email Address" outlined v-model.trim="user.email"></v-text-field>
-                <v-text-field color="#B55B68" label="Password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                <v-text-field label="Username" outlined v-model.trim="user.user_name"></v-text-field>
+                <v-text-field label="Email Address" outlined v-model.trim="user.email"></v-text-field>
+                <v-text-field label="Password" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"  @click:append="showPassword = !showPassword" outlined v-model.trim="user.password">
                 </v-text-field>
                 <v-text-field color="#B55B68" label="Confirm Password" :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"

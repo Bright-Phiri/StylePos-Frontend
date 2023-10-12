@@ -12,7 +12,7 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Order Summary... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Order Summary... Please wait"
               :headers="headers" :items="orders" :items-per-page="5" :search="search" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.price`]="{ item }">
                 {{ formartValue(item.price) }}

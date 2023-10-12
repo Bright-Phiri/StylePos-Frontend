@@ -13,30 +13,30 @@
                 <v-form ref="addEmployeeForm">
                   <v-row>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.first_name" label="First Name"></v-text-field>
+                      <v-text-field v-model="employee.first_name" label="First Name"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.last_name" label="Last Name"></v-text-field>
+                      <v-text-field v-model="employee.last_name" label="Last Name"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.user_name" label="Username"></v-text-field>
+                      <v-text-field v-model="employee.user_name" label="Username"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-autocomplete label="Role" :items="job_titles" v-model="employee.job_title">
                       </v-autocomplete>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.email" label="Email"></v-text-field>
+                      <v-text-field v-model="employee.email" label="Email"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.phone_number" label="Phone Number"></v-text-field>
+                      <v-text-field v-model="employee.phone_number" label="Phone Number"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field type="password" color="#B55B68" label="Password" v-model="employee.password">
+                      <v-text-field type="password" label="Password" v-model="employee.password">
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field type="password" color="#B55B68" label="Confirm Password"
+                      <v-text-field type="password" label="Confirm Password"
                         v-model="employee.password_confirmation">
                       </v-text-field>
                     </v-col>
@@ -46,7 +46,7 @@
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined v-on:click="cancelAdd">Cancel</v-btn>
                 <v-btn class="text-capitalize mb-3" elevation="2" color="#B55B68"
-                  :loading="saveEmployeeLoading ? '#B55B68' : null" outlined v-on:click="saveEmployee">Save
+                  :loading="saveEmployeeLoading" outlined v-on:click="saveEmployee">Save
                   User</v-btn>
               </v-card-actions>
             </v-card>
@@ -62,26 +62,26 @@
                 <v-form ref="editEmployeeForm">
                   <v-row>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.first_name" label="First Name"></v-text-field>
+                      <v-text-field v-model="employee.first_name" label="First Name"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.last_name" label="Last Name"></v-text-field>
+                      <v-text-field v-model="employee.last_name" label="Last Name"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.user_name" label="Username"></v-text-field>
+                      <v-text-field v-model="employee.user_name" label="Username"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-autocomplete label="Role" :items="job_titles" v-model="employee.job_title">
                       </v-autocomplete>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.email" label="Email"></v-text-field>
+                      <v-text-field v-model="employee.email" label="Email"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field color="#B55B68" v-model="employee.phone_number" label="Phone Number"></v-text-field>
+                      <v-text-field  v-model="employee.phone_number" label="Phone Number"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-text-field type="password" color="#B55B68" label="Password" v-model="employee.password">
+                      <v-text-field type="password" label="Password" v-model="employee.password">
                       </v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -95,7 +95,7 @@
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="cancelUpdate">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="saveEmployeeLoading ? '#B55B68' : null" elevation="2"
+                <v-btn class="text-capitalize mb-3" :loading="saveEmployeeLoading" elevation="2"
                   outlined color="#B55B68" v-on:click="updateEmployee">Update User</v-btn>
               </v-card-actions>
             </v-card>
@@ -122,11 +122,11 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading ? '#B55B68' : null" loading-text="Loading Items... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Items... Please wait"
               :headers="headers" :items="employees" :items-per-page="6" show-select :search="search"
               :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditEmployeeDialog(item.id)" color="primary">mdi-pencil
+                <v-icon small class="mr-0" v-on:click="showEditEmployeeDialog(item.id)" color="blue">mdi-pencil
                 </v-icon>
                 <v-tooltip bottom v-if="item.status === 'disabled'">
                  <template v-slot:activator="{ on, attrs }">

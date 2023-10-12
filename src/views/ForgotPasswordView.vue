@@ -16,7 +16,7 @@
             <v-card-text>
               <v-form v-on:submit.prevent="forgotPassword">
                 <v-text-field label="Email Address" color="#B55B68" outlined dense v-model.trim="user.email"></v-text-field>
-                <v-btn type="submit" :loading="loading ? '#B55B68' : null" dark depressed class="text-capitalize font-weight-light mb-2" outlined
+                <v-btn type="submit" :loading="loading" dark depressed class="text-capitalize font-weight-light mb-2" outlined
                   color="#B55B68">Reset Password</v-btn>
               </v-form>
             </v-card-text>

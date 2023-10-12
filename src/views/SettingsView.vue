@@ -28,7 +28,6 @@
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                color="#B55B68"
                                 v-model.trim="user.first_name"
                                 label="First Name"
                                 dense
@@ -39,7 +38,6 @@
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                color="#B55B68"
                                 v-model.trim="user.last_name"
                                 label="Last Name"
                                 dense
@@ -50,7 +48,6 @@
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                color="#B55B68"
                                 v-model.trim="user.user_name"
                                 label="Username"
                                 dense
@@ -61,7 +58,6 @@
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                color="#B55B68"
                                 type="email"
                                 v-model.trim="user.email"
                                 label="Email"
@@ -73,7 +69,6 @@
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                color="#B55B68"
                                 v-model.trim="user.phone_number"
                                 label="Phone"
                                 dense
@@ -85,7 +80,6 @@
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                color="#B55B68"
                                 type="password"
                                 v-model.trim="user.password"
                                 label="Enter password"
@@ -105,7 +99,7 @@
                             type="submit"
                             elevation="2"
                             color="#B55B68"
-                            :loading="loading ? '#B55B68' : null"
+                            :loading="loading"
                             outlined
                             class="text-capitalize ml-2"
                             >Save</v-btn
