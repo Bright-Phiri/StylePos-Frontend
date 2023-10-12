@@ -439,7 +439,7 @@ export default {
           discount: item.discount
         }
         this.loading = true
-        const response = await LineItemService.applyDiscount(line_item_payload, item.id)
+        const response = await LineItemService.applyDiscount(this.order_id, line_item_payload, item.id)
         if (response.status === 200) {
           const order = response.data
           this.setData(order)
