@@ -4,17 +4,17 @@ export default {
     getData(page, perPage, search) {
         return Api().get('items', { params: { page: page, per_page: perPage, search: search } })
     },
-    create(employee) {
-        return Api().post('items', employee)
+    create(item) {
+        return Api().post('items', item)
     },
     show(barcode) {
         return Api().get(`items/find_item/${barcode}`)
     },
-    getItem(item_id,category_id) {
-        return Api().get(`categories/${category_id}/items/${item_id}`)
+    getItem(item_id) {
+        return Api().get(`items/${item_id}`)
     },
-    put(item,category_id, item_id) {
-        return Api().put(`categories/${category_id}/items/${item_id}`, item)
+    put(item, item_id) {
+        return Api().put(`items/${item_id}`, item)
     },
     delete(item_id) {
         return Api().delete(`items/${item_id}`)

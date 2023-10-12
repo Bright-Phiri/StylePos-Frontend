@@ -99,7 +99,7 @@
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id, item.category_id)"
+                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)"
                   color="primary">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="#2A9B90" v-on:click="
@@ -247,12 +247,11 @@ export default {
         this.saveItemLoading = false;
       }
     },
-    async showEditItemDialog(item_id, category_id) {
+    async showEditItemDialog(item_id) {
       this.editdialog = true;
       this.item_id = item_id;
-      this.category_id = category_id;
       try {
-        const response = await ItemsService.getItem(item_id, category_id);
+        const response = await ItemsService.getItem(item_id);
         this.item = response.data;
         console.log(this.item);
       } catch (error) {
@@ -287,7 +286,6 @@ export default {
 
         const response = await ItemsService.put(
           itemPayload,
-          this.category_id,
           this.item_id
         );
 
