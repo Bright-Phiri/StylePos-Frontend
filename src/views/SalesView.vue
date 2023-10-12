@@ -385,7 +385,7 @@ export default {
           quantity: this.item.quantity
         }
         this.loading = true
-        const response = await LineItemService.create(this.user.id, this.order_id, line_item_payload)
+        const response = await LineItemService.create(this.order_id, line_item_payload)
         if (response.status === 200) {
           const order = response.data
           this.setData(order)
@@ -404,7 +404,7 @@ export default {
           quantity: item.quantity
         }
         this.loading = true
-        const response = await LineItemService.update(this.user.id, this.order_id, line_item_payload, item.id)
+        const response = await LineItemService.update(line_item_payload, item.id)
         if (response.status === 200) {
           const order = response.data
           this.setData(order)
@@ -420,7 +420,7 @@ export default {
     async removeLineItem(line_item_id) {
       this.loading = true
       try {
-        const response = await LineItemService.delete(this.user.id, this.order_id, line_item_id)
+        const response = await LineItemService.delete(line_item_id)
         if (response.status === 200) {
           const order = response.data
           this.setData(order)
@@ -439,7 +439,7 @@ export default {
           discount: item.discount
         }
         this.loading = true
-        const response = await LineItemService.applyDiscount(this.user.id, this.order_id, line_item_payload, item.id)
+        const response = await LineItemService.applyDiscount(line_item_payload, item.id)
         if (response.status === 200) {
           const order = response.data
           this.setData(order)
