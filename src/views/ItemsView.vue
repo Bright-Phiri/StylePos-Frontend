@@ -232,9 +232,8 @@ export default {
           price: this.item.price,
           size: this.item.size,
           color: this.item.color,
-          category_id: this.item.category_id,
         };
-        const response = await ItemsService.create(itemPayload);
+        const response = await ItemsService.create(this.item.category_id, itemPayload);
         if (response.status === 201) {
           this.$swal("Information", "Item saved successfully", "success");
           this.$refs.addItemForm.reset();

@@ -4,8 +4,8 @@ export default {
     getData(page, perPage, search) {
         return Api().get('items', { params: { page: page, per_page: perPage, search: search } })
     },
-    create(item) {
-        return Api().post('items', item)
+    create(category_id,item) {
+        return Api().post(`categories/${category_id}/items`, item)
     },
     show(barcode) {
         return Api().get(`items/find_item/${barcode}`)
