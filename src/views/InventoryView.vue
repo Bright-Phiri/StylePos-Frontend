@@ -50,7 +50,7 @@
               @pagination="onPagination" :items="inventoryLevels" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditInventoryDialog(item.item_id, item.id)"
+                <v-icon small class="mr-0" v-on:click="showEditInventoryDialog(item.id)"
                   color="primary">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteInventory(item.id)">mdi-delete</v-icon>
@@ -123,11 +123,10 @@ export default {
       this.currentPage = Number(page.page);
       this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
     },
-    async showEditInventoryDialog(item_id, id) {
-      this.item_id = item_id
+    async showEditInventoryDialog(id) {
       this.inventoryLevelDialog = true
       try {
-        const response = await InventoryLevelService.show(item_id,null, id);
+        const response = await InventoryLevelService.show(id);
         this.inventoryLevel = response.data
       } catch (error) {
         this.handleError(error)
@@ -146,7 +145,7 @@ export default {
           reorder_level: this.inventoryLevel.reorder_level,
           supplier: this.inventoryLevel.supplier
         };
-        const response = await InventoryLevelService.put(inventoryLevelPayload, null,this.item_id, this.inventoryLevel.id);
+        const response = await InventoryLevelService.put(inventoryLevelPayload, this.inventoryLevel.id);
         if (response.status === 200) {
           await this.$swal('Information', 'Inventory Level successfully updated', 'success').then(() => {
             this.updateInventoryLoading = false;

@@ -103,7 +103,7 @@
                   color="primary">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="#2A9B90" v-on:click="
-                  showInventoryLevelDialog(item.id, item.category_id)
+                  showInventoryLevelDialog(item.id)
                   ">mdi-plus-box
                 </v-icon>
                 <v-icon small class="mr-0" color="blue darken-2"
@@ -352,9 +352,8 @@ export default {
         documentTitle: "Barcode", // Set the title of the print document
       });
     },
-    showInventoryLevelDialog(item_id, category_id) {
+    showInventoryLevelDialog(item_id) {
       this.item_id = item_id;
-      this.category_id = category_id;
       this.inventoryLevelDialog = true;
     },
     async addInventoryLevel() {
@@ -375,7 +374,6 @@ export default {
       try {
         const response = await InventoryLevelService.create(
           inventoryLevelPayload,
-          this.category_id,
           this.item_id
         );
         if (response.status === 201) {
