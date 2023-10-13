@@ -180,13 +180,7 @@ export default {
       },
       errors: [],
       headers: [
-        {
-          text: 'Id',
-          align: 'start',
-          sortable: false,
-          value: 'id',
-        },
-        { text: 'First Name', value: 'first_name' },
+        { text: 'First Name',  align: 'start', value: 'first_name' },
         { text: 'Last Name', value: 'last_name' },
         { text: 'Username', value: 'user_name' },
         { text: 'Email', value: 'email' },
