@@ -111,15 +111,25 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (
-    to.name !== "login" &&
-    to.name !== "signup" &&
-    to.name !== "forgot" &&
-    to.name !== "reset" &&
-    !store.state.isUserLoggedIn
-  )
-    next({ name: "login" });
-  else next();
+  if (to.name !== "login" && to.name !== "signup" && to.name !== "forgot" && to.name !== "reset") {
+    if (!store.state.isUserLoggedIn) {
+      // If the user is not logged in, redirect to the login page.
+      next({ name: "login" });
+    } else if (store.state.user.job_title === "Cashier" && to.name !== "sales") {
+      // If the user is a Cashier and is trying to access routes other than "sales," redirect them to the "sales" route.
+      next({ name: "sales" });
+    } else if (to.name === "sales" && store.state.user.job_title === "Store Manager") {
+      // If the user is a Store Manager and is trying to access the "sales" route, redirect them to the "dashboard" route.
+      next({ name: "dashboard" });
+    } else {
+      // For all other cases, allow the navigation.
+      next();
+    }
+  } else {
+    // Allow access to non-restricted routes.
+    next();
+  }
 });
+
 
 export default router;
