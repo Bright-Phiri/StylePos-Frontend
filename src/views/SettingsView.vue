@@ -118,34 +118,42 @@
                         Set VAT rate
                       </v-card-title>
                       <v-card-text>
-                        <v-form v-on:submit.prevent="setVAT">
+                        <v-form>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                v-model.trim="user.first_name"
+                                v-model.trim="configuration.vat_rate"
                                 label="VAT rate"
                                 dense
                                 prepend-icon="mdi-currency-sign"
                               ></v-text-field>
                             </v-col>
                           </v-row>
-                       
                           
                           <v-btn
                             class="text-capitalize"
                             elevation="2"
                             outlined
-                            v-on:click="cancelUserUpdate"
+                            v-on:click="cancelConfigUpdate"
                             >Cancel</v-btn
                           >
-                          <v-btn
-                            type="submit"
+                          <v-btn v-if="configurations.length == 0"
                             elevation="2"
+                            v-on:click="saveConfig"
                             color="#B55B68"
                             :loading="loading"
                             outlined
                             class="text-capitalize ml-2"
                             >Save</v-btn
+                          >
+                          <v-btn v-if="configurations.length > 0"
+                            elevation="2"
+                            v-on:click="updateConfig"
+                            color="#B55B68"
+                            :loading="loading"
+                            outlined
+                            class="text-capitalize ml-2"
+                            >Update</v-btn
                           >
                         </v-form>
                       </v-card-text>
@@ -229,7 +237,9 @@
 
 <script>
 import EmployeesService from "@/services/EmployeesService";
+import ConfigService from "@/services/ConfigurationService";
 import AuthService from "../services/AuthService";
+import ConfigurationService from "@/services/ConfigurationService";
 export default {
   name: "SettingsView",
   data() {
@@ -245,6 +255,11 @@ export default {
         password: null,
         password_confirmation: null,
       },
+      configuration: {
+        id: null,
+        vat_rate: null
+      },
+      configurations: [],
       errors: [],
     };
   },
@@ -254,13 +269,74 @@ export default {
     },
     cancelUserUpdate() {
       this.user.password = null;
-      this.fetchLoggedFromAPI();
+      this.fetchLoggedUserFromAPI();
     },
-    async fetchLoggedFromAPI() {
+    async fetchLoggedUserFromAPI() {
       try {
         const loggedUser = this.$store.state.user;
         const response = await EmployeesService.show(loggedUser.id);
         this.user = response.data;
+      } catch (error) {
+        this.handleError(error);
+      }
+    },
+    cancelConfigUpdate(){
+      this.configuration.vat_rate = null;
+      this.fetchConfigsFromAPI();
+    },
+    async saveConfig(){
+      if (!this.configuration.vat_rate){
+        this.$swal("Fields Validations", "Please enter all required fields", "warning")
+        return;
+      }
+      try {
+          let configurationPayload = {
+            vat_rate: this.configuration.vat_rate
+          };
+          const response = await ConfigurationService.create(
+            configurationPayload,
+          );
+          if (response.status === 201) {
+            this.loading = false;
+            this.$swal("Message", "Configurations set successfully", "success").then(() => {
+              this.fetchConfigsFromAPI();
+            });
+          }
+        } catch (error) {
+          this.loading = false;
+          this.handleError(error);
+        }
+    },
+    async updateConfig(){
+      if (!this.configuration.vat_rate){
+        this.$swal("Fields Validations", "Please enter all required fields", "warning")
+        return;
+      }
+      try {
+          let configurationPayload = {
+            vat_rate: this.configuration.vat_rate
+          };
+          const response = await ConfigurationService.put(
+            configurationPayload, this.configuration.id
+          );
+          if (response.status === 200) {
+            this.loading = false;
+            this.$swal("Message", "Configurations updated successfully", "success").then(() => {
+              this.fetchConfigsFromAPI();
+            });
+          }
+        } catch (error) {
+          this.loading = false;
+          this.handleError(error);
+        }
+    },
+    async fetchConfigsFromAPI() {
+      try {
+        const response = await ConfigService.getData();
+        this.configurations = response.data;
+        if (this.configurations && this.configurations.length > 0) {
+          this.configuration = this.configurations[0];
+        }
       } catch (error) {
         this.handleError(error);
       }
@@ -359,7 +435,8 @@ export default {
     },
   },
   mounted() {
-    this.fetchLoggedFromAPI();
+    this.fetchLoggedUserFromAPI();
+    this.fetchConfigsFromAPI();
   },
 };
 </script>

@@ -1,6 +1,9 @@
 import Api from "./api";
 
 export default {
+    getData() {
+        return Api().get('configurations')
+    },
     create(configuration) {
         return Api().post('configurations', configuration)
     },
