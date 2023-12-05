@@ -15,6 +15,10 @@
                     User Info
                   </v-tab>
                   <v-tab>
+                    <v-icon left> mdi-cogs </v-icon>
+                    VAT
+                  </v-tab>
+                  <v-tab>
                     <v-icon left> mdi-lock </v-icon>
                     Security
                   </v-tab>
@@ -88,6 +92,45 @@
                               ></v-text-field>
                             </v-col>
                           </v-row>
+                          <v-btn
+                            class="text-capitalize"
+                            elevation="2"
+                            outlined
+                            v-on:click="cancelUserUpdate"
+                            >Cancel</v-btn
+                          >
+                          <v-btn
+                            type="submit"
+                            elevation="2"
+                            color="#B55B68"
+                            :loading="loading"
+                            outlined
+                            class="text-capitalize ml-2"
+                            >Save</v-btn
+                          >
+                        </v-form>
+                      </v-card-text>
+                    </v-card>
+                  </v-tab-item>
+                  <v-tab-item>
+                    <v-card flat>
+                      <v-card-title class="font-weight-light">
+                        Set VAT rate
+                      </v-card-title>
+                      <v-card-text>
+                        <v-form v-on:submit.prevent="setVAT">
+                          <v-row dense>
+                            <v-col cols="12" xl="5" lg="6" sm="7" md="7">
+                              <v-text-field
+                                v-model.trim="user.first_name"
+                                label="VAT rate"
+                                dense
+                                prepend-icon="mdi-currency-sign"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                       
+                          
                           <v-btn
                             class="text-capitalize"
                             elevation="2"
