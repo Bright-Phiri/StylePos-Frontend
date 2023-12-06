@@ -1,17 +1,17 @@
-'use strict'
+'use strict';
 
-import { app, protocol, BrowserWindow } from 'electron'
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-const isDevelopment = process.env.NODE_ENV !== 'production'
+import { app, protocol, BrowserWindow } from 'electron';
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
+import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import { autoUpdater } from 'electron-updater';
 
-// Scheme must be registered before the app is ready
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
-])
+]);
 
 async function createWindow() {
-  // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -19,66 +19,92 @@ async function createWindow() {
     icon: '../public/logo.ico',
     title: 'Style POS',
     webPreferences: {
-      
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
-  })
+  });
 
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+  if (isDevelopment) {
+    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+    if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
-    createProtocol('app')
-    // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    createProtocol('app');
+    win.loadURL('app://./index.html');
   }
 }
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
-})
+});
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) createWindow()
-})
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+});
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
     try {
-      await installExtension(VUEJS_DEVTOOLS)
+      await installExtension(VUEJS_DEVTOOLS);
     } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString())
+      console.error('Vue Devtools failed to install:', e.toString());
     }
   }
-  createWindow()
-})
 
-// Exit cleanly on request from parent process in development mode.
+  // Configure auto-updater to check for updates from GitHub
+  autoUpdater.setFeedURL({
+    provider: 'github',
+    owner: 'Bright-Phiri',
+    repo: 'StylePos-Frontend',
+    releaseType: 'release'
+  });
+
+  // Check for updates
+  if (!isDevelopment) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+
+  createWindow();
+});
+
 if (isDevelopment) {
   if (process.platform === 'win32') {
     process.on('message', (data) => {
       if (data === 'graceful-exit') {
-        app.quit()
+        app.quit();
       }
-    })
+    });
   } else {
     process.on('SIGTERM', () => {
-      app.quit()
-    })
+      app.quit();
+    });
   }
 }
+
+// Listen for update events
+autoUpdater.on('checking-for-update', () => {
+  console.log('Checking for update...');
+});
+
+autoUpdater.on('update-available', (info) => {
+  console.log('Update available:', info);
+});
+
+autoUpdater.on('update-not-available', () => {
+  console.log('Update not available.');
+});
+
+autoUpdater.on('error', (err) => {
+  console.error('Error in auto-updater:', err);
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  console.log('Download progress:', progressObj);
+});
+
+autoUpdater.on('update-downloaded', () => {
+  console.log('Update downloaded; will install now');
+  // Quit and install the update
+  autoUpdater.quitAndInstall();
+});
