@@ -1,6 +1,8 @@
 {
-  "name": "inbox",
-  "version": "0.1.0",
+  "name": "stylepos",
+  "version": "1.0.0",
+  "description": "Clothing Retail Point of Sale System",
+  "author": "Bright",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -20,6 +22,7 @@
     "core-js": "^3.8.3",
     "jsbarcode": "^3.11.5",
     "print-js": "^1.6.0",
+    "terser-webpack-plugin": "^5.3.9",
     "vue": "^2.6.14",
     "vue-apexcharts": "^1.6.2",
     "vue-axios": "^3.5.2",

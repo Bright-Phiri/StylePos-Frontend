@@ -43,7 +43,7 @@
                   <v-icon x-small color="black">mdi-greater-than</v-icon>
                 </v-card-title>
                 <v-card-text class="d-flex flex-column">
-                  <h2 class="font-weight-regular">Daily Transactions</h2>
+                  <h2 class="font-weight-regular">Daily Sales</h2>
                   <h2 class="mt-2"><animated-number :value="orders_count" :formatValue="formatValue" :duration="900" />
                   </h2>
                 </v-card-text>
