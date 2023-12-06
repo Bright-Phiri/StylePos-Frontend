@@ -48,7 +48,7 @@ app.on('ready', async () => {
     try {
       await installExtension(VUEJS_DEVTOOLS);
     } catch (e) {
-      console.error('Vue Devtools failed to install:', e.toString());
+      alert('Vue Devtools failed to install: ' + e.toString());
     }
   }
 
@@ -84,27 +84,27 @@ if (isDevelopment) {
 
 // Listen for update events
 autoUpdater.on('checking-for-update', () => {
-  console.log('Checking for update...');
+  alert('Checking for update...');
 });
 
 autoUpdater.on('update-available', (info) => {
-  console.log('Update available:', info);
+  alert('Update available: ' + JSON.stringify(info));
 });
 
 autoUpdater.on('update-not-available', () => {
-  console.log('Update not available.');
+  alert('Update not available.');
 });
 
 autoUpdater.on('error', (err) => {
-  console.error('Error in auto-updater:', err);
+  alert('Error in auto-updater: ' + err.toString());
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
-  console.log('Download progress:', progressObj);
+  alert('Download progress: ' + JSON.stringify(progressObj));
 });
 
 autoUpdater.on('update-downloaded', () => {
-  console.log('Update downloaded; will install now');
+  alert('Update downloaded; will install now');
   // Quit and install the update
   autoUpdater.quitAndInstall();
 });
