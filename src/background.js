@@ -1,6 +1,6 @@
 'use strict';
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, dialog } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { autoUpdater } from 'electron-updater';
@@ -48,7 +48,11 @@ app.on('ready', async () => {
     try {
       await installExtension(VUEJS_DEVTOOLS);
     } catch (e) {
-      alert('Vue Devtools failed to install: ' + e.toString());
+      dialog.showMessageBox({
+        type: 'error',
+        message: 'Vue Devtools failed to install: ' + e.toString(),
+        buttons: []
+      });
     }
   }
 
@@ -84,27 +88,51 @@ if (isDevelopment) {
 
 // Listen for update events
 autoUpdater.on('checking-for-update', () => {
-  alert('Checking for update...');
+  dialog.showMessageBox({
+    type: 'info',
+    message: 'Checking for update...',
+    buttons: []
+  });
 });
 
 autoUpdater.on('update-available', (info) => {
-  alert('Update available: ' + JSON.stringify(info));
+  dialog.showMessageBox({
+    type: 'info',
+    message: 'Update available: ' + JSON.stringify(info),
+    buttons: []
+  });
 });
 
 autoUpdater.on('update-not-available', () => {
-  alert('Update not available.');
+  dialog.showMessageBox({
+    type: 'info',
+    message: 'Update not available.',
+    buttons: []
+  });
 });
 
 autoUpdater.on('error', (err) => {
-  alert('Error in auto-updater: ' + err.toString());
+  dialog.showMessageBox({
+    type: 'error',
+    message: 'Error in auto-updater: ' + err.toString(),
+    buttons: []
+  });
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
-  alert('Download progress: ' + JSON.stringify(progressObj));
+  dialog.showMessageBox({
+    type: 'info',
+    message: 'Download progress: ' + JSON.stringify(progressObj),
+    buttons: []
+  });
 });
 
 autoUpdater.on('update-downloaded', () => {
-  alert('Update downloaded; will install now');
+  dialog.showMessageBox({
+    type: 'info',
+    message: 'Update downloaded; will install now',
+    buttons: []
+  });
   // Quit and install the update
   autoUpdater.quitAndInstall();
 });
