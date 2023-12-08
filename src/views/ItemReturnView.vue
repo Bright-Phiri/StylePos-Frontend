@@ -58,7 +58,7 @@
 <script>
 import OrdersService from '../services/OrdersService'
 export default {
-  name: "OrderSummaryView",
+  name: "ItemReturnView",
   data() {
     return {
       loading: false,

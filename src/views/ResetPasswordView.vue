@@ -34,7 +34,7 @@
 <script>
 import AuthService from '../services/AuthService'
 export default {
-  name: 'ResetPassword',
+  name: 'ResetPasswordView',
   data() {
     return {
       loading: false,

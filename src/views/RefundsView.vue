@@ -27,7 +27,7 @@
 <script>
 import OrdersService from '../services/OrdersService'
 export default {
-  name: "ItemsView",
+  name: "RefundsView",
   data() {
     return {
       dialog: false,

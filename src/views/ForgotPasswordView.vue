@@ -29,7 +29,7 @@
 <script>
 import AuthService from '../services/AuthService'
 export default {
-  name: 'FogotPassword',
+  name: 'FogotPasswordView',
   data() {
     return {
       loading: false,

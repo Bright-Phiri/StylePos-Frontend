@@ -157,7 +157,7 @@
 <script>
 import EmployeesService from '@/services/EmployeesService';
 export default {
-  name: "ItemsView",
+  name: "EmployeesView",
   data() {
     return {
       dialog: false,

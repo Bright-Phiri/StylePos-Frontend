@@ -39,7 +39,7 @@
 <script>
 import AuthService from '../services/AuthService'
 export default {
-  name: 'SignUp',
+  name: 'SignUpView',
   data() {
     return {
       loading: false,

@@ -37,7 +37,7 @@
 <script>
 import OrdersService from '../services/OrdersService'
 export default {
-  name: "ItemsView",
+  name: "OrdersView",
   data() {
     return {
       searchTimeout: null, // Initialize searchTimeout variable as null
