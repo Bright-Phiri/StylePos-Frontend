@@ -31,7 +31,7 @@
             <h1 class="font-weight-regular">Inventory Levels</h1>
           </div>
           <div class="d-flex justify-end">
-            <v-btn class="ma-2 text-capitalize font-weight-regular" plain color="#B55B68">
+            <v-btn class="ma-2 text-capitalize font-weight-regular" v-on:click="exportToPdf" plain color="#B55B68">
               <v-icon left dark color="#B55B68">
                 mdi-file-export-outline
               </v-icon>
@@ -45,7 +45,7 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading" loading-text="Loading Inventory Levels... Please wait"
+            <v-data-table :loading="loading" v-model="selected" loading-text="Loading Inventory Levels... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="inventoryLevels" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
@@ -64,13 +64,17 @@
 </template>
 <script>
 import InventoryLevelService from '@/services/InventoryLevelService';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 export default {
   name: "InventoryView",
   data() {
     return {
+      heading: 'Inventory Levels',
       dialog: false,
       loading: false,
       inventoryLevels: [],
+      selected: [],
       item_id: null,
       updateInventoryLoading: false,
       total: 0,
@@ -171,7 +175,38 @@ export default {
       } catch (error) {
         this.handleError(error)
       }
-    }
+    }, 
+    exportToPdf() {
+      let items = [];
+      if (this.inventoryLevels.length == 0) {
+        this.$swal("Infor", "Records not found", "info");
+      } else {
+        if (this.selected.length == 0) {
+          items = this.inventoryLevels
+        } else {
+          items = this.selected
+        }
+        const columns = [
+          { title: "Item Name", dataKey: "item" },
+          { title: "Quantity", dataKey: "quantity" },
+          { title: "Re-order Level", dataKey: "reorder_level" },
+          { title: "Supplier", dataKey: "supplier" }
+        ];
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "in",
+          format: "letter"
+        });
+        // Using autoTable plugin
+        doc.autoTable({
+          columns,
+          body: items,
+          //margin: { left: 0.5, top: 1.25 }
+        });
+        // Creating footer and saving file
+        doc.save(`${this.heading}.pdf`);
+      }
+    },
   },
   mounted() {
     this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
