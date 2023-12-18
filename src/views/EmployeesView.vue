@@ -108,7 +108,7 @@
             </v-btn>
           </div>
           <div class="d-flex justify-end">
-            <v-btn class="ma-2 text-capitalize font-weight-regular" plain color="#B55B68">
+            <v-btn class="ma-2 text-capitalize font-weight-regular" v-on:click="exportToPdf" plain color="#B55B68">
               <v-icon left dark color="#B55B68">
                 mdi-file-export-outline
               </v-icon>
@@ -122,7 +122,7 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading" loading-text="Loading Items... Please wait"
+            <v-data-table :loading="loading" v-model="selected" loading-text="Loading Items... Please wait"
               :headers="headers" :items="employees" :items-per-page="6" show-select :search="search"
               :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
@@ -156,6 +156,8 @@
 
 <script>
 import EmployeesService from '@/services/EmployeesService';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 export default {
   name: "EmployeesView",
   data() {
@@ -163,9 +165,11 @@ export default {
       dialog: false,
       editDialog: false,
       loading: false,
+      heading: 'Users',
       saveEmployeeLoading: false,
       search: '',
       employees: [],
+      selected: [],
       employee_id: null,
       job_titles: ['Cashier', 'Store Manager'],
       employee: {
@@ -314,6 +318,39 @@ export default {
         }
       } catch (error) {
         this.handleError(error)
+      }
+    },
+    exportToPdf() {
+      let items = [];
+      if (this.employees.length == 0) {
+        this.$swal("Infor", "Records not found", "info");
+      } else {
+        if (this.selected.length == 0) {
+          items = this.employees
+        } else {
+          items = this.selected
+        }
+        const columns = [
+          { title: "First Name", dataKey: "first_name" },
+          { title: "Last Name", dataKey: "last_name" },
+          { title: "Username", dataKey: "user_name" },
+          { title: "Phone Number", dataKey: "phone_number" },
+          { title: "Role", dataKey: "job_title" },
+          { title: "Status", dataKey: "status" },
+        ];
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "in",
+          format: "letter"
+        });
+        // Using autoTable plugin
+        doc.autoTable({
+          columns,
+          body: items,
+          //margin: { left: 0.5, top: 1.25 }
+        });
+        // Creating footer and saving file
+        doc.save(`${this.heading}.pdf`);
       }
     },
   },
