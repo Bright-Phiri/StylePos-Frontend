@@ -53,7 +53,7 @@
           <div class="d-flex justify-end">
             <v-btn class="ma-2 text-capitalize font-weight-regular" v-on:click="exportToPdf" plain color="#B55B68">
               <v-icon left dark color="#B55B68">
-                mdi-file-export-outline
+                mdi-file-export-outline 
               </v-icon>
               Export all
             </v-btn>
