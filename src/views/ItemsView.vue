@@ -167,20 +167,15 @@ export default {
       },
       errors: [],
       headers: [
-        {
-          text: "Id",
-          align: "start",
-          sortable: false,
-          value: "id",
-        },
-        { text: "Barcode", value: "barcode" },
+        
+        { text: "Barcode", align: "start", sortable: false, value: "barcode" },
         { text: "Name", value: "name" },
         { text: "Pre VAT Price", value: "price" },
         { text: "Seling Price", value: "selling_price" },
         { text: "Size", value: "size" },
         { text: "Color", value: "color" },
         { text: "Stock Level", value: "stock_level" },
-        { text: "Inventory Level", value: "inventory_level" },
+        { text: "Inventory", value: "inventory_level" },
         { text: "Action", value: "action" },
       ],
     };

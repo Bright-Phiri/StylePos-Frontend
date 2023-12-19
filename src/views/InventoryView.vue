@@ -95,7 +95,7 @@ export default {
           sortable: false,
           value: 'id',
         },
-        { text: 'Item', value: 'item' },
+        { text: 'Item Name', value: 'item' },
         { text: 'Quantity', value: 'quantity' },
         { text: 'Re-order Level', value: 'reorder_level' },
         { text: 'Supplier', value: 'supplier' },

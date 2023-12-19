@@ -28,6 +28,7 @@
                 {{ formartValue(item.total) }}
               </template>
             </v-data-table>
+            <strong class="font-weight-regular ml-3" v-if="orders.length > 0">Total Sales (MWK): {{ formattedTotalSales }}</strong>
           </v-card>
         </v-col>
       </v-row>
@@ -68,6 +69,15 @@ export default {
         { text: 'Action', value: 'action' },
       ],
     }
+  },
+  computed: {
+    formattedTotalSales() {
+      // Summing up the 'total' property from each order
+      const totalSales = this.orders.reduce((total, order) => total + parseFloat(order.total || 0), 0);
+      
+      // Formatting the total sales value
+      return this.formartValue(totalSales);
+    },
   },
   methods: {
     filterTransactions(){

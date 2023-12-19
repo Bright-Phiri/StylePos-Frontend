@@ -49,6 +49,7 @@
                 {{ formartValue(item.vat) }}
               </template>
             </v-data-table>
+            <strong class="font-weight-regular ml-3" v-if="line_items.length > 0">Grand Total(MWK): {{ formattedTotalSales }}</strong>
           </v-card>
         </v-col>
       </v-row>
@@ -90,7 +91,14 @@ export default {
   computed: {
     order_ID() {
       return this.$store.state.order_ID !== null ? this.$store.state.order_ID : 0;
-    }
+    },
+    formattedTotalSales() {
+      // Summing up the 'total' property from each order
+      const totalSales = this.line_items.reduce((total, line_items) => total + parseFloat(line_items.total || 0), 0);
+      
+      // Formatting the total sales value
+      return this.formartValue(totalSales);
+    },
   },
   methods: {
     async fetchDataFromAPI(order_id) {
