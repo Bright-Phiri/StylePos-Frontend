@@ -146,17 +146,6 @@
                   {{item.status === 'active' ? "Active":"Inactive"}}
                 </v-chip>
               </template>
-              <template  v-slot:[`item.avatar`]="{ item }">
-                <div class="d-flex align-center">
-                  <v-avatar size="28" class="my-2">
-                  <v-img :src="item.avatar"></v-img>
-                  </v-avatar>
-                  <div class="d-flex flex-column ms-2">
-                  <a class="text-decoration-none font-weight-normal text-capitalize">{{item.username}}</a>
-                   <small>@{{item.user_name}}</small>
-                  </div>
-                </div>
-              </template>
             </v-data-table>
           </v-card>
         </v-col>
@@ -195,11 +184,6 @@ export default {
       },
       errors: [],
       headers: [
-        { 
-          text: "User", 
-          value: "avatar",
-          sortable: false 
-        },
         { text: 'First Name',  align: 'start', value: 'first_name' },
         { text: 'Last Name', value: 'last_name' },
         { text: 'Username', value: 'user_name' },
