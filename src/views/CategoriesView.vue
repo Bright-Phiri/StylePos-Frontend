@@ -51,9 +51,9 @@
             </v-btn>
           </div>
           <div class="d-flex justify-end">
-            <v-btn class="ma-2 text-capitalize font-weight-regular" plain color="#B55B68">
+            <v-btn class="ma-2 text-capitalize font-weight-regular" v-on:click="exportToPdf" plain color="#B55B68">
               <v-icon left dark color="#B55B68">
-                mdi-file-export-outline
+                mdi-file-export-outline 
               </v-icon>
               Export all
             </v-btn>
@@ -65,7 +65,7 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading" loading-text="Loading Categories... Please wait"
+            <v-data-table :loading="loading" v-model="selected" loading-text="Loading Categories... Please wait"
               :headers="headers" :items-per-page="itemsPerPage"
               :items="categories" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
@@ -88,10 +88,13 @@
 </template>
 <script>
 import CategoryService from '../services/CategoryService'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 export default {
   name: "CategoriesView",
   data() {
     return {
+      heading: 'Categories',
       dialog: false,
       editdialog: false,
       searchTimeout: null, // Initialize searchTimeout variable as null
@@ -101,6 +104,7 @@ export default {
       itemsPerPage: 7,
       search: '',
       categories: [],
+      selected: [],
       category_id: null,
       category: {
         name: null,
@@ -214,6 +218,36 @@ export default {
       }
       catch (error) {
         this.handleError(error)
+      }
+    },
+    exportToPdf() {
+      let items = [];
+      if (this.categories.length == 0) {
+        this.$swal("Infor", "Records not found", "info");
+      } else {
+        if (this.selected.length == 0) {
+          items = this.categories
+        } else {
+          items = this.selected
+        }
+        const columns = [
+          { title: "Name", dataKey: "name" },
+          { title: "Description", dataKey: "description" },
+          { title: "Items Count", dataKey: "items_count" },
+        ];
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "in",
+          format: "letter"
+        });
+        // Using autoTable plugin
+        doc.autoTable({
+          columns,
+          body: items,
+          //margin: { left: 0.5, top: 1.25 }
+        });
+        // Creating footer and saving file
+        doc.save(`${this.heading}.pdf`);
       }
     },
   },

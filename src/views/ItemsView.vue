@@ -80,7 +80,7 @@
             </v-btn>
           </div>
           <div class="d-flex justify-end">
-            <v-btn class="ma-2 text-capitalize font-weight-regular" plain color="#B55B68">
+            <v-btn class="ma-2 text-capitalize font-weight-regular" v-on:click="exportToPdf" plain color="#B55B68">
               <v-icon left dark color="#B55B68">
                 mdi-file-export-outline
               </v-icon>
@@ -94,7 +94,7 @@
           </div>
 
           <v-card>
-            <v-data-table :loading="loading" loading-text="Loading Items... Please wait"
+            <v-data-table :loading="loading" v-model="selected" loading-text="Loading Items... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
@@ -129,10 +129,14 @@ import InventoryLevelService from "../services/InventoryLevelService";
 import CategoryService from "../services/CategoryService";
 import JsBarcode from "jsbarcode";
 import printJS from "print-js";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 export default {
   name: "ItemsView",
   data() {
     return {
+      heading: 'Items',
+      selected: [],
       dialog: false,
       editdialog: false,
       searchTimeout: null, // Initialize searchTimeout variable as null
@@ -411,6 +415,41 @@ export default {
       } catch (error) {
         this.loading = false;
         this.handleError(error);
+      }
+    },
+    exportToPdf() {
+      let items = [];
+      if (this.items.length == 0) {
+        this.$swal("Infor", "Records not found", "info");
+      } else {
+        if (this.selected.length == 0) {
+          items = this.items
+        } else {
+          items = this.selected
+        }
+        const columns = [
+          { title: "Barcode", dataKey: "barcode" },
+          { title: "Name", dataKey: "name" },
+          { title: "Pre VAT price", dataKey: "price" },
+          { title: "Selling Price", dataKey: "selling_price" },
+          { title: "Size", dataKey: "size" },
+          { title: "Color", dataKey: "color" },
+          { title: "Stock Level", dataKey: "stock_level" },
+          { title: "Inventory Level", dataKey: "inventory_level" },
+        ];
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "in",
+          format: "letter"
+        });
+        // Using autoTable plugin
+        doc.autoTable({
+          columns,
+          body: items,
+          //margin: { left: 0.5, top: 1.25 }
+        });
+        // Creating footer and saving file
+        doc.save(`${this.heading}.pdf`);
       }
     },
   },
