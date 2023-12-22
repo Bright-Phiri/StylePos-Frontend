@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default function () {
   const instance = axios.create({
-    baseURL: "https://clothingretailapi-01cbc9688440.herokuapp.com/api/v1/",
+    baseURL: "http://127.0.0.1:3000/api/v1/",
   });
 
   instance.interceptors.request.use((config) => {

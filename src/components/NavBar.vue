@@ -5,7 +5,7 @@
 
         <v-sheet color="#FFFFFF" class="pa-4">
           <div class="d-flex justify-space-between">
-            <v-avatar tile width="560" height="57" class="mr-11">
+            <v-avatar tile width="100%" class="mr-11">
               <v-img src="../assets/icon1.png"></v-img>
             </v-avatar>
             <v-btn icon large @click.stop="mini = !mini" class="d-none d-xl-flex d-none d-lg-flex d-xl-none">

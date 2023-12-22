@@ -5,37 +5,37 @@
         <v-col cols="12" lg="8">
           <v-row>
             <v-col cols="12" lg="4" sm="6" md="4">
-              <v-card color="#B55B52" height="180px" style="border-radius: 10px;" class="elevation-0 pa-5">
+              <v-card color="#B55B52" style="border-radius: 10px;" class="elevation-0 pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#BE6F67" size="64">
                     <v-icon large color="white">mdi-cart</v-icon>
                   </v-avatar>
                   <v-icon x-small color="white">mdi-greater-than</v-icon>
                 </v-card-title>
-                <v-card-text class="d-flex flex-column">
-                  <h2 class="font-weight-regular heading-color">Total sales</h2>
-                  <h2 class="heading-color mt-2"><animated-number :value="total_sales" :formatValue="formatAmount"
-                      :duration="1200" /></h2>
+                <v-card-text class="d-flex flex-column flex-grow">
+                  <h4 class="font-weight-regular heading-color">Total sales</h4>
+                  <h4 class="heading-color mt-2"><animated-number :value="total_sales" :formatValue="formatAmount"
+                      :duration="1200" /></h4>
                 </v-card-text>
               </v-card>
             </v-col>
             <v-col cols="12" lg="4" sm="6" md="4">
-              <v-card height="180px" class="elevation-0 my-card pa-5">
+              <v-card class="elevation-0 my-card pa-5" style="border-radius: 10px;">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
                     <v-icon large color="#B55B52">mdi-cart</v-icon>
                   </v-avatar>
                   <v-icon x-small color="black">mdi-greater-than</v-icon>
                 </v-card-title>
-                <v-card-text class="d-flex flex-column">
-                  <h2 class="font-weight-regular">Daily total sales</h2>
-                  <h2 class="mt-2"><animated-number :value="daily_total_sales" :formatValue="formatAmount"
-                      :duration="1500" /></h2>
+                <v-card-text class="d-flex flex-column flex-grow">
+                  <h4 class="font-weight-regular">Daily total sales</h4>
+                  <h4 class="mt-2"><animated-number :value="daily_total_sales" :formatValue="formatAmount"
+                      :duration="1500" /></h4>
                 </v-card-text>
               </v-card>
             </v-col>
             <v-col cols="12" lg="4" sm="12" md="4">
-              <v-card color="white" height="180px" style="border-radius: 10px;" class="elevation-1 pa-5">
+              <v-card color="white" style="border-radius: 10px;" class="elevation-1 pa-5">
                 <v-card-title class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
                     <v-icon large color="#B55B52">mdi-cash-multiple</v-icon>
@@ -43,9 +43,9 @@
                   <v-icon x-small color="black">mdi-greater-than</v-icon>
                 </v-card-title>
                 <v-card-text class="d-flex flex-column">
-                  <h2 class="font-weight-regular">Daily Sales</h2>
-                  <h2 class="mt-2"><animated-number :value="orders_count" :formatValue="formatValue" :duration="900" />
-                  </h2>
+                  <h4 class="font-weight-regular">Daily Sales</h4>
+                  <h4 class="mt-2"><animated-number :value="orders_count" :formatValue="formatValue" :duration="900" />
+                  </h4>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -54,7 +54,7 @@
             <v-col cols="12" lg="12" xl="12" sm="12" md="12">
               <v-card color="#ffffff" style="border-radius: 10px;" class="elevation-0">
                 <v-card-title>
-                  <h4 class="ml-7">Transaction Statistics</h4>
+                  <h4 class="ml-7 text-subtitle-1 font-weight-regular">Transaction Statistics</h4>
                 </v-card-title>
                 <v-card-text>
                   <div class="justify-center">
@@ -69,14 +69,14 @@
         <v-col cols="12" lg="4">
           <div class="side-content">
             <v-card color="#ffffff" style="border-radius: 10px;" class="elevation-0">
-              <v-card-title>Sales Overview</v-card-title>
+              <v-card-title class="text-subtitle-1 font-weight-regular">Sales Overview</v-card-title>
               <v-card-text class="d-flex justify-center">
                 <apexchart v-if="series && series.length" width="350" type="donut" :options="options" :series="series">
                 </apexchart>
               </v-card-text>
             </v-card>
             <v-card color="#ffffff" style="border-radius: 10px;" class="mt-0 elevation-0">
-              <v-card-title>Inventory Levels</v-card-title>
+              <v-card-title class="text-subtitle-1 font-weight-regular">Inventory Levels</v-card-title>
               <v-card-text>
                 <v-alert border="left" colored-border color="green" elevation="1">
                   <v-row>

@@ -5,7 +5,12 @@ export default {
         this.$swal("Error", error.message + ", Couldn't reach API", "error");
       } else {
         if (error.response.status === 400) {
-          this.$swal("Error", error.response.data.error, "error");
+          if (error.response.data.error) {
+            this.$swal("Error", error.response.data.error, "error");
+          } else{
+            this.$swal("Error", error.response.data.message, "error");
+          }
+          
         } else if (error.response.status === 401) {
           if (error.response.data.status && error.response.data.status === "login"){
             this.$router.push({ path: '/logout' });
