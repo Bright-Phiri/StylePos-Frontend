@@ -6,47 +6,47 @@
           <v-row>
             <v-col cols="12" lg="4" sm="6" md="4">
               <v-card color="#B55B52" style="border-radius: 10px;" class="elevation-0 pa-5">
-                <v-card-title class="d-flex justify-space-between">
+                <div class="d-flex justify-space-between mt-0">
                   <v-avatar style="border-radius: 13%;" color="#BE6F67" size="64">
                     <v-icon large color="white">mdi-cart</v-icon>
                   </v-avatar>
                   <v-icon x-small color="white">mdi-greater-than</v-icon>
-                </v-card-title>
-                <v-card-text class="d-flex flex-column flex-grow">
-                  <h4 class="font-weight-regular heading-color">Total sales</h4>
-                  <h4 class="heading-color mt-2"><animated-number :value="total_sales" :formatValue="formatAmount"
-                      :duration="1200" /></h4>
-                </v-card-text>
+                </div>
+                <div class="d-flex flex-column flex-grow">
+                  <p class="text-sm mt-1 heading-color">Total sales</p>
+                  <span class="heading-color font-weight-bold"><animated-number :value="total_sales" :formatValue="formatAmount"
+                      :duration="1200" /></span>
+                  </div>
               </v-card>
             </v-col>
             <v-col cols="12" lg="4" sm="6" md="4">
               <v-card class="elevation-0 my-card pa-5" style="border-radius: 10px;">
-                <v-card-title class="d-flex justify-space-between">
+                <div class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
                     <v-icon large color="#B55B52">mdi-cart</v-icon>
                   </v-avatar>
                   <v-icon x-small color="black">mdi-greater-than</v-icon>
-                </v-card-title>
-                <v-card-text class="d-flex flex-column flex-grow">
-                  <h4 class="font-weight-regular">Daily total sales</h4>
-                  <h4 class="mt-2"><animated-number :value="daily_total_sales" :formatValue="formatAmount"
-                      :duration="1500" /></h4>
-                </v-card-text>
+                </div>
+                <div class="d-flex flex-column flex-grow">
+                  <p class="text-sm mt-1">Daily total sales</p>
+                  <span class="font-weight-bold"><animated-number :value="daily_total_sales" :formatValue="formatAmount"
+                      :duration="1500" /></span>
+                </div>
               </v-card>
             </v-col>
             <v-col cols="12" lg="4" sm="12" md="4">
               <v-card color="white" style="border-radius: 10px;" class="elevation-1 pa-5">
-                <v-card-title class="d-flex justify-space-between">
+                <div class="d-flex justify-space-between">
                   <v-avatar style="border-radius: 13%;" color="#F4E7E5" size="64">
                     <v-icon large color="#B55B52">mdi-cash-multiple</v-icon>
                   </v-avatar>
                   <v-icon x-small color="black">mdi-greater-than</v-icon>
-                </v-card-title>
-                <v-card-text class="d-flex flex-column">
-                  <h4 class="font-weight-regular">Daily Sales</h4>
-                  <h4 class="mt-2"><animated-number :value="orders_count" :formatValue="formatValue" :duration="900" />
-                  </h4>
-                </v-card-text>
+                </div>
+                <div class="d-flex flex-column">
+                  <p class="text-sm mt-1">Daily Sales</p>
+                  <span class="font-weight-bold"><animated-number :value="orders_count" :formatValue="formatValue" :duration="900" />
+                  </span>
+                </div>
               </v-card>
             </v-col>
           </v-row>
