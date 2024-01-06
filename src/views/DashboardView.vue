@@ -1,6 +1,6 @@
 <template>
   <div class="DashboardView">
-    <v-container class="py-8 px-6" fluid>
+    <v-container class="py-4 px-1" fluid>
       <v-row>
         <v-col cols="12" lg="8">
           <v-row>

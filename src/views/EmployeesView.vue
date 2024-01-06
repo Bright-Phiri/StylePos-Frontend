@@ -1,6 +1,6 @@
 <template>
   <div class="ItemsView">
-    <v-container class="py-8 px-6" fluid>
+   
       <v-row>
         <v-col cols="12">
           <v-dialog max-width="800" v-model="dialog" persistent transition="fab-transition">
@@ -150,7 +150,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
+   
   </div>
 </template>
 
