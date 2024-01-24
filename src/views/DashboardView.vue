@@ -257,6 +257,7 @@ export default {
     },
   },
   mounted() {
+    this.$cable.connection.connect(`ws://localhost:3000/cable?token=${this.$store.state.token}`);
     this.$cable.subscribe({ channel: "DashboardChannel" });
   }
 };

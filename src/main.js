@@ -22,7 +22,7 @@ Vue.use(ActionCableVue, {
   debug: true,
   debugLevel: "error",
   connectionUrl: "ws://localhost:3000/cable",
-  connectImmediately: true,
+  connectImmediately: false,
 });
 
 Vue.component("apexchart", VueApexCharts);
