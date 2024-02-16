@@ -361,7 +361,7 @@ export default {
         const response = await ItemsService.show(this.item.barcode)
         const transformedData = {
           ...response.data,
-          price: this.formartValue(response.data.price),
+          price: this.formartValue(response.data.selling_price),
         }
         this.item = transformedData
       }

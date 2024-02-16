@@ -3,7 +3,7 @@
     <v-container class="py-4 px-1" fluid>
       <v-row>
         <v-col cols="12">
-          <v-dialog max-width="570" v-model="dialog" persistent transition="fab-transition">
+          <v-dialog max-width="580" v-model="dialog" persistent transition="fab-transition">
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Add New Item
@@ -12,7 +12,8 @@
               <v-card-text>
                 <v-form ref="addItemForm">
                   <v-text-field v-model="item.name" label="Name"></v-text-field>
-                  <v-text-field v-model="item.price" label="Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.price" label="Cost Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.selling_price" label="Selling Price (MWK)"></v-text-field>
                   <v-text-field v-model="item.size" label="Size"></v-text-field>
                   <v-text-field v-model="item.color" label="Color"></v-text-field>
                   <v-autocomplete label="Category" :items="categories" v-model="item.category_id" item-text="name"
@@ -27,7 +28,7 @@
             </v-card>
           </v-dialog>
 
-          <v-dialog max-width="570" v-model="editdialog" persistent transition="fab-transition">
+          <v-dialog max-width="580" v-model="editdialog" persistent transition="fab-transition">
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Edit Item
@@ -36,7 +37,8 @@
               <v-card-text>
                 <v-form ref="editItemForm">
                   <v-text-field v-model="item.name" label="Name"></v-text-field>
-                  <v-text-field v-model="item.price" label="Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.price" label="Cost Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.selling_price" label="Selling Price (MWK)"></v-text-field>
                   <v-text-field v-model="item.size" label="Size"></v-text-field>
                   <v-text-field v-model="item.color" label="Color"></v-text-field>
                 </v-form>
@@ -155,6 +157,7 @@ export default {
       item: {
         name: null,
         price: null,
+        selling_price: null,
         size: null,
         color: null,
         category_id: null,
@@ -170,7 +173,7 @@ export default {
         
         { text: "Barcode", align: "start", sortable: false, value: "barcode" },
         { text: "Name", value: "name" },
-        { text: "Pre VAT Price", value: "price" },
+        { text: "Cost Price", value: "price" },
         { text: "Seling Price", value: "selling_price" },
         { text: "Size", value: "size" },
         { text: "Color", value: "color" },
@@ -213,7 +216,7 @@ export default {
       }
     },
     async saveItem() {
-      const requiredFields = ["name", "price", "size", "color", "category_id"];
+      const requiredFields = ["name", "price","selling_price", "size", "color", "category_id"];
 
       if (requiredFields.some((field) => !this.item[field])) {
         await this.$swal(
@@ -229,6 +232,7 @@ export default {
         const itemPayload = {
           name: this.item.name,
           price: this.item.price,
+          selling_price: this.item.selling_price,
           size: this.item.size,
           color: this.item.color,
         };
@@ -263,7 +267,7 @@ export default {
       });
     },
     async updateItem() {
-      const requiredFields = ["name", "price", "size", "color"];
+      const requiredFields = ["name", "price","selling_price", "size", "color"];
 
       if (requiredFields.some((field) => !this.item[field])) {
         await this.$swal(
@@ -278,6 +282,7 @@ export default {
         const itemPayload = {
           name: this.item.name,
           price: this.item.price,
+          selling_price: this.item.selling_price,
           size: this.item.size,
           color: this.item.color,
         };
