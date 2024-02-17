@@ -58,7 +58,8 @@
           <v-card-text>
             <v-form ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex">
-                <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem" outlined></v-text-field>
+                <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem"
+                  outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
                 <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4"></v-text-field>
@@ -452,11 +453,17 @@ export default {
       }
     },
     processPayment() {
-      if (this.pay >= parseFloat(this.order_total.replace(",", ""))) {
-        const change = this.pay - parseFloat(this.order_total.replace(",", ""));
-        this.change = this.formartValue(change)
+      // Remove commas from the order total and convert it to a float
+      const orderTotalWithoutCommas = parseFloat(this.order_total.replace(/,/g, ""));
+      // Check if the payment is greater than or equal to the order total
+      if (this.pay >= orderTotalWithoutCommas) {
+        // Calculate the change
+        const change = this.pay - orderTotalWithoutCommas;
+        // Format the change value
+        this.change = this.formartValue(change);
       } else {
-        this.change = this.formartValue(0)
+        // If payment is insufficient, set the change to 0
+        this.change = this.formartValue(0);
       }
     },
     issueReceipt() {
@@ -513,7 +520,8 @@ export default {
   font-family: Arial, sans-serif;
   font-size: 14px;
   width: 300px;
-  visibility: hidden; /* hide by default */
+  visibility: hidden;
+  /* hide by default */
 }
 
 .receipt h1 {
@@ -563,8 +571,8 @@ export default {
     font-size: 12pt;
     width: 100%;
     page-break-after: always;
-    visibility: visible; /* show only when printing */
+    visibility: visible;
+    /* show only when printing */
   }
 }
-
 </style>
