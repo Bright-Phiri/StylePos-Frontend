@@ -154,10 +154,11 @@ export default {
         };
         const response = await CategoryService.create(categoryPayload);
         if (response.status === 201) {
-          this.$swal('Information', 'Category saved successfully', 'success');
-          this.$refs.addCategoryForm.reset();
-          this.dialog = false;
-          this.fetchDataFromAPI();
+          this.$swal('Information', 'Category saved successfully', 'success').then(()=>{
+            this.$refs.addCategoryForm.reset();
+            this.dialog = false;
+            this.fetchDataFromAPI();
+          })
         }
       } catch (error) {
         this.handleError(error);
@@ -205,8 +206,7 @@ export default {
       } catch (error) {
         this.handleError(error);
       }
-    }
-    ,
+    },
     async deleteCategory(category_id) {
       try {
         const response = await CategoryService.delete(category_id);
