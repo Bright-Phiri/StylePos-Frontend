@@ -16,7 +16,7 @@
                   </v-tab>
                   <v-tab>
                     <v-icon left> mdi-cogs </v-icon>
-                    VAT
+                    TAX RATE
                   </v-tab>
                   <v-tab>
                     <v-icon left> mdi-lock </v-icon>
