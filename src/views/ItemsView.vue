@@ -3,7 +3,7 @@
     <v-container class="py-4 px-1" fluid>
       <v-row>
         <v-col cols="12">
-          <v-dialog max-width="580" v-model="dialog" persistent transition="fab-transition">
+          <v-dialog max-width="600" v-model="dialog" persistent transition="fab-transition">
             <v-card>
               <v-card-title class="d-flex justify-space-between">
                 Add New Item
@@ -12,8 +12,8 @@
               <v-card-text>
                 <v-form ref="addItemForm">
                   <v-text-field v-model="item.name" label="Name"></v-text-field>
-                  <v-text-field v-model="item.price" label="Cost Price (MWK)"></v-text-field>
-                  <v-text-field v-model="item.selling_price" label="Selling Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.price" label="Cost Price"></v-text-field>
+                  <v-text-field v-model="item.selling_price" label="Selling Price"></v-text-field>
                   <v-text-field v-model="item.size" label="Size"></v-text-field>
                   <v-text-field v-model="item.color" label="Color"></v-text-field>
                   <v-autocomplete label="Category" :items="categories" v-model="item.category_id" item-text="name"
@@ -37,8 +37,8 @@
               <v-card-text>
                 <v-form ref="editItemForm">
                   <v-text-field v-model="item.name" label="Name"></v-text-field>
-                  <v-text-field v-model="item.price" label="Cost Price (MWK)"></v-text-field>
-                  <v-text-field v-model="item.selling_price" label="Selling Price (MWK)"></v-text-field>
+                  <v-text-field v-model="item.price" label="Cost Price"></v-text-field>
+                  <v-text-field v-model="item.selling_price" label="Selling Price"></v-text-field>
                   <v-text-field v-model="item.size" label="Size"></v-text-field>
                   <v-text-field v-model="item.color" label="Color"></v-text-field>
                 </v-form>
@@ -101,15 +101,8 @@
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)"
-                  color="blue">mdi-pencil
-                </v-icon>
-                <v-icon small class="mr-0" color="#2A9B90" v-on:click="
-                  showInventoryLevelDialog(item.id)
-                  ">mdi-plus-box
-                </v-icon>
-                <v-icon small class="mr-0" color="blue darken-2"
-                  v-on:click="generateAndPrintBarcode(item.barcode)">mdi-barcode</v-icon>
+                <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)" color="blue">mdi-pencil</v-icon>
+                <v-icon small class="mr-0" color="#2A9B90" v-on:click="showInventoryLevelDialog(item.id)">mdi-plus-box</v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteItem(item.id)">mdi-delete</v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">
@@ -129,8 +122,6 @@
 import ItemsService from "../services/ItemsService";
 import InventoryLevelService from "../services/InventoryLevelService";
 import CategoryService from "../services/CategoryService";
-import JsBarcode from "jsbarcode";
-import printJS from "print-js";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'
 export default {
@@ -340,18 +331,6 @@ export default {
       } catch (error) {
         this.handleError(error);
       }
-    },
-    generateAndPrintBarcode(barcodeValue) {
-      const canvas = document.createElement("canvas");
-      JsBarcode(canvas, barcodeValue);
-      // Send the barcode image to the printer using print-js
-      printJS({
-        printable: canvas.toDataURL(), // Convert the canvas to a base64-encoded image URL
-        type: "image",
-        maxWidth: 300, // Set the maximum width of the image
-        targetStyles: ["height=auto"], // Set the height of the image to auto
-        documentTitle: "Barcode", // Set the title of the print document
-      });
     },
     showInventoryLevelDialog(item_id) {
       this.item_id = item_id;

@@ -32,8 +32,8 @@
         <v-spacer></v-spacer>
         <v-divider class="mx-5"></v-divider>
 
-        <v-list shaped nav>
-          <v-list-item v-for="item in links1" :key="item.text" link router :to="item.route">
+        <v-list shaped nav dense>
+          <v-list-item v-for="item in app" :key="item.text" link router :to="item.route">
             <v-list-item-icon>
               <v-tooltip right>
                 <template v-slot:activator="{ on, attrs }">
@@ -57,7 +57,7 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-avatar color="F9F9F9" size="39"> <v-img src="../assets/avatar.png"></v-img> </v-avatar>
-        <h4 class="ml-3 font-weight-bold">Welcome, {{ user.user_name }}</h4>
+        <h4 class="ml-3 font-weight-bold">Welcome back, {{ user.user_name }}!</h4>
         <v-icon @click="logout" class="ml-2">mdi-exit-to-app</v-icon>
       </v-app-bar>
     </nav>
@@ -78,13 +78,14 @@ export default {
         { text: "Dashboard", icon: "mdi-view-dashboard", route: "/" },
         { text: "Categories", icon: "mdi-shape-outline", route: "/categories" },
         { text: "Items", icon: "mdi-package", route: "/items" },
+        { text: "Barcodes", icon: "mdi-barcode", route: "/barcodes" },
         { text: "Inventory", icon: "mdi-trending-up", route: "/inventory" },
-        { text: "Transactions", icon: "mdi-cash-multiple", route: "/orders" },
+        { text: "Sales", icon: "mdi-cash-multiple", route: "/orders" },
         { text: "Returns", icon: "mdi-undo", route: "/returns" },
         { text: "Refunds", icon: "mdi-cash-refund", route: "/refunds" },
-        { text: "Users", icon: "mdi-account-multiple", route: "/employees" },
       ],
-      links1: [
+      app: [
+        { text: "Users", icon: "mdi-account-multiple", route: "/employees" },
         { text: "Settings", icon: "mdi-cog", route: "/settings" },
       ]
     }

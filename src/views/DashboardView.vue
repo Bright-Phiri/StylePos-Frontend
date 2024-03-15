@@ -14,9 +14,9 @@
                 </div>
                 <div class="d-flex flex-column flex-grow">
                   <p class="text-sm mt-1 heading-color">Total sales</p>
-                  <span class="heading-color font-weight-bold"><animated-number :value="total_sales" :formatValue="formatAmount"
-                      :duration="1200" /></span>
-                  </div>
+                  <span class="heading-color font-weight-bold"><animated-number :value="total_sales"
+                      :formatValue="formatAmount" :duration="1200" /></span>
+                </div>
               </v-card>
             </v-col>
             <v-col cols="12" lg="4" sm="6" md="4">
@@ -44,7 +44,8 @@
                 </div>
                 <div class="d-flex flex-column">
                   <p class="text-sm mt-1">Daily Sales</p>
-                  <span class="font-weight-bold"><animated-number :value="orders_count" :formatValue="formatValue" :duration="900" />
+                  <span class="font-weight-bold"><animated-number :value="orders_count" :formatValue="formatValue"
+                      :duration="900" />
                   </span>
                 </div>
               </v-card>
@@ -54,7 +55,7 @@
             <v-col cols="12" lg="12" xl="12" sm="12" md="12">
               <v-card color="#ffffff" style="border-radius: 10px;" class="elevation-0">
                 <v-card-title>
-                  <h4 class="ml-7 text-subtitle-1 font-weight-regular">Transaction Statistics</h4>
+                  <h4 class="ml-7 text-subtitle-1 font-weight-regular">Annual Transactions Summary</h4>
                 </v-card-title>
                 <v-card-text>
                   <div class="justify-center">
@@ -80,10 +81,13 @@
               <v-card-text>
                 <v-alert border="left" colored-border color="green" elevation="1">
                   <v-row>
-                    <v-col>
-                      <v-avatar tile size="64">
+                    <v-col class="d-flex flex-column">
+                      <v-avatar tile size="40">
                         <v-img src="@/assets/i-stock.png"></v-img>
                       </v-avatar>
+                      <v-sparkline :value="value" :gradient="gradient" :smooth="radius || false" :padding="padding"
+                        :line-width="width" :stroke-linecap="lineCap" :gradient-direction="gradientDirection"
+                        :fill="fill" :type="type" :auto-line-width="autoLineWidth" auto-draw></v-sparkline>
                     </v-col>
                     <v-col>
                       <h4 class="text-center font-weight-light">Items In Stock</h4>
@@ -95,8 +99,8 @@
                 </v-alert>
                 <v-alert border="left" colored-border color="red" elevation="1">
                   <v-row>
-                    <v-col>
-                      <v-avatar tile size="64">
+                    <v-col class="d-flex flex-column">
+                      <v-avatar tile size="40">
                         <v-img src="@/assets/o-stock.png"></v-img>
                       </v-avatar>
                     </v-col>
@@ -118,6 +122,14 @@
 </template>
 <script>
 import AnimatedNumber from "animated-number-vue";
+const gradients = [
+  ['#222'],
+  ['#42b3f4'],
+  ['red', 'orange', 'yellow'],
+  ['purple', 'violet'],
+  ['#00c6ff', '#F0F', '#FF0'],
+  ['#f72047', '#ffd200', 'black'],
+]
 export default {
   name: "DashboardView",
   components: {
@@ -125,6 +137,17 @@ export default {
   },
   data() {
     return {
+      width: 2,
+      radius: 10,
+      padding: 8,
+      lineCap: 'round',
+      gradient: gradients[5],
+      value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
+      gradientDirection: 'top',
+      gradients,
+      fill: false,
+      type: 'trend',
+      autoLineWidth: false,
       orders_count: 0,
       total_sales: 0,
       daily_total_sales: 0,
@@ -157,7 +180,7 @@ export default {
           }
         },
         forecastDataPoints: {
-          count: 7
+          count: 9
         },
         xaxis: {
           categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

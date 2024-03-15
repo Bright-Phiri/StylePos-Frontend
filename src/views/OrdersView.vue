@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12">
           <div class="d-flex justify-space-between">
-            <h1 class="font-weight-regular">Transactions</h1>
+            <h1 class="font-weight-regular">Sales</h1>
           </div>
           <div class="d-flex justify-end">
             <v-btn color="#FFCDD2" v-on:click="fetchDataFromAPI(currentPage, itemsPerPage, search)" class="mt-2" fab depressed x-small>
