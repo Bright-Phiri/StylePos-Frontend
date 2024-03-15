@@ -58,10 +58,12 @@
           <v-card-text>
             <v-form ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex">
-                <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem" outlined></v-text-field>
+                <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem"
+                  outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
-                <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4"></v-text-field>
+                <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined
+                  class="ml-4"></v-text-field>
               </div>
               <div class="justify-end">
                 <v-btn class="white--text" color="blue" x-large v-on:click="addLineItem">
@@ -144,12 +146,12 @@
       <div class="total">
         <span>Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
         <span class="price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-          order_total }}</span>
+        order_total }}</span>
       </div>
       <div class="total">
         <span>Change: </span>
         <span class="price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-          change }}</span>
+        change }}</span>
       </div>
       <p>You were served by:</p>
       <p>Cashier: {{ user.first_name }} {{ user.last_name }}</p>
@@ -415,6 +417,12 @@ export default {
       catch (error) {
         this.loading = false
         this.handleError(error)
+        this.user = this.$store.state.user
+        if (this.order_id !== 0) {
+          this.setOrder(this.order_id)
+        } else {
+          this.clearData();
+        }
       }
     },
     async removeLineItem(line_item_id) {
@@ -514,7 +522,8 @@ export default {
   font-family: Arial, sans-serif;
   font-size: 14px;
   width: 300px;
-  visibility: hidden; /* hide by default */
+  visibility: hidden;
+  /* hide by default */
 }
 
 .receipt h1 {
@@ -564,8 +573,8 @@ export default {
     font-size: 12pt;
     width: 100%;
     page-break-after: always;
-    visibility: visible; /* show only when printing */
+    visibility: visible;
+    /* show only when printing */
   }
 }
-
 </style>
