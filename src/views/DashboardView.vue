@@ -191,16 +191,24 @@ export default {
         },
       },
       options: {
+
         plotOptions: {
           donut: {
-            size: '30%'
+            size: '30%',
           }
         },
         legend: {
           position: 'bottom'
         },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return `MK${val.toLocaleString('en-US', { minimumFractionDigits: 2 })}`; // Display decimal places
+            }
+          }
+        },
         colors: ['#555555', '#FF968B', '#FCBEB6'],
-        labels: ["Daily", "Weekly", "Monthly"]
+        labels: ["Daily", "Weekly", "Monthly"],
       },
       series: [],
       stati: [{
