@@ -21,16 +21,16 @@
         <v-card class="mt-2">
           <v-card-title class="d-flex justify-space-between">
             <h3 class="mb-9">Order details</h3>
-            <v-text-field dense outlined v-model="search" placeholder="Search" class="shrink ml-2"
+            <v-text-field dense outlined v-model="search" placeholder="Search line item" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </v-card-title>
           <v-card-text>
             <v-divider></v-divider>
-            <v-data-table height="250" :loading="loading" loading-text="Loading Line Items... Please wait"
+            <v-data-table height="250" dense :loading="loading" loading-text="Loading Line Items... Please wait"
               :headers="headers" :items="lineItems" :items-per-page="6" :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" color="red" v-on:click="removeLineItem(item.id)">mdi-delete</v-icon>
+                <v-icon small class="ml-2" color="red" v-on:click="removeLineItem(item.id)">mdi-close-thick</v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">
                 {{ formartValue(item.price) }}

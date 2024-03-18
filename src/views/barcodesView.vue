@@ -15,7 +15,7 @@
               placeholder="Search" class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
           </div>
 
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" v-model="selected" loading-text="Loading Items... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
@@ -29,6 +29,11 @@
               </template>
               <template v-slot:[`item.selling_price`]="{ item }">
                 {{ formartValue(item.selling_price) }}
+              </template>
+              <template v-slot:[`item.stock_level`]="{ item }">
+                <v-chip class="text-center" small style="width: 90px" outlined :color="getColor(item.stock_level)" dark>
+                  {{ item.stock_level }}
+                </v-chip>
               </template>
             </v-data-table>
           </v-card>
@@ -68,6 +73,20 @@ export default {
     };
   },
   methods: {
+    getColor(status) {
+      switch (status) {
+        case 'In stock':
+          return "success";
+        case 'Out of stock':
+          return "red";
+        case 'Low stock':
+          return "warning";
+        case 'Not added':
+          return "secondary";
+        default:
+          return "secondary";
+      }
+    },
     async fetchDataFromAPI(page, perPage, search) {
       this.loading = true;
       try {

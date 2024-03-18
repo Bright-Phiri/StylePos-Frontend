@@ -64,7 +64,7 @@
               class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
           </div>
 
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" v-model="selected" loading-text="Loading Categories... Please wait"
               :headers="headers" :items-per-page="itemsPerPage"
               :items="categories" show-select :search="search" :sort-desc="[false, true]"

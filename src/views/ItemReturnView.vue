@@ -29,7 +29,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" loading-text="Loading Order Summary... Please wait"
               :headers="headers" :items="line_items" :items-per-page="5" :search="search" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">

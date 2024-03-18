@@ -43,7 +43,7 @@
               append-icon="mdi-magnify"></v-text-field>
           </div>
 
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" v-model="selected" loading-text="Loading Inventory Levels... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="inventoryLevels" show-select :search="search" :sort-desc="[false, true]"

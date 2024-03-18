@@ -11,7 +11,7 @@
               append-icon="mdi-magnify"></v-text-field>
           </div>
 
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" loading-text="Loading Order Summary... Please wait"
               :headers="headers" :items="orders" :items-per-page="5" :search="search" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.price`]="{ item }">

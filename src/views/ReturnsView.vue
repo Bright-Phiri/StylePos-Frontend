@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12">
           <div class="d-flex justify-space-between">
-            <h1 class="font-weight-regular">Transactions</h1>
+            <h1 class="font-weight-regular">Sales</h1>
           </div>
           <div class="d-flex justify-end">
             <v-btn color="#FFCDD2" v-on:click="fetchDataFromAPI(currentPage, itemsPerPage, search)" class="mt-2" fab depressed x-small>
@@ -16,7 +16,7 @@
               dense
               color="#B55B68" class="ml-4"></v-select>
           </div>
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" loading-text="Loading Transactions... Please wait"
               :headers="headers"  :server-items-length="total" :search="search" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="orders" :sort-desc="[false, true]" multi-sort>

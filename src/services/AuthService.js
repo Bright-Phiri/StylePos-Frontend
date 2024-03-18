@@ -14,6 +14,6 @@ export default {
         return Api().post('passwords/reset_password', user_details)
     },
     updatePassword(credentials, user_id) {
-        return Api().put(`passwords/update_password/${user_id}`, credentials)
+        return Api().patch(`passwords/update_password/${user_id}`, credentials)
     }
 }

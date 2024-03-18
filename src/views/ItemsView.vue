@@ -22,8 +22,8 @@
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined v-on:click="dialog = !dialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="saveItemLoading" elevation="2" outlined
-                  color="#B55B68" v-on:click="saveItem">Save Item</v-btn>
+                <v-btn class="text-capitalize mb-3" :loading="saveItemLoading" elevation="2" outlined color="#B55B68"
+                  v-on:click="saveItem">Save Item</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -46,8 +46,8 @@
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="editdialog = !editdialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="updateItemloading" elevation="2" outlined
-                  color="#B55B68" v-on:click="updateItem">Update Item</v-btn>
+                <v-btn class="text-capitalize mb-3" :loading="updateItemloading" elevation="2" outlined color="#B55B68"
+                  v-on:click="updateItem">Update Item</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -61,16 +61,15 @@
               <v-card-text>
                 <v-form ref="addInventoryLevelForm">
                   <v-text-field v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
-                  <v-text-field v-model="inventoryLevel.reorder_level"
-                    label="Reorder Level"></v-text-field>
+                  <v-text-field v-model="inventoryLevel.reorder_level" label="Reorder Level"></v-text-field>
                   <v-text-field v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
                   v-on:click="inventoryLevelDialog = !inventoryLevelDialog">Cancel</v-btn>
-                <v-btn class="text-capitalize mb-3" :loading="saveInventoryLoading" elevation="2"
-                  outlined color="#B55B68" v-on:click="addInventoryLevel">Add Inventory</v-btn>
+                <v-btn class="text-capitalize mb-3" :loading="saveInventoryLoading" elevation="2" outlined
+                  color="#B55B68" v-on:click="addInventoryLevel">Add Inventory</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -95,14 +94,15 @@
               placeholder="Search" class="shrink ml-2" append-icon="mdi-magnify"></v-text-field>
           </div>
 
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" v-model="selected" loading-text="Loading Items... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="mr-0" v-on:click="showEditItemDialog(item.id)" color="blue">mdi-pencil</v-icon>
-                <v-icon small class="mr-0" color="#2A9B90" v-on:click="showInventoryLevelDialog(item.id)">mdi-plus-box</v-icon>
+                <v-icon small class="mr-0" color="#2A9B90"
+                  v-on:click="showInventoryLevelDialog(item.id)">mdi-plus-box</v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteItem(item.id)">mdi-delete</v-icon>
               </template>
               <template v-slot:[`item.price`]="{ item }">
@@ -110,6 +110,11 @@
               </template>
               <template v-slot:[`item.selling_price`]="{ item }">
                 {{ formartValue(item.selling_price) }}
+              </template>
+              <template v-slot:[`item.stock_level`]="{ item }">
+                <v-chip class="text-center" small style="width: 90px" outlined :color="getColor(item.stock_level)" dark>
+                  {{ item.stock_level }}
+                </v-chip>
               </template>
             </v-data-table>
           </v-card>
@@ -161,7 +166,6 @@ export default {
       },
       errors: [],
       headers: [
-        
         { text: "Barcode", align: "start", sortable: false, value: "barcode" },
         { text: "Name", value: "name" },
         { text: "Cost Price", value: "price" },
@@ -187,6 +191,20 @@ export default {
         this.handleError(error);
       }
     },
+    getColor(status) {
+      switch (status) {
+        case 'In stock':
+          return "success";
+        case 'Out of stock':
+          return "red";
+        case 'Low stock':
+          return "warning";
+        case 'Not added':
+          return "secondary";
+        default:
+          return "secondary";
+      }
+    },
     searchItem() {
       clearTimeout(this.searchTimeout);
       this.searchTimeout = setTimeout(() => {
@@ -207,7 +225,7 @@ export default {
       }
     },
     async saveItem() {
-      const requiredFields = ["name", "price","selling_price", "size", "color", "category_id"];
+      const requiredFields = ["name", "price", "selling_price", "size", "color", "category_id"];
 
       if (requiredFields.some((field) => !this.item[field])) {
         await this.$swal(
@@ -258,7 +276,7 @@ export default {
       });
     },
     async updateItem() {
-      const requiredFields = ["name", "price","selling_price", "size", "color"];
+      const requiredFields = ["name", "price", "selling_price", "size", "color"];
 
       if (requiredFields.some((field) => !this.item[field])) {
         await this.$swal(

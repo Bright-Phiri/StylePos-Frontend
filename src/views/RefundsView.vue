@@ -10,7 +10,7 @@
             <v-text-field color="#B55B68" dense rounded v-model="search" outlined placeholder="Search" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </div>
-          <v-card>
+          <v-card shaped>
             <v-data-table :loading="loading" loading-text="Loading Refunds... Please wait"
               :headers="headers"  :search="search" :items-per-page="7"
                :items="refunds" multi-sort>

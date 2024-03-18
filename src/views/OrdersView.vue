@@ -16,8 +16,9 @@
               dense
               color="#B55B68" class="ml-4"></v-select>
           </div>
-          <v-card>
-            <v-data-table :loading="loading" loading-text="Loading Transactions... Please wait"
+          <v-card shaped>
+            <v-card-text>
+              <v-data-table :loading="loading" loading-text="Loading Transactions... Please wait"
               :headers="headers"  :server-items-length="total" :search="search" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="orders" :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
@@ -29,6 +30,7 @@
               </template>
             </v-data-table>
             <strong class="font-weight-regular ml-3" v-if="orders.length > 0">Total Sales (MWK): {{ formattedTotalSales }}</strong>
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
