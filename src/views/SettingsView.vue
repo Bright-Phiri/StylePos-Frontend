@@ -115,17 +115,21 @@
                   <v-tab-item>
                     <v-card flat>
                       <v-card-title class="font-weight-light">
-                        Set VAT rate
+                        Add New
                       </v-card-title>
                       <v-card-text>
                         <v-form>
                           <v-row dense>
                             <v-col cols="12" xl="5" lg="6" sm="7" md="7">
                               <v-text-field
-                                v-model.trim="configuration.vat_rate"
-                                label="VAT rate"
+                                v-model.trim="taxRate.name"
+                                label="TAX Name"
                                 dense
-                                prepend-icon="mdi-currency-sign"
+                              ></v-text-field>
+                              <v-text-field
+                                v-model.trim="taxRate.rate"
+                                label="TAX Rate"
+                                dense
                               ></v-text-field>
                             </v-col>
                           </v-row>
@@ -137,7 +141,7 @@
                             v-on:click="cancelConfigUpdate"
                             >Cancel</v-btn
                           >
-                          <v-btn v-if="configurations.length == 0"
+                          <v-btn v-if="taxRates.length == 0"
                             elevation="2"
                             v-on:click="saveConfig"
                             color="#B55B68"
@@ -146,7 +150,7 @@
                             class="text-capitalize ml-2"
                             >Save</v-btn
                           >
-                          <v-btn v-if="configurations.length > 0"
+                          <v-btn v-if="taxRates.length > 0"
                             elevation="2"
                             v-on:click="updateConfig"
                             color="#B55B68"
@@ -237,9 +241,8 @@
 
 <script>
 import EmployeesService from "@/services/EmployeesService";
-import ConfigService from "@/services/ConfigurationService";
 import AuthService from "../services/AuthService";
-import ConfigurationService from "@/services/ConfigurationService";
+import TaxRateService from "@/services/TaxRateService";
 export default {
   name: "SettingsView",
   data() {
@@ -255,11 +258,12 @@ export default {
         password: null,
         password_confirmation: null,
       },
-      configuration: {
+      taxRate: {
         id: null,
-        vat_rate: null
+        rate: null,
+        name: null
       },
-      configurations: [],
+      taxRates: [],
       errors: [],
     };
   },
@@ -281,24 +285,26 @@ export default {
       }
     },
     cancelConfigUpdate(){
-      this.configuration.vat_rate = null;
+      this.taxRate.rate = null;
+      this.taxRate.name = null;
       this.fetchConfigsFromAPI();
     },
     async saveConfig(){
-      if (!this.configuration.vat_rate){
+      if (!this.taxRate.rate || !this.taxRate.name){
         this.$swal("Fields Validations", "Please enter all required fields", "warning")
         return;
       }
       try {
-          let configurationPayload = {
-            vat_rate: this.configuration.vat_rate
+          let taxRatePayload = {
+            name: this.taxRate.name,
+            rate: this.taxRate.rate
           };
-          const response = await ConfigurationService.create(
-            configurationPayload,
+          const response = await TaxRateService.create(
+            taxRatePayload,
           );
           if (response.status === 201) {
             this.loading = false;
-            this.$swal("Message", "Configurations set successfully", "success").then(() => {
+            this.$swal("Message", "Tax rate added successfully", "success").then(() => {
               this.fetchConfigsFromAPI();
             });
           }
@@ -308,20 +314,21 @@ export default {
         }
     },
     async updateConfig(){
-      if (!this.configuration.vat_rate){
+      if (!this.taxRate.rate || !this.taxRate.name){
         this.$swal("Fields Validations", "Please enter all required fields", "warning")
         return;
       }
       try {
-          let configurationPayload = {
-            vat_rate: this.configuration.vat_rate
+          let taxRatePayload = {
+            rate: this.taxRate.rate,
+            name: this.taxRate.name
           };
-          const response = await ConfigurationService.put(
-            configurationPayload, this.configuration.id
+          const response = await TaxRateService.put(
+            taxRatePayload, this.configuration.id
           );
           if (response.status === 200) {
             this.loading = false;
-            this.$swal("Message", "Configurations updated successfully", "success").then(() => {
+            this.$swal("Message", "Tax rate updated successfully", "success").then(() => {
               this.fetchConfigsFromAPI();
             });
           }
@@ -330,12 +337,12 @@ export default {
           this.handleError(error);
         }
     },
-    async fetchConfigsFromAPI() {
+    async fetchTaxRatessFromAPI() {
       try {
-        const response = await ConfigService.getData();
-        this.configurations = response.data;
-        if (this.configurations && this.configurations.length > 0) {
-          this.configuration = this.configurations[0];
+        const response = await TaxRateService.getData();
+        this.taxRates = response.data;
+        if (this.taxRates && this.taxRates.length > 0) {
+          this.taxRate = this.taxRates[0];
         }
       } catch (error) {
         this.handleError(error);
@@ -436,7 +443,7 @@ export default {
   },
   mounted() {
     this.fetchLoggedUserFromAPI();
-    this.fetchConfigsFromAPI();
+    this.fetchTaxRatessFromAPI();
   },
 };
 </script>
