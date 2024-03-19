@@ -57,18 +57,13 @@
           <v-card-title>Add Item</v-card-title>
           <v-card-text>
             <v-form ref="addLineItemForm" class="d-flex justify-space-between">
-              <div class="d-inline-flex">
+              <div class="d-inline-flex" style="width: 100%">
                 <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem"
                   outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
                 <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined
                   class="ml-4"></v-text-field>
-              </div>
-              <div class="justify-end">
-                <v-btn class="white--text" color="blue" x-large v-on:click="addLineItem">
-                  <v-icon large>mdi-cart</v-icon>Add
-                </v-btn>
               </div>
             </v-form>
           </v-card-text>
@@ -366,6 +361,7 @@ export default {
         }
         this.item = transformedData
         this.item.quantity = 1
+        this.addLineItem();
       }
       catch (error) {
         this.handleError(error)
