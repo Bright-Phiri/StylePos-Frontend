@@ -62,8 +62,7 @@
                   outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
-                <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined
-                  class="ml-4"></v-text-field>
+                <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4" readonly></v-text-field>
               </div>
             </v-form>
           </v-card-text>
