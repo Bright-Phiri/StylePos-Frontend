@@ -57,7 +57,13 @@ export default {
       }
       this.loading = true
       try {
-        const response = await AuthService.login({ user_name: username, password })
+        let userPayload = {
+          user: {
+            user_name: username,
+            password
+          }
+        };
+        const response = await AuthService.login(userPayload)
         if (response.status === 200) {
           const user = response.data.user
           this.loading = false
