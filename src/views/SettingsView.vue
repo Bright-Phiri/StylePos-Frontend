@@ -287,7 +287,7 @@ export default {
     cancelConfigUpdate(){
       this.taxRate.rate = null;
       this.taxRate.name = null;
-      this.fetchConfigsFromAPI();
+      this.fetchTaxRatessFromAPI();
     },
     async saveConfig(){
       if (!this.taxRate.rate || !this.taxRate.name){
@@ -305,7 +305,7 @@ export default {
           if (response.status === 201) {
             this.loading = false;
             this.$swal("Message", "Tax rate added successfully", "success").then(() => {
-              this.fetchConfigsFromAPI();
+              this.fetchTaxRatessFromAPI();
             });
           }
         } catch (error) {
@@ -324,12 +324,12 @@ export default {
             name: this.taxRate.name
           };
           const response = await TaxRateService.put(
-            taxRatePayload, this.configuration.id
+            taxRatePayload, this.taxRate.id
           );
           if (response.status === 200) {
             this.loading = false;
             this.$swal("Message", "Tax rate updated successfully", "success").then(() => {
-              this.fetchConfigsFromAPI();
+              this.fetchTaxRatessFromAPI();
             });
           }
         } catch (error) {
