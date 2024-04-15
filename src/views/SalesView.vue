@@ -58,7 +58,7 @@
           <v-card-text>
             <v-form ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex" style="width: 100%">
-                <v-text-field label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem"
+                <v-text-field ref="barcodeTextField" label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem"
                   outlined></v-text-field>
                 <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
                 <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
@@ -302,6 +302,7 @@ export default {
         if (response.status === 201) {
           const order = response.data
           this.$store.commit('setOderId', order.id)
+          this.$refs.barcodeTextField.focus();
           this.$vToastify.success('Order successfully created', 'Message');
         }
       }
@@ -317,6 +318,7 @@ export default {
           const order = response.data
           this.setData(order)
           this.loading = false
+          this.$refs.barcodeTextField.focus();
         }
       }
       catch (error) {
@@ -344,6 +346,7 @@ export default {
         if (response.status === 204) {
           this.$store.commit('setOderId', 0)
           this.clearData();
+          this.$refs.barcodeTextField.focus();
           this.$vToastify.success('Order successfully voided', 'Message');
         }
       }
@@ -361,6 +364,7 @@ export default {
         this.item = transformedData
         this.item.quantity = 1
         this.addLineItem();
+        this.$refs.barcodeTextField.focus();
       }
       catch (error) {
         this.handleError(error)
@@ -393,6 +397,7 @@ export default {
       catch (error) {
         this.loading = false
         this.handleError(error)
+        this.$refs.addLineItemForm.reset()
       }
     },
     async updateLineItemQauantity(item) {
@@ -407,6 +412,7 @@ export default {
           this.setData(order)
           this.loading = false
           this.$refs.addLineItemForm.reset()
+          this.$refs.barcodeTextField.focus();
         }
       }
       catch (error) {
@@ -429,6 +435,7 @@ export default {
           this.setData(order)
           this.loading = false
           this.$refs.addLineItemForm.reset()
+          this.$refs.barcodeTextField.focus();
         }
       }
       catch (error) {
@@ -500,7 +507,9 @@ export default {
     order_id() {
       return this.$store.state.order_id !== null ? this.$store.state.order_id : 0;
     }
-  }, mounted() {
+  }, 
+  mounted() {
+    this.$refs.barcodeTextField.focus();
     this.user = this.$store.state.user
     if (this.order_id !== 0) {
       this.setOrder(this.order_id)
