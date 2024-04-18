@@ -17,17 +17,47 @@
       </v-btn>
     </v-app-bar>
     <v-row>
+      <v-dialog max-width="800" v-model="dialog" persistent transition="fab-transition">
+        <v-card>
+          <v-card-title class="d-flex justify-space-between">
+             search item
+            <v-icon v-on:click="toggleDialog">mdi-close</v-icon>
+          </v-card-title>
+          <v-card-text>
+            <div class="d-flex justify-end">
+            <v-text-field color="#B55B68" v-model.trim="search" @input="findItem" dense outlined
+              placeholder="Search"  append-icon="mdi-magnify"></v-text-field>
+          </div>
+            <v-data-table :loading="itemsLoading" loading-text="Loading Items... Please wait"
+              :headers="itemsHeaders" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
+              @pagination="onPagination" :items="items" :search="searchItem" :sort-desc="[false, true]"
+              multi-sort>
+              <template v-slot:[`item.action`]="{ item }">
+                <v-icon medium class="ml-2" v-on:click="addItem(item.id)" color="blue">mdi-plus</v-icon>
+              </template>
+              <template v-slot:[`item.selling_price`]="{ item }">
+                {{ formartValue(item.selling_price) }}
+              </template>
+              <template v-slot:[`item.stock_level`]="{ item }">
+                <v-chip class="text-center" small style="width: 90px" outlined :color="getColor(item.stock_level)" dark>
+                  {{ item.stock_level }}
+                </v-chip>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
       <v-col cols="12" lg="9" xl="9">
         <v-card class="mt-2">
           <v-card-title class="d-flex justify-space-between">
-            <h3 class="mb-9">Order details</h3>
-            <v-text-field dense outlined v-model="search" placeholder="Search line item" class="shrink ml-2"
+            <h3 class="mb-9">Items</h3>
+            <v-text-field dense outlined v-model="itemSearch" placeholder="Search line item" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </v-card-title>
           <v-card-text>
             <v-divider></v-divider>
             <v-data-table height="250" dense :loading="loading" loading-text="Loading Line Items... Please wait"
-              :headers="headers" :items="lineItems" :items-per-page="6" :search="search" :sort-desc="[false, true]"
+              :headers="headers" :items="lineItems" :items-per-page="6" :search="itemSearch" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
                 <v-icon small class="ml-2" color="red" v-on:click="removeLineItem(item.id)">mdi-close-thick</v-icon>
@@ -54,15 +84,16 @@
           </v-card-text>
         </v-card>
         <v-card class="mt-4">
-          <v-card-title>Add Item</v-card-title>
+          <v-card-title class="d-flex justify-space-between">Add Item
+            <v-btn small v-on:click="toggleDialog" class="text-capitalize">Find Item</v-btn></v-card-title>
           <v-card-text>
-            <v-form ref="addLineItemForm" class="d-flex justify-space-between">
+            <v-form @submit.prevent ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex" style="width: 100%">
-                <v-text-field ref="barcodeTextField" label="Item Code" v-model.trim="item.barcode" v-on:keyup.enter="searchItem"
-                  outlined></v-text-field>
-                <v-text-field label="Item Name" class="ml-4" v-model="item.name" outlined readonly></v-text-field>
-                <v-text-field label="Price" class="ml-4" v-model="item.price" outlined readonly></v-text-field>
-                <v-text-field label="Quantity" type="number" v-model="item.quantity" outlined class="ml-4" readonly></v-text-field>
+                <v-text-field ref="barcodeTextField" label="Item Code" color="blue" class="mr-4"
+                  v-model.trim="item.barcode" v-on:keyup.enter="searchItem" outlined></v-text-field>
+                <v-btn class="white--text" color="blue" x-large v-on:click="addLineItem">
+                  <v-icon large>mdi-cart</v-icon>Add
+                </v-btn>
               </div>
             </v-form>
           </v-card-text>
@@ -107,7 +138,6 @@
         </v-sheet>
       </v-col>
     </v-row>
-
   </div>
 </template>
 
@@ -122,7 +152,15 @@ export default {
       loading: false,
       lineItems: [],
       search: '',
+      itemSearch: '',
       user: {},
+      dialog: false,
+      itemsLoading: false,
+      searchTimeout: null,
+      currentPage: 1,
+      itemsPerPage: 7,
+      items: [],
+      total: 0,
       headers: [
         {
           text: 'Barcode',
@@ -137,6 +175,14 @@ export default {
         { text: 'Total VAT', value: 'vat' },
         { text: 'Total', value: 'total' },
         { text: 'Action', value: 'action' },
+      ],
+      itemsHeaders: [
+        { text: "Barcode", align: "start", sortable: false, value: "barcode" },
+        { text: "Name", value: "name" },
+        { text: "Seling Price", value: "selling_price" },
+        { text: "Size", value: "size" },
+        { text: "Color", value: "color" },
+        { text: "Action", value: "action" },
       ],
       item: {
         id: null,
@@ -166,6 +212,32 @@ export default {
     }
   },
   methods: {
+    onPagination(page) {
+      this.currentPage = Number(page.page);
+      this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+    },
+    async fetchDataFromAPI(page, perPage, search) {
+      this.itemsLoading = true;
+      try {
+        const response = await ItemsService.getData(page, perPage, search);
+        this.items = response.data.items;
+        this.total = response.data.total;
+        this.itemsLoading = false;
+      } catch (error) {
+        this.itemsLoading = false;
+        this.handleError(error);
+      }
+    },
+    findItem() {
+      clearTimeout(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {
+        this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+      }, 500);
+    },
+    toggleDialog(){
+      this.dialog = !this.dialog
+      this.$refs.barcodeTextField.focus();
+    },
     printReceipt() {
       // Clone the receipt element and remove the print button
       const receipt = this.$refs.receipt.cloneNode(true)
@@ -250,6 +322,7 @@ export default {
     async newOrder() {
       if (this.order_id != 0) {
         this.$vToastify.error('Order in progress', 'Message');
+        this.$refs.barcodeTextField.focus();
         return;
       }
       try {
@@ -263,6 +336,7 @@ export default {
       }
       catch (error) {
         this.handleError(error)
+        this.$refs.barcodeTextField.focus();
       }
     },
     async setOrder(order_id) {
@@ -279,6 +353,7 @@ export default {
       catch (error) {
         this.handleError(error)
         this.loading = false
+        this.$refs.barcodeTextField.focus();
       }
     },
     setData(order) {
@@ -290,10 +365,12 @@ export default {
       this.change = this.formartValue(0)
       this.items_count = order.items_count
       this.transaction_date = order.transaction_date
+      this.$refs.barcodeTextField.focus();
     },
     async voidOrder() {
       if (this.order_id == 0) {
         this.$vToastify.error('Order not found', 'Error');
+        this.$refs.barcodeTextField.focus();
         return;
       }
       try {
@@ -307,6 +384,7 @@ export default {
       }
       catch (error) {
         this.handleError(error)
+        this.$refs.barcodeTextField.focus();
       }
     },
     async searchItem() {
@@ -324,14 +402,17 @@ export default {
       catch (error) {
         this.handleError(error)
         this.$refs.addLineItemForm.reset()
+        this.$refs.barcodeTextField.focus();
       }
     },
     async addLineItem() {
       if (this.order_id == 0) {
+        this.$refs.barcodeTextField.focus();
         this.$vToastify.error('Order not found, Please create new order', 'Error');
         return;
       }
       if (this.item.barcode == null) {
+        this.$refs.barcodeTextField.focus();
         this.$vToastify.error('Message, Please enter item code', 'Error');
         return
       }
@@ -347,12 +428,14 @@ export default {
           this.setData(order)
           this.loading = false
           this.$refs.addLineItemForm.reset()
+          this.$refs.barcodeTextField.focus();
         }
       }
       catch (error) {
         this.loading = false
         this.handleError(error)
         this.$refs.addLineItemForm.reset()
+        this.$refs.barcodeTextField.focus();
       }
     },
     async updateLineItemQauantity(item) {
@@ -376,8 +459,10 @@ export default {
         this.user = this.$store.state.user
         if (this.order_id !== 0) {
           this.setOrder(this.order_id)
+          this.$refs.barcodeTextField.focus();
         } else {
           this.clearData();
+          this.$refs.barcodeTextField.focus();
         }
       }
     },
@@ -395,6 +480,7 @@ export default {
       }
       catch (error) {
         this.handleError(error)
+        this.$refs.barcodeTextField.focus();
       }
 
     },
@@ -410,11 +496,13 @@ export default {
           this.setData(order)
           this.loading = false
           this.$refs.addLineItemForm.reset()
+          this.$refs.barcodeTextField.focus();
         }
       }
       catch (error) {
         this.loading = false
         this.handleError(error)
+        this.$refs.barcodeTextField.focus();
       }
     },
     processPayment() {
@@ -428,15 +516,17 @@ export default {
     issueReceipt() {
       if (this.order_id == 0) {
         this.$vToastify.error('Order not found', 'Message');
+        this.$refs.barcodeTextField.focus();
         return;
       }
       if (this.pay != null && this.pay >= parseFloat(this.order_total.replace(",", ""))) {
         this.lineItems = []
         this.$store.commit('setOderId', 0)
         this.$vToastify.success('Order successfully completed', 'Message');
-        // this.printReceipt();
         this.clearData();
+        this.$refs.barcodeTextField.focus();
       }
+      this.$refs.barcodeTextField.focus();
     },
     clearData() {
       this.lineItems = []
