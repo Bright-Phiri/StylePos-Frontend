@@ -20,7 +20,7 @@
       <v-dialog max-width="800" v-model="dialog" persistent transition="fab-transition">
         <v-card>
           <v-card-title class="d-flex justify-space-between">
-             search item
+             Find item
             <v-icon v-on:click="toggleDialog">mdi-close</v-icon>
           </v-card-title>
           <v-card-text>
@@ -33,7 +33,7 @@
               @pagination="onPagination" :items="items" :search="searchItem" :sort-desc="[false, true]"
               multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon medium class="ml-2" v-on:click="addItem(item.id)" color="blue">mdi-plus</v-icon>
+                <v-icon medium class="ml-2" v-on:click="addItem(item.barcode)" color="blue">mdi-plus</v-icon>
               </template>
               <template v-slot:[`item.selling_price`]="{ item }">
                 {{ formartValue(item.selling_price) }}
@@ -50,7 +50,7 @@
       <v-col cols="12" lg="9" xl="9">
         <v-card class="mt-2">
           <v-card-title class="d-flex justify-space-between">
-            <h3 class="mb-9">Items</h3>
+            <h4 class="mb-9">Items</h4>
             <v-text-field dense outlined v-model="itemSearch" placeholder="Search line item" class="shrink ml-2"
               append-icon="mdi-magnify"></v-text-field>
           </v-card-title>
@@ -85,7 +85,7 @@
         </v-card>
         <v-card class="mt-4">
           <v-card-title class="d-flex justify-space-between">Add Item
-            <v-btn small v-on:click="toggleDialog" class="text-capitalize">Find Item</v-btn></v-card-title>
+            <v-btn small v-on:click="toggleDialog" class="text-capitalize"> <v-icon small>mdi-magnify</v-icon>Find Item</v-btn></v-card-title>
           <v-card-text>
             <v-form @submit.prevent ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex" style="width: 100%">
@@ -306,6 +306,11 @@ export default {
         this.$refs.barcodeTextField.focus();
       }
     },
+    addItem(barcode){
+      this.item.barcode = barcode
+      this.searchItem();
+      this.toggleDialog();
+    },
     async searchItem() {
       try {
         const response = await ItemsService.show(this.item.barcode)
@@ -483,66 +488,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.receipt {
-  border: 1px solid black;
-  padding: 10px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  width: 300px;
-  visibility: hidden;
-  /* hide by default */
-}
-
-.receipt h1 {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 0 10px 0;
-}
-
-.receipt ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.receipt li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.receipt .item {
-  flex: 0.3;
-}
-
-.receipt .price {
-  flex: 0.3;
-}
-
-.receipt .total {
-  flex: 0.3;
-}
-
-.receipt .total span:first-child {
-  font-weight: bold;
-}
-
-.receipt .total .price {
-  font-weight: bold;
-}
-
-@media print {
-  .receipt {
-    display: block;
-    margin: 0;
-    font-size: 12pt;
-    width: 100%;
-    page-break-after: always;
-    visibility: visible;
-    /* show only when printing */
-  }
-}
-</style>
