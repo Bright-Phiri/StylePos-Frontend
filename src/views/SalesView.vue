@@ -108,51 +108,6 @@
       </v-col>
     </v-row>
 
-    <div class="receipt" ref="receipt">
-      <h1 class="heading-1">StylePos Receipt</h1>
-      <ul>
-        <li v-for="item in lineItems" :key="item.id">
-          <span class="item">{{ item.item }}</span>
-          <span class="price">{{ item.quantity }} * {{ formartValue(item.price) }}</span>
-          <span class="total">{{ formartValue(item.total) }}</span>
-        </li>
-      </ul>
-      <P>--------------------------------------------------------------------------------------------------------------
-      </P>
-      <div class="total mt-2">
-        <span>Sub total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
-        <span class="price">{{ sub_total }}</span>
-      </div>
-      <div class="total mt-2">
-        <span>Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
-        <span class="price">{{ discount }}</span>
-      </div>
-      <div class="total mt-2">
-        <span>VAT A-16.5%&nbsp;: </span>
-        <span class="price">{{ vat }}</span>
-      </div>
-      <div class="total mt-2">
-        <span>Total VAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
-        <span class="price">{{ vat }}</span>
-      </div>
-      <P>--------------------------------------------------------------------------------------------------------------
-      </P>
-      <div class="total">
-        <span>Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span>
-        <span class="price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-        order_total }}</span>
-      </div>
-      <div class="total">
-        <span>Change: </span>
-        <span class="price">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-        change }}</span>
-      </div>
-      <p>You were served by:</p>
-      <p>Cashier: {{ user.first_name }} {{ user.last_name }}</p>
-      <p>Date Time : {{ transaction_date }}</p>
-      <button @click="printReceipt">Print Receipt</button>
-    </div>
-
   </div>
 </template>
 
