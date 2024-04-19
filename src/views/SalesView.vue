@@ -121,7 +121,7 @@
                   <h1 class="text-h6 text-center">VAT&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ vat }}</h1>
                 </div>
-                <v-text-field class="mt-1" v-model="pay" v-on:keyup="processPayment" style="border-radius: 0"
+                <v-text-field class="mt-1" v-model="pay"  color="blue" v-on:keyup="processPayment" style="border-radius: 0"
                   outlined></v-text-field>
                 <h2>CHANGE</h2>
                 <v-alert color="#001F3F" style="border-radius: 0;">
