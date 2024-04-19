@@ -80,18 +80,18 @@
                 {{ formartValue(item.vat) }}
               </template>
             </v-data-table>
-            <h4>Number of items: {{ items_count }}</h4>
+            <h4>Items: {{ items_count }}</h4>
           </v-card-text>
         </v-card>
         <v-card class="mt-4">
           <v-card-title class="d-flex justify-space-between">Add Item
-            <v-btn small v-on:click="toggleDialog" class="text-capitalize"> <v-icon small>mdi-magnify</v-icon>Find Item</v-btn></v-card-title>
+            <v-btn small outlined color="grey" v-on:click="toggleDialog" class="text-capitalize"> <v-icon small>mdi-magnify</v-icon>Find Item</v-btn></v-card-title>
           <v-card-text>
             <v-form @submit.prevent ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex" style="width: 100%">
-                <v-text-field ref="barcodeTextField" label="Item Code" color="blue" class="mr-4"
+                <v-text-field ref="barcodeTextField" label="Scan bar code" color="blue" class="mr-4"
                   v-model.trim="item.barcode" v-on:keyup.enter="searchItem" outlined></v-text-field>
-                <v-btn class="white--text" color="blue" x-large v-on:click="addLineItem">
+                <v-btn class="white--text" color="#1572E8" x-large v-on:click="addLineItem">
                   <v-icon large>mdi-cart</v-icon>Add
                 </v-btn>
               </div>
@@ -104,8 +104,8 @@
           <v-card class="elevation-0">
             <v-card-text>
               <div class="d-flex flex-column" style="border-color: black">
-                <v-alert outlined color="black" style="border-radius: 0">
-                  <div class="text-h6">
+                <v-alert color="#001F3F" style="border-radius: 0">
+                  <div class="text-h6 white--text">
                     {{ order_total }}
                   </div>
                 </v-alert>
@@ -124,13 +124,13 @@
                 <v-text-field class="mt-1" v-model="pay" v-on:keyup="processPayment" style="border-radius: 0"
                   outlined></v-text-field>
                 <h2>CHANGE</h2>
-                <v-alert outlined color="black" style="border-radius: 0">
-                  <div class="text-h6">{{ change }}</div>
+                <v-alert color="#001F3F" style="border-radius: 0;">
+                  <div class="text-h6 white--text">{{ change }}</div>
                 </v-alert>
-                <v-btn x-large class="white--text" v-on:click="issueReceipt" depressed flat color="green">Finish
+                <v-btn x-large class="white--text" v-on:click="issueReceipt" depressed flat color="#2DCE89">Finish
                   Sale</v-btn>
-                <v-btn x-large class="mt-2 white--text" v-on:click="voidOrder" depressed flat color="red">VOID</v-btn>
-                <v-btn x-large class="mt-2 white--text" v-on:click="newOrder" depressed flat color="blue">NEW
+                <v-btn x-large class="mt-2 white--text" v-on:click="voidOrder" depressed flat color="#F5365C">VOID</v-btn>
+                <v-btn x-large class="mt-2 white--text" v-on:click="newOrder" depressed flat color="#00C0EF">NEW
                   SALE</v-btn>
               </div>
             </v-card-text>
@@ -168,17 +168,16 @@ export default {
           sortable: false,
           value: 'barcode',
         },
-        { text: 'Item Name', value: 'item' },
-        { text: 'Selling Price', value: 'price' },
+        { text: 'Item', value: 'item' },
+        { text: 'Price', value: 'price' },
         { text: 'Quantity', value: 'quantity' },
         { text: 'Discount', value: 'discount' },
-        { text: 'Total VAT', value: 'vat' },
-        { text: 'Total', value: 'total' },
+        { text: 'Subtotal ', value: 'total' },
         { text: 'Action', value: 'action' },
       ],
       itemsHeaders: [
         { text: "Barcode", align: "start", sortable: false, value: "barcode" },
-        { text: "Name", value: "name" },
+        { text: "Product", value: "name" },
         { text: "Seling Price", value: "selling_price" },
         { text: "Size", value: "size" },
         { text: "Color", value: "color" },
