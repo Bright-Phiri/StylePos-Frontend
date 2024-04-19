@@ -25,7 +25,7 @@
           </v-card-title>
           <v-card-text>
             <div class="d-flex justify-end">
-            <v-text-field color="#B55B68" v-model.trim="search" @input="findItem" dense outlined
+            <v-text-field color="#B55B68" ref="findItemTextField" v-model.trim="search" @input="findItem" dense outlined
               placeholder="Search"  append-icon="mdi-magnify"></v-text-field>
           </div>
             <v-data-table :loading="itemsLoading" loading-text="Loading Items... Please wait"
@@ -250,7 +250,7 @@ export default {
           const order = response.data
           this.$store.commit('setOderId', order.id)
           this.$refs.barcodeTextField.focus();
-          this.$vToastify.success('Order successfully created', 'Message');
+          this.$vToastify.success('Order created successfully', 'Message');
         }
       }
       catch (error) {
@@ -288,7 +288,7 @@ export default {
     },
     async voidOrder() {
       if (this.order_id == 0) {
-        this.$vToastify.error('Order not found', 'Error');
+        this.$vToastify.error('No items added, add some items first', 'Warning');
         this.$refs.barcodeTextField.focus();
         return;
       }
@@ -298,7 +298,7 @@ export default {
           this.$store.commit('setOderId', 0)
           this.clearData();
           this.$refs.barcodeTextField.focus();
-          this.$vToastify.success('Order successfully voided', 'Message');
+          this.$vToastify.success('Order voided successfully', 'Message');
         }
       }
       catch (error) {
@@ -446,7 +446,7 @@ export default {
       if (this.pay != null && this.pay >= parseFloat(this.order_total.replace(",", ""))) {
         this.lineItems = []
         this.$store.commit('setOderId', 0)
-        this.$vToastify.success('Order successfully completed', 'Message');
+        this.$vToastify.success('Order completed successfully', 'Message');
         this.clearData();
         this.$refs.barcodeTextField.focus();
       }
