@@ -34,7 +34,8 @@ npm run lint
 <img width="960" alt="10" src="https://github.com/Bright-Phiri/StylePos-Frontend/assets/75673222/44237243-5425-4f5e-884e-3cda8e71f27d">
 <img width="960" alt="11" src="https://github.com/Bright-Phiri/StylePos-Frontend/assets/75673222/0b4a4f0c-1fd3-400e-b71d-07d450e704b5">
 <img width="960" alt="12" src="https://github.com/Bright-Phiri/StylePos-Frontend/assets/75673222/d213d9cc-55ea-4f44-b9c6-e30b26a94bd9">
-<img width="960" alt="12" src="https://github.com/Bright-Phiri/StylePos-Frontend/assets/75673222/71d7537d-b4e1-4421-92bf-d0705dfec274">
+<img width="960" alt="12" src="https://github.com/Bright-Phiri/StylePos-Frontend/assets/75673222/98750d3e-4b81-41fb-b1de-54e14dc93d18">
+
 
 
 
