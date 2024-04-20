@@ -20,7 +20,7 @@
       <v-dialog max-width="800" v-model="dialog" persistent transition="fab-transition">
         <v-card>
           <v-card-title class="d-flex justify-space-between">
-             Find item
+             Item Lookup
             <v-icon v-on:click="toggleDialog">mdi-close</v-icon>
           </v-card-title>
           <v-card-text>
@@ -80,16 +80,16 @@
                 {{ formartValue(item.vat) }}
               </template>
             </v-data-table>
-            <h4>Items: {{ items_count }}</h4>
+            <h4>Total Number Of Items: {{ items_count }}</h4>
           </v-card-text>
         </v-card>
         <v-card class="mt-4">
           <v-card-title class="d-flex justify-space-between">Add Item
-            <v-btn small outlined color="grey" v-on:click="toggleDialog" class="text-capitalize"> <v-icon small>mdi-magnify</v-icon>Find Item</v-btn></v-card-title>
+            <v-btn small outlined color="grey" v-on:click="toggleDialog" class="text-capitalize"> <v-icon small>mdi-magnify</v-icon>Item Lookup</v-btn></v-card-title>
           <v-card-text>
             <v-form @submit.prevent ref="addLineItemForm" class="d-flex justify-space-between">
               <div class="d-inline-flex" style="width: 100%">
-                <v-text-field ref="barcodeTextField" label="Scan bar code" color="blue" class="mr-4"
+                <v-text-field ref="barcodeTextField" label="Scan/Enter Item Code" color="blue" class="mr-4"
                   v-model.trim="item.barcode" v-on:keyup.enter="searchItem" outlined></v-text-field>
                 <v-btn class="white--text" color="#1572E8" x-large v-on:click="addLineItem">
                   <v-icon large>mdi-cart</v-icon>Add
@@ -103,9 +103,10 @@
         <v-sheet elevation="1" rounded="lg" class="pa-4 text-center mt-2 mx-auto">
           <v-card class="elevation-0">
             <v-card-text>
+              <h1 class="mb-3">BALANCE DUE</h1>
               <div class="d-flex flex-column" style="border-color: black">
                 <v-alert color="#001F3F" style="border-radius: 0">
-                  <div class="text-h6 white--text">
+                  <div class="text-h4 white--text">
                     {{ order_total }}
                   </div>
                 </v-alert>
@@ -121,17 +122,11 @@
                   <h1 class="text-h6 text-center">VAT&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ vat }}</h1>
                 </div>
-                <v-text-field class="mt-1" v-model="pay"  color="blue" v-on:keyup="processPayment" style="border-radius: 0"
-                  outlined></v-text-field>
-                <h2>CHANGE</h2>
-                <v-alert color="#001F3F" style="border-radius: 0;">
-                  <div class="text-h6 white--text">{{ change }}</div>
-                </v-alert>
-                <v-btn x-large class="white--text" v-on:click="issueReceipt" depressed flat color="#2DCE89">Finish
-                  Sale</v-btn>
-                <v-btn x-large class="mt-2 white--text" v-on:click="voidOrder" depressed flat color="#F5365C">VOID</v-btn>
-                <v-btn x-large class="mt-2 white--text" v-on:click="newOrder" depressed flat color="#00C0EF">NEW
-                  SALE</v-btn>
+                <v-btn x-large class="mt-4 white--text" v-on:click="issueReceipt" depressed flat color="#2DCE89">PAY</v-btn>
+                <v-btn x-large class="mt-3 white--text" v-on:click="voidOrder" depressed flat color="#F5365C">VOID SALE</v-btn>
+                <v-btn x-large class="mt-3 white--text" v-on:click="issueReceipt" depressed flat color="#2196F3">DRAWER</v-btn>
+                <v-btn x-large class="mt-3 white--text" v-on:click="issueReceipt" depressed flat color="#1976D2">REPRINT</v-btn>
+                <v-btn x-large class="mt-3 white--text" v-on:click="newOrder" depressed flat color="#00C0EF">NEW SALE</v-btn>
               </div>
             </v-card-text>
           </v-card>
