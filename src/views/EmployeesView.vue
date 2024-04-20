@@ -146,6 +146,17 @@
                   {{item.status === 'active' ? "Active":"Inactive"}}
                 </v-chip>
               </template>
+              <template  v-slot:[`item.avatar`]="{ item }">
+                <div class="d-flex align-center">
+                  <v-avatar size="30" class="my-2">
+                  <v-img :src="item.avatar"></v-img>
+                  </v-avatar>
+                  <div class="d-flex flex-column ms-2">
+                  <a class="text-decoration-none tex-dark font-weight-normal text-capitalize">{{item.user_name}}</a>
+                   <small>@{{item.user_name}}</small>
+                  </div>
+                </div>
+              </template>
             </v-data-table>
           </v-card>
         </v-col>
@@ -184,7 +195,8 @@ export default {
       },
       errors: [],
       headers: [
-        { text: 'First Name',  align: 'start', value: 'first_name' },
+        { text: 'Avatar', align: 'start', value: 'avatar' },
+        { text: 'First Name', value: 'first_name' },
         { text: 'Last Name', value: 'last_name' },
         { text: 'Username', value: 'user_name' },
         { text: 'Email', value: 'email' },
