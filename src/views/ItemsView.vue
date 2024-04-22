@@ -45,7 +45,7 @@
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
                 <v-btn class="text-capitalize mb-3" elevation="2" outlined
-                  v-on:click="editdialog = !editdialog">Cancel</v-btn>
+                  v-on:click="cancelItemUpdate">Cancel</v-btn>
                 <v-btn class="text-capitalize mb-3" :loading="updateItemloading" elevation="2" outlined color="#B55B68"
                   v-on:click="updateItem">Update Item</v-btn>
               </v-card-actions>
@@ -190,6 +190,10 @@ export default {
         this.loading = false;
         this.handleError(error);
       }
+    },
+    cancelItemUpdate(){
+      this.editdialog = !this.editdialog
+      this.$refs.editItemForm.reset();
     },
     getColor(status) {
       switch (status) {
