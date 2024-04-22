@@ -6,11 +6,10 @@ export default {
       } else {
         if (error.response.status === 400) {
           if (error.response.data.error) {
-            this.$swal("Error", error.response.data.error, "error");
+            this.$swal("Warning", error.response.data.error, "warning");
           } else{
             this.$swal("Error", error.response.data.message, "error");
           }
-          
         } else if (error.response.status === 401) {
           if (error.response.data.status && error.response.data.status === "login"){
             this.$router.push({ path: '/logout' });

@@ -103,14 +103,13 @@
         <v-sheet elevation="1" rounded="lg" class="pa-4 text-center mt-2 mx-auto">
           <v-card class="elevation-0">
             <v-card-text>
-              <h1 class="mb-3">BALANCE DUE</h1>
               <div class="d-flex flex-column" style="border-color: black">
                 <v-alert color="#001F3F" style="border-radius: 0">
-                  <div class="text-h4 white--text">
+                  <div class="text-h6 white--text">
                     {{ order_total }}
                   </div>
                 </v-alert>
-                <div class="d-flex mt-2">
+                <div class="d-flex mt-1">
                   <h1 class="text-h6 text-center">SUB&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ sub_total }}</h1>
                 </div>
@@ -122,11 +121,18 @@
                   <h1 class="text-h6 text-center">VAT&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ vat }}</h1>
                 </div>
-                <v-btn x-large class="mt-4 white--text" v-on:click="issueReceipt" depressed flat color="#2DCE89">PAY</v-btn>
-                <v-btn x-large class="mt-3 white--text" v-on:click="voidOrder" depressed flat color="#F5365C">VOID SALE</v-btn>
-                <v-btn x-large class="mt-3 white--text" v-on:click="issueReceipt" depressed flat color="#2196F3">DRAWER</v-btn>
-                <v-btn x-large class="mt-3 white--text" v-on:click="issueReceipt" depressed flat color="#1976D2">REPRINT</v-btn>
-                <v-btn x-large class="mt-3 white--text" v-on:click="newOrder" depressed flat color="#00C0EF">NEW SALE</v-btn>
+                <h2 class="mt-1">TENDERED AMOUNT</h2>
+                <v-text-field class="mt-1" color="blue" v-model="pay" v-on:keyup="processPayment" style="border-radius: 0"
+                  outlined></v-text-field>
+                <h2 class="mt-1">CHANGE</h2>
+                <v-alert color="#001F3F" style="border-radius: 0">
+                  <div class="text-h6 white--text">{{ change }}</div>
+                </v-alert>
+                <v-btn large class="white--text" v-on:click="issueReceipt" depressed flat color="green">Finish
+                  Sale</v-btn>
+                <v-btn large class="mt-2 white--text" v-on:click="voidOrder" depressed flat color="red">VOID</v-btn>
+                <v-btn large class="mt-2 white--text" v-on:click="newOrder" depressed flat color="blue">NEW
+                  SALE</v-btn>
               </div>
             </v-card-text>
           </v-card>
