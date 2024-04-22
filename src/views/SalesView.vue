@@ -109,19 +109,19 @@
                     {{ order_total }}
                   </div>
                 </v-alert>
-                <div class="d-flex mt-1">
-                  <h1 class="text-h6 text-center">SUB&nbsp;:</h1>
+                <div class="d-flex">
+                  <h1 class="text-h6 text-center">SUB TOTAL&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ sub_total }}</h1>
                 </div>
                 <div class="d-flex mt-2">
-                  <h1 class="text-h6 text-center">DIS&nbsp;&nbsp;:</h1>
+                  <h1 class="text-h6 text-center">DISCOUNT&nbsp;&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ discount }}</h1>
                 </div>
                 <div class="d-flex mt-2">
-                  <h1 class="text-h6 text-center">VAT&nbsp;:</h1>
+                  <h1 class="text-h6 text-center">VAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</h1>
                   <h1 class="text-h6 text-center ml-1">{{ vat }}</h1>
                 </div>
-                <h2 class="mt-1">TENDERED AMOUNT</h2>
+                <h2 class="mt-2">TENDERED AMOUNT</h2>
                 <v-text-field class="mt-1" color="blue" v-model="pay" v-on:keyup="processPayment" style="border-radius: 0"
                   outlined></v-text-field>
                 <h2 class="mt-1">CHANGE</h2>
