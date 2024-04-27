@@ -12,8 +12,6 @@
               <v-card-text>
                 <v-form ref="updateInventoryLevelForm">
                   <v-text-field v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
-                  <v-text-field v-model="inventoryLevel.reorder_level"
-                    label="Reorder Level"></v-text-field>
                   <v-text-field v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
                 </v-form>
               </v-card-text>
@@ -53,6 +51,15 @@
                   color="blue">mdi-pencil
                 </v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteInventory(item.id)">mdi-delete</v-icon>
+              </template>
+              <template v-slot:[`item.stock_value`]="{ item }">
+                {{ formartValue(item.stock_value) }}
+              </template>
+              <template v-slot:[`item.price`]="{ item }">
+                {{ formartValue(item.price) }}
+              </template>
+              <template v-slot:[`item.selling_price`]="{ item }">
+                {{ formartValue(item.selling_price) }}
               </template>
             </v-data-table>
           </v-card>
@@ -95,9 +102,11 @@ export default {
           value: 'id',
         },
         { text: 'Item Name', value: 'item' },
-        { text: 'Quantity', value: 'quantity' },
-        { text: 'Re-order Level', value: 'reorder_level' },
+        { text: 'Stock', value: 'quantity' },
+        { text: "Cost Price", value: "price" },
+        { text: "Seling Price", value: "selling_price" },
         { text: 'Supplier', value: 'supplier' },
+        { text: 'Stock Value', value: 'stock_value' }, 
         { text: 'Action', value: 'action' },
       ],
     }
@@ -115,6 +124,12 @@ export default {
         this.loading = false
         this.handleError(error)
       }
+    },
+    formartValue(value) {
+      return parseFloat(value).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     },
     searchItem(){
       clearTimeout(this.searchTimeout);
@@ -136,7 +151,7 @@ export default {
       }
     },
     async updateInventoryLevel() {
-      const requiredFields = ['quantity', 'reorder_level'];
+      const requiredFields = ['quantity'];
       if (requiredFields.some(field => !this.inventoryLevel[field])) {
         await this.$swal('Fields Validation', 'Please fill in all required fields', 'error');
         return;
@@ -145,7 +160,6 @@ export default {
       try {
         const inventoryLevelPayload = {
           quantity: this.inventoryLevel.quantity,
-          reorder_level: this.inventoryLevel.reorder_level,
           supplier: this.inventoryLevel.supplier
         };
         const response = await InventoryLevelService.put(inventoryLevelPayload, this.inventoryLevel.id);

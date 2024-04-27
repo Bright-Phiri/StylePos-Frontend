@@ -67,7 +67,6 @@ export default {
         { text: "Size", value: "size" },
         { text: "Color", value: "color" },
         { text: "Stock Level", value: "stock_level" },
-        { text: "Inventory", value: "inventory_level" },
         { text: "Action", value: "action" },
       ],
     };

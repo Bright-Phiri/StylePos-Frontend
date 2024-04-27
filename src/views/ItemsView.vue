@@ -16,6 +16,7 @@
                   <v-text-field v-model="item.selling_price" label="Selling Price"></v-text-field>
                   <v-text-field v-model="item.size" label="Size"></v-text-field>
                   <v-text-field v-model="item.color" label="Color"></v-text-field>
+                  <v-text-field v-model="item.reorder_level" label="Reorder Level"></v-text-field>
                   <v-autocomplete label="Category" :items="categories" v-model="item.category_id" item-text="name"
                     item-value="id"></v-autocomplete>
                 </v-form>
@@ -41,6 +42,7 @@
                   <v-text-field v-model="item.selling_price" label="Selling Price"></v-text-field>
                   <v-text-field v-model="item.size" label="Size"></v-text-field>
                   <v-text-field v-model="item.color" label="Color"></v-text-field>
+                  <v-text-field v-model="item.reorder_level" label="Reorder Level"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -61,7 +63,6 @@
               <v-card-text>
                 <v-form ref="addInventoryLevelForm">
                   <v-text-field v-model="inventoryLevel.quantity" label="Quantity"></v-text-field>
-                  <v-text-field v-model="inventoryLevel.reorder_level" label="Reorder Level"></v-text-field>
                   <v-text-field v-model="inventoryLevel.supplier" label="Supplier"></v-text-field>
                 </v-form>
               </v-card-text>
@@ -156,12 +157,12 @@ export default {
         selling_price: null,
         size: null,
         color: null,
+        reorder_level: null,
         category_id: null,
       },
       categories: [],
       inventoryLevel: {
         quantity: null,
-        reorder_level: null,
         supplier: null,
       },
       errors: [],
@@ -173,7 +174,7 @@ export default {
         { text: "Size", value: "size" },
         { text: "Color", value: "color" },
         { text: "Stock Level", value: "stock_level" },
-        { text: "Inventory", value: "inventory_level" },
+        { text: "Reorder Level", value: "reorder_level" },
         { text: "Action", value: "action" },
       ],
     };
@@ -229,7 +230,7 @@ export default {
       }
     },
     async saveItem() {
-      const requiredFields = ["name", "price", "selling_price", "size", "color", "category_id"];
+      const requiredFields = ["name", "price", "selling_price", "size", "color", "reorder_level", "category_id"];
 
       if (requiredFields.some((field) => !this.item[field])) {
         await this.$swal(
@@ -248,6 +249,7 @@ export default {
           selling_price: this.item.selling_price,
           size: this.item.size,
           color: this.item.color,
+          reorder_level: this.item.reorder_level
         };
         const response = await ItemsService.create(this.item.category_id, itemPayload);
         if (response.status === 201) {
@@ -280,7 +282,7 @@ export default {
       });
     },
     async updateItem() {
-      const requiredFields = ["name", "price", "selling_price", "size", "color"];
+      const requiredFields = ["name", "price", "selling_price", "size", "color", "reorder_level"];
 
       if (requiredFields.some((field) => !this.item[field])) {
         await this.$swal(
@@ -298,6 +300,7 @@ export default {
           selling_price: this.item.selling_price,
           size: this.item.size,
           color: this.item.color,
+          reorder_level: this.item.reorder_level
         };
 
         const response = await ItemsService.put(
@@ -359,7 +362,7 @@ export default {
       this.inventoryLevelDialog = true;
     },
     async addInventoryLevel() {
-      if (!this.inventoryLevel.quantity || !this.inventoryLevel.reorder_level) {
+      if (!this.inventoryLevel.quantity) {
         this.$swal(
           "Fields Validation",
           "Please fill in all required fields",
@@ -370,7 +373,6 @@ export default {
       this.saveInventoryLoading = true;
       let inventoryLevelPayload = {
         quantity: this.inventoryLevel.quantity,
-        reorder_level: this.inventoryLevel.reorder_level,
         supplier: this.inventoryLevel.supplier,
       };
       try {
