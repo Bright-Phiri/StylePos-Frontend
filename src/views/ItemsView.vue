@@ -438,7 +438,7 @@ export default {
           { title: "Size", dataKey: "size" },
           { title: "Color", dataKey: "color" },
           { title: "Stock Level", dataKey: "stock_level" },
-          { title: "Inventory Level", dataKey: "inventory_level" },
+          { title: "Reorder Level", dataKey: "reorder_level" },
         ];
         const doc = new jsPDF({
           orientation: "portrait",

@@ -202,8 +202,10 @@ export default {
         const columns = [
           { title: "Item Name", dataKey: "item" },
           { title: "Quantity", dataKey: "quantity" },
-          { title: "Re-order Level", dataKey: "reorder_level" },
-          { title: "Supplier", dataKey: "supplier" }
+          { title: "Cost Price", dataKey: "price" },
+          { title: "Seling Price", dataKey: "selling_price" },
+          { title: 'Supplier', dataKey: 'supplier' },
+          { title: 'Stock Value', dataKey: 'stock_value' }, 
         ];
         const doc = new jsPDF({
           orientation: "portrait",
