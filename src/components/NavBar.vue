@@ -14,7 +14,7 @@
           </div>
         </v-sheet>
 
-        <v-list nav shaped>
+        <v-list nav dense shaped>
           <v-list-item v-for="item in store_manager" :key="item.text" link router :to="item.route">
             <v-list-item-icon>
               <v-tooltip right class="d-lg-none d-xl-flex">
@@ -80,6 +80,7 @@ export default {
         { text: "Items", icon: "mdi-package", route: "/items" },
         { text: "Barcodes", icon: "mdi-barcode", route: "/barcodes" },
         { text: "Inventory", icon: "mdi-trending-up", route: "/inventory" },
+        { text: "Receiving", icon: "mdi-trending-up", route: "/receiving" },
         { text: "Sales", icon: "mdi-cash-multiple", route: "/orders" },
         { text: "Returns", icon: "mdi-undo", route: "/returns" },
         { text: "Refunds", icon: "mdi-cash-refund", route: "/refunds" },
