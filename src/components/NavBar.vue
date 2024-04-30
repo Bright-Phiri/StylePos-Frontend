@@ -80,7 +80,7 @@ export default {
         { text: "Items", icon: "mdi-package", route: "/items" },
         { text: "Barcodes", icon: "mdi-barcode", route: "/barcodes" },
         { text: "Inventory", icon: "mdi-trending-up", route: "/inventory" },
-        { text: "Receiving", icon: "mdi-trending-up", route: "/receiving" },
+        { text: "Receivings", icon: "mdi-dolly", route: "/receivings" },
         { text: "Sales", icon: "mdi-cash-multiple", route: "/orders" },
         { text: "Returns", icon: "mdi-undo", route: "/returns" },
         { text: "Refunds", icon: "mdi-cash-refund", route: "/refunds" },
