@@ -32,6 +32,22 @@
         <v-spacer></v-spacer>
         <v-divider class="mx-5"></v-divider>
 
+        <v-list shaped nav dense>
+          <v-list-item v-for="item in app" :key="item.text" link router :to="item.route">
+            <v-list-item-icon>
+              <v-tooltip right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon v-bind="attrs" v-on="on">{{ item.icon }}</v-icon>
+                </template>
+                <span>{{ item.text }}</span>
+              </v-tooltip>
+            </v-list-item-icon>
+            <v-list-item-content class="ListItemClass">
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
       </v-navigation-drawer>
       
       <v-app-bar app flat color="#F3F3F3">
@@ -68,9 +84,11 @@ export default {
         { text: "Sales", icon: "mdi-cash-multiple", route: "/orders" },
         { text: "Returns", icon: "mdi-undo", route: "/returns" },
         { text: "Refunds", icon: "mdi-cash-refund", route: "/refunds" },
+      ],
+      app: [
         { text: "Users", icon: "mdi-account-multiple", route: "/employees" },
         { text: "Settings", icon: "mdi-cog", route: "/settings" },
-      ],
+      ]
     }
   },
   methods: {
