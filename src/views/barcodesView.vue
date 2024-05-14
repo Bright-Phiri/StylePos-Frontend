@@ -16,7 +16,7 @@
           </div>
 
           <v-card shaped>
-            <v-data-table :loading="loading" v-model="selected" loading-text="Loading Items... Please wait"
+            <v-data-table :loading="loading" loading-text="Loading Items... Please wait"
               :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
               @pagination="onPagination" :items="items" show-select :search="search" :sort-desc="[false, true]"
               multi-sort>

@@ -1,8 +1,8 @@
 import Api from "./api";
 
 export default {
-    getData() {
-        return Api().get('received_items')
+    getData(page, perPage, search) {
+        return Api().get('received_items', { params: { page: page, per_page: perPage, search: search } })
     },
     create(item, item_id) {
         return Api().post(`items/${item_id}/received_items`, item)

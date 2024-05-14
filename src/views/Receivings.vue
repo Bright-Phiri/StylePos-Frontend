@@ -12,13 +12,14 @@
               <v-card-text>
                 <v-form ref="addReceivedItemForm">
                   <v-autocomplete dense outlined :search-input.sync="searchItemTxField" :items="items" :loading="loading"
-                    label="Search Item" placeholder="Start typing to Search" prepend-inner-icon="mdi-magnify" return-object
+                    label="Search Item" v-model="item.id" placeholder="Start typing to Search" prepend-inner-icon="mdi-magnify"
                     item-text="name"
                     item-value="id"></v-autocomplete>
                   <v-text-field v-model="item.price" label="Cost Price"></v-text-field>
                   <v-text-field v-model="item.selling_price" label="Selling Price"></v-text-field>
-                  <v-text-field v-model="item.size" label="Size"></v-text-field>
-                  <v-text-field v-model="item.color" label="Color"></v-text-field>
+                  <v-text-field v-model="item.quantity" label="Quantity"></v-text-field>
+                  <v-text-field v-model="item.batch_number" label="Batch Number"></v-text-field>
+                  <v-text-field v-model="item.supplier" label="Supplier"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions class="d-flex justify-end">
@@ -49,13 +50,11 @@
           </div>
 
           <v-card shaped>
-            <v-data-table :loading="loadingReceivings" v-model="selected" loading-text="Loading Inventory Levels... Please wait"
-              :headers="headers" :server-items-length="total" :items-per-page="itemsPerPage" :page.sync="currentPage"
-              @pagination="onPagination" :items="inventoryLevels" show-select :search="search"
+            <v-data-table :loading="loadingReceivings" v-model="selected" loading-text="Loading Received Items... Please wait"
+              :headers="headers" :server-items-length="receivedItemstotal" :items-per-page="itemsPerPage" :page.sync="receivedcurrentPage"
+              @pagination="onPagination" :items="receivedItems" show-select :search="search"
               :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" v-on:click="showEditInventoryDialog(item.id)" color="blue">mdi-pencil
-                </v-icon>
                 <v-icon small class="mr-0" color="red" v-on:click="deleteInventory(item.id)">mdi-delete</v-icon>
               </template>
               <template v-slot:[`item.stock_value`]="{ item }">
@@ -76,6 +75,7 @@
 </template>
 <script>
 import ItemsService from "../services/ItemsService";
+import ReceivedItemsService from "../services/ReceivedItemService";
 import 'jspdf-autotable'
 export default {
   name: "InventoryView",
@@ -85,20 +85,24 @@ export default {
       dialog: false,
       loading: false,
       loadingReceivings: false,
+      saveItemLoading: false,
       selected: [],
       total: 0,
       currentPage: 1,
+      receivedItemstotal: 0,
+      receivedcurrentPage: 1,
       itemsPerPage: 7,
       search: '',
       items: [],
+      receivedItems: [],
       searchItemTxField: "",
       item: {
         id: null,
-        name: null,
         price: null,
         selling_price: null,
-        size: null,
-        color: null,
+        quantity: null,
+        batch_number: null,
+        supplier: null
       },
       headers: [
         {
@@ -107,11 +111,11 @@ export default {
           sortable: false,
           value: 'id',
         },
-        { text: 'Barcode', value: 'barcode' },
         { text: 'name', value: 'item' },
         { text: "Cost Price", value: "cost_price" },
         { text: "Seling Price", value: "selling_price" },
         { text: 'Quantity', value: 'quantity' },
+        { text: "Batch Number", value: "batch_number" },
         { text: 'Supplier', value: 'supplier' },
         { text: 'Stock Value', value: 'stock_value' },
         { text: 'Received on', value: 'received_on' },
@@ -130,6 +134,53 @@ export default {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
+    },
+    async saveItem() {
+      const requiredFields = ["id", "price", "selling_price", "quantity", "batch_number"];
+
+      if (requiredFields.some((field) => !this.item[field])) {
+        await this.$swal(
+          "Fields Validation",
+          "Please fill in all required fields",
+          "warning"
+        );
+        return;
+      }
+      alert(this.item.id)
+      console.log(this.item.id)
+      try {
+        this.saveItemLoading = true;
+        const itemPayload = {
+          cost_price: this.item.price,
+          selling_price: this.item.selling_price,
+          quantity: this.item.quantity,
+          batch_number: this.item.batch_number,
+          supplier: this.item.supplier
+        };
+        const response = await ReceivedItemsService.create(itemPayload, this.item.id);
+        if (response.status === 201) {
+          this.$swal("Information", "Item saved successfully", "success");
+          this.$refs.addItemForm.reset();
+          this.dialog = false;
+          this.fetchReceivingsDataFromAPI();
+        }
+      } catch (error) {
+        this.handleError(error);
+      } finally {
+        this.saveItemLoading = false;
+      }
+    },
+    async fetchReceivingsDataFromAPI(page, perPage, search) {
+      this.loadingReceivings = true;
+      try {
+        const response = await ReceivedItemsService.getData(page, perPage, search);
+        this.receivedItems = response.data.items;
+        this.receivedItemstotal = response.data.total;
+        this.loadingReceivings = false;
+      } catch (error) {
+        this.loadingReceivings = false;
+        this.handleError(error);
+      }
     },
     async fetchDataFromAPI(page, perPage, search) {
       this.loading = true;
@@ -151,8 +202,13 @@ export default {
     },
     onPagination(page) {
       this.currentPage = Number(page.page);
+      this.receivedcurrentPage = Number(page.page);
       this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+      this.fetchReceivingsDataFromAPI(this.receivedcurrentPage, this.itemsPerPage, this.search);
     },
+  },
+  mounted() {
+    this.fetchReceivingsDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
   },
 };
 </script>
