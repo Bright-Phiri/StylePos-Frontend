@@ -55,7 +55,7 @@
               @pagination="onPagination" :items="receivedItems" show-select :search="search"
               :sort-desc="[false, true]" multi-sort>
               <template v-slot:[`item.action`]="{ item }">
-                <v-icon small class="mr-0" color="red" v-on:click="deleteInventory(item.id)">mdi-delete</v-icon>
+                <v-icon small class="mr-0" color="red" v-on:click="deleteItem(item.id)">mdi-delete</v-icon>
               </template>
               <template v-slot:[`item.stock_value`]="{ item }">
                 {{ formartValue(item.stock_value) }}
@@ -191,6 +191,22 @@ export default {
         this.loading = false;
       } catch (error) {
         this.loading = false;
+        this.handleError(error);
+      }
+    },
+    async deleteItem(item_id) {
+      try {
+        const response = await ReceivedItemsService.delete(item_id);
+        if (response.status === 204) {
+          this.$swal(
+            "Information",
+            "Received Item deleted successfully",
+            "success"
+          ).then(() => {
+            this.fetchReceivingsDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+          });
+        }
+      } catch (error) {
         this.handleError(error);
       }
     },
