@@ -2,7 +2,6 @@
   <div name="NavBar">
     <nav>
       <v-navigation-drawer color="#FFFFFF" :width="282" v-model="drawer" :mini-variant.sync="mini" app>
-
         <v-sheet color="#FFFFFF" class="pa-4">
           <div class="d-flex justify-space-between">
             <v-avatar tile width="100%" class="mr-11">
@@ -47,7 +46,6 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-
       </v-navigation-drawer>
       
       <v-app-bar app flat color="#F3F3F3">
@@ -60,6 +58,7 @@
         <h4 class="ml-3 font-weight-bold">Welcome back, {{ user.user_name }}!</h4>
         <v-icon @click="logout" class="ml-2">mdi-exit-to-app</v-icon>
       </v-app-bar>
+
     </nav>
     <transition name="page" mode="out-in">
       <router-view />
