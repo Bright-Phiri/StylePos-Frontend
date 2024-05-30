@@ -146,7 +146,6 @@ export default {
         );
         return;
       }
-      alert(this.item.id)
       console.log(this.item.id)
       try {
         this.saveItemLoading = true;
