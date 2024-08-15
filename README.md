@@ -19,6 +19,8 @@ npm run build
 ```
 npm run lint
 ```
+### Application Link
+https://stylepos.netlify.app
 
 ### Screenshots
 
