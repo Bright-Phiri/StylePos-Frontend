@@ -21,7 +21,7 @@ Vue.use(VueToastify);
 Vue.use(ActionCableVue, {
   debug: true,
   debugLevel: "error",
-  connectionUrl: "ws://localhost:3000/cable",
+  connectionUrl: "wss://storesapi-6efa26ededb6.herokuapp.com/cable",
   connectImmediately: false,
 });
 
