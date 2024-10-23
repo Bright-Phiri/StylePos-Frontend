@@ -11,7 +11,7 @@ export default {
         return Api().put(`line_items/${line_item_id}`, line_item)
     },
     applyDiscount(order_id, line_item, line_item_id) {
-        return Api().patch(`orders/${order_id}/line_items/apply_discount/${line_item_id}`, line_item)
+        return Api().patch(`/line_items/${line_item_id}/apply_discount`, line_item)
     },
     delete(line_item_id) {
         return Api().delete(`line_items/${line_item_id}`)

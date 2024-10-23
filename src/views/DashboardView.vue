@@ -288,7 +288,7 @@ export default {
     },
   },
   mounted() {
-    this.$cable.connection.connect(`wss://storesapi-6efa26ededb6.herokuapp.com/cable?token=${this.$store.state.token}`);
+    this.$cable.connection.connect(`ws://localhost:3000/cable?token=${this.$store.state.token}`);
     this.$cable.subscribe({ channel: "DashboardChannel" });
   }
 };

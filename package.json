@@ -24,6 +24,7 @@
     "jsbarcode": "^3.11.5",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.1",
+    "pdf-lib": "^1.17.1",
     "print-js": "^1.6.0",
     "terser-webpack-plugin": "^5.3.9",
     "vue": "^2.6.14",

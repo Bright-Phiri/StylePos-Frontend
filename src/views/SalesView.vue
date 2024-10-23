@@ -146,6 +146,7 @@
 import ItemsService from '../services/ItemsService'
 import LineItemService from '../services/LineItemService'
 import OrdersService from '../services/OrdersService'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 export default {
   name: "SalesView",
   data() {
@@ -215,6 +216,120 @@ export default {
     onPagination(page) {
       this.currentPage = Number(page.page);
       this.fetchDataFromAPI(this.currentPage, this.itemsPerPage, this.search);
+    },
+    async generateReceipt() {
+      const lineItems = [
+        { description: 'Item 1', quantity: 2, unitPrice: 10.00, total: 20.00, totalVAT: 3.30 },
+        { description: 'Item 2', quantity: 1, unitPrice: 15.00, total: 15.00, totalVAT: 2.48 },
+      ];
+      const total = 35.00;
+
+      const pdfUrl = await this.generateTransactionReceipt(lineItems, total);
+      if (pdfUrl) {
+        this.printPDF(pdfUrl);
+      } else {
+        console.error('Failed to generate receipt');
+      }
+    },
+    async generateTransactionReceipt(lineItems, total) {
+      try {
+        // Create a new PDF document
+        const pdfDoc = await PDFDocument.create();
+        const page = pdfDoc.addPage([216, 432]); // Page size 72f * 3 by 72f * 6 (in points)
+
+        // Embed a font
+        const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontSize = 8;
+
+        // Add taxpayer details
+        this.addText(page, 'Business Name', font, fontSize, 108, 400, 'center');
+        this.addText(page, 'Address', font, fontSize, 108, 390, 'center');
+        this.addText(page, 'Address', font, fontSize, 108, 380, 'center');
+        this.addText(page, '20204525', font, fontSize, 108, 370, 'center');
+        this.addText(page, '*VAT REGISTERED*', font, fontSize, 108, 360, 'center');
+
+        // Add buyer details
+        const buyerDetails = [
+          { label: "BUYER'S NAME", value: '' },
+          { label: "BUYER'S TIN", value: '' },
+          { label: 'ZNO', value: '' }
+        ];
+        let yPosition = 320;
+        buyerDetails.forEach(detail => {
+          this.addText(page, detail.label, font, fontSize, 10, yPosition, 'left');
+          this.addText(page, detail.value, font, fontSize, 206, yPosition, 'right');
+          yPosition -= 10;
+        });
+
+        // Add line items
+        yPosition -= 10;
+        let totalVAT = 0;
+        let taxableAmount = 0;
+        lineItems.forEach(item => {
+          const itemName = item.description;
+          const quantity = item.quantity.toString().padStart(6, ' ');
+          const unitPrice = this.formatValue(item.unitPrice).padStart(10, ' ');
+          const totalPrice = this.formatValue(item.total).padStart(10, ' ');
+
+          this.addText(page, `${itemName} ${unitPrice} ${quantity} ${totalPrice}`, font, fontSize, 10, yPosition, 'left');
+          yPosition -= 10;
+
+          totalVAT += item.totalVAT;
+          taxableAmount += item.total - item.totalVAT;
+        });
+
+        // Add totals and VAT
+        yPosition -= 10;
+        this.addText(page, `Taxable A-16.5%: ${this.formatValue(taxableAmount).padStart(20, ' ')}`, font, fontSize, 10, yPosition, 'left');
+        yPosition -= 10;
+        this.addText(page, `VAT A-16.5%: ${this.formatValue(totalVAT).padStart(20, ' ')}`, font, fontSize, 10, yPosition, 'left');
+        yPosition -= 10;
+        this.addText(page, `TOTAL VAT: ${this.formatValue(totalVAT).padStart(20, ' ')}`, font, fontSize, 10, yPosition, 'left');
+        yPosition -= 10;
+        this.addText(page, `Total: ${this.formatValue(total).padStart(20, ' ')}`, font, fontSize, 10, yPosition, 'left');
+
+        // Add end of receipt text
+        yPosition -= 20;
+        this.addText(page, '*** END OF A LEGAL RECEIPT ***', font, fontSize, 108, yPosition, 'center');
+
+        // Save the PDF document
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+
+        // Return or download the PDF file as needed
+        return url;
+      } catch (error) {
+        console.error('Error generating receipt:', error);
+        return null;
+      }
+    },
+    addText(page, text, font, size, x, y, align = 'left') {
+      const textWidth = font.widthOfTextAtSize(text, size);
+      if (align === 'center') x -= textWidth / 2;
+      if (align === 'right') x -= textWidth;
+      page.drawText(text, { x, y, size, font, color: rgb(0, 0, 0) });
+    },
+    formatValue(value) {
+      return value.toFixed(2);
+    },
+    printPDF(pdfUrl) {
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = 'none';
+      iframe.src = pdfUrl;
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        iframe.contentWindow.print();
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+        }, 1000);
+      };
     },
     async fetchDataFromAPI(page, perPage, search) {
       this.itemsLoading = true;
@@ -448,6 +563,7 @@ export default {
         this.$store.commit('setOderId', 0)
         this.$vToastify.success('Order completed successfully', 'Message');
         this.clearData();
+        //this.generateReceipt();
         this.$refs.barcodeTextField.focus();
       }
       this.$refs.barcodeTextField.focus();

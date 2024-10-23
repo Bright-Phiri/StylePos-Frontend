@@ -11,7 +11,7 @@ export default {
         return Api().get(`categories/${category_id}`)
     },
     show_items(page, perPage, search, category_id) {
-        return Api().get(`categories/show_items/${category_id}`, { params: { page: page, per_page: perPage, search: search } })
+        return Api().get(`categories/${category_id}/show_items`, { params: { page: page, per_page: perPage, search: search } })
     },
     put(category, category_id) {
         return Api().put(`categories/${category_id}`, category)

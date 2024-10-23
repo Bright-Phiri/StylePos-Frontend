@@ -8,10 +8,10 @@ export default {
         return Api().post('employees', employee)
     },
     disable(employee_id) {
-        return Api().patch(`employees/disable_user/${employee_id}`)
+        return Api().patch(`employees/${employee_id}/disable_user`)
     },
     activate(employee_id) {
-        return Api().patch(`employees/activate_user/${employee_id}`)
+        return Api().patch(`employees/${employee_id}/activate_user`)
     },
     show(employee_id) {
         return Api().get(`employees/${employee_id}`)
